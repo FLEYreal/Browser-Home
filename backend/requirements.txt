@@ -4,3 +4,5 @@ fastapi==0.109.0
 uvicorn==0.26.0
 SQLAlchemy==2.0.25
 psycopg2==2.9.9
+python-dotenv==1.0.0
+alembic==1.13.1
