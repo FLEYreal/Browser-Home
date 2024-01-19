@@ -18,7 +18,7 @@ router = APIRouter(
 
 
 # Endpoints
-@router.get("/item")
+@router.get("/")
 async def item_get(shelf_id: int, item_id: int):
     """
     Get item(s) data in a list of dictionaries.
@@ -34,7 +34,7 @@ async def item_get(shelf_id: int, item_id: int):
     return {"test": True}
 
 
-@router.post("/item")
+@router.post("/")
 async def item_post():
     """
     Insert a list of item(s) data into a database table.
@@ -53,7 +53,7 @@ async def item_post():
     return {"test": True}
 
 
-@router.post("item/update")
+@router.post("/update")
 async def item_update_post():
     """
     Updates item(s) from database table.
@@ -74,7 +74,7 @@ async def item_update_post():
     return {"test": True}
 
 
-@router.delete("item/update")
+@router.delete("/update")
 async def item_update_delete(shelf_id: int):
     """
     Updates item(s) from database table.
