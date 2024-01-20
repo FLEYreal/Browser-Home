@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 
 # Modules
-from db import Base
+from .db import Base
 
 
 # Tables' Models

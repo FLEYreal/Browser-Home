@@ -1,32 +1,26 @@
 # FastAPI Imports
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
-from sqlalchemy import select
 
 # SQLAlchemy Imports
+from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 # Modules
-from db import get_db
-from models import Shelves
+from ..db import get_db
+from ..models import Shelves
+
+# Utils
+from ..utils.schemas import ShelfPostBody
+from ..utils.responses import responses, generate_response
 
 # Define router
 router = APIRouter(
     prefix="/shelf",
     tags=["shelf"],
-
-    responses={
-
-        404: {
-            "status": 404,
-            "title": "HTTP 404: Not Found!",
-            "description": "You won't find it here, look elsewhere!"
-        }
-
-    }
-
+    responses=responses
 )
-
 
 # Endpoints
 @router.get("/")
@@ -54,18 +48,21 @@ async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):
             # If shelf_id is lower than 0
             if shelf_id <= 0:
                 return JSONResponse(
-                    status_code=400,
-                    content={
-                        "status": 400,
-                        "title": "HTTP 400: Bad Request!",
-                        "description": "Well, there's no shelf_id lower than 0!"
-                    }
+                    status_code=422,
+                    content=generate_response(
+                        status=422,
+                        title="HTTP 422: Validation Error!",
+                        description="Well, there's no shelf_id lower than 0!"
+                    )
                 )
 
             # Send request to Shelves table, looking for rows with provided shelf_id
             query = db.execute(
                 select(Shelves).where(Shelves.shelf_id == shelf_id)
             )
+
+            # Commit changes to database
+            db.commit()
 
             # Transform result into a list of dictionaries
             transformed_query = map(lambda x: x["Shelves"], query.mappings().all())
@@ -79,6 +76,9 @@ async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):
             # Send request to Shelves table getting all rows
             query = db.execute(select(Shelves))
 
+            # Commit changes to database
+            db.commit()
+
             # Transform result into a list of dictionaries
             transformed_query = map(lambda x: x["Shelves"], query.mappings().all())
 
@@ -90,43 +90,68 @@ async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):
 
     except ValueError:
         return JSONResponse(
-            status_code=400,
-            content={
-                "status": 400,
-                "title": "HTTP 400: Bad Request!",
-                "description": "Hey? What is this shelf_id? Provide me an integer!"
-            }
+            status_code=422,
+            content=generate_response(
+                status=422,
+                title="HTTP 422: Validation Error!",
+                description="Hey? What is this shelf_id? Provide me an integer!"
+            )
         )
 
     except Exception as e:
 
         print("Exception: ", e)
-        return JSONResponse(
-            status_code=500,
-            content={
-                "status": 500,
-                "title": "HTTP 500: Internal Server Error!",
-                "description": "Welp... Server is having hard times, please try again later!"
-            }
-        )
+        return JSONResponse(status_code=500, content=responses[500])
 
 
 @router.post("/")
-async def shelf_post():
+async def shelf_post(body: ShelfPostBody, db: Session = Depends(get_db)):
     """
     Inserts new shelf(ves) data into a database table.
 
     Queries: None
     Body: [{
-        title: str,
-        description: str,
-        color?: str
+        title: str = Field(min_length=1, max_length=32)
+        description: str = Field(min_length=1, max_length=128)
+        color: Optional[str] = Field(None, min_length=1, max_length=7)
     }]
 
     Returns:
         dict: Returns Operation Details.
     """
-    return {"test": True}
+
+    try:
+
+        # If no color provided, setup default color to black
+        if not body.color:
+            body.color = "#000000"
+
+        # Insert new values to "Shelves" table
+        db.execute(
+            insert(Shelves).values(
+                title=body.title,
+                description=body.description,
+                color=body.color
+            )
+        )
+
+        # Commit changes to database
+        db.commit()
+
+        # Return Operation Details
+        return JSONResponse(
+            status_code=201,
+            content=generate_response(
+                status=201,
+                title="HTTP 201: Created!",
+                description="New shelf successfully created!"
+            )
+        )
+
+    except Exception as e:
+
+        print("Exception: ", e)
+        return JSONResponse(status_code=500, content=responses[500])
 
 
 @router.post("/update")
