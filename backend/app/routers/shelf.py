@@ -22,6 +22,7 @@ router = APIRouter(
     responses=responses
 )
 
+
 # Endpoints
 @router.get("/")
 async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):

@@ -1,7 +1,8 @@
 def generate_response(
     status: int,
     title: str,
-    description: str
+    description: str,
+    details: dict | None = None
 ):
     """
     Generate a standardized JSON response. Function is sort of abstraction.
@@ -12,6 +13,7 @@ def generate_response(
         status (int): HTTP status code
         title (str): Title of the response
         description (str): Description of the response
+        details (dict | None, optional): Additional info about the response.
 
     Returns:
         dict: JSON response with status, title, and description keys
@@ -20,7 +22,8 @@ def generate_response(
     return {
         "status": status,
         "title": title,
-        "description": description
+        "description": description,
+        "details": details
     }
 
 

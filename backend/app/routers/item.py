@@ -1,19 +1,14 @@
 # Imports
 from fastapi import APIRouter
 
+# Utils
+from ..utils.responses import responses
+
 # Define router
 router = APIRouter(
     prefix="/item",
     tags=["item"],
-    responses={
-
-        404: {
-            "status": 404,
-            "title": "HTTP 404: Not Found!",
-            "description": "You won't find it here, look elsewhere!"
-        }
-
-    }
+    responses=responses
 )
 
 
