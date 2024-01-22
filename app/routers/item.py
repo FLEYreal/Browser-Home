@@ -1,5 +1,18 @@
-# Imports
-from fastapi import APIRouter
+# FastAPI Imports
+from fastapi import APIRouter, Depends
+from fastapi.responses import JSONResponse
+
+# SQLAlchemy Imports
+from sqlalchemy import select, and_
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.orm import Session
+
+# Libs
+from typing import Optional
+
+# Modules
+from ..db import get_db
+from ..models import Items
 
 # Utils
 from ..utils.responses import responses
@@ -14,7 +27,7 @@ router = APIRouter(
 
 # Endpoints
 @router.get("/")
-async def item_get(shelf_id: int, item_id: int):
+async def item_get(shelf_id: Optional[int] = None, item_id: Optional[int] = None, db: Session = Depends(get_db)):
     """
     Get item(s) data in a list of dictionaries.
 
@@ -26,7 +39,31 @@ async def item_get(shelf_id: int, item_id: int):
     Returns:
         list[dict]: A list of dictionaries containing the item(s) data.
     """
-    return {"test": True}
+
+    try:
+
+        # Conditions for query
+        conditions = [
+            Items.item_id == item_id if item_id else True,
+            Items.shelf_fk == shelf_id if shelf_id else True,
+        ]
+
+        # Find all items with or without conditions
+        items = db.execute(
+            select(Items)
+            .where(and_(*conditions))
+        ).mappings().all()
+
+        # Transform result into a list of dictionaries
+        transformed_query = list(map(lambda x: x["Items"], items))
+
+        # Return all found items
+        return transformed_query
+
+    except Exception as e:
+
+        print("Exception: ", e)
+        return JSONResponse(status_code=500, content=responses[500])
 
 
 @router.post("/")

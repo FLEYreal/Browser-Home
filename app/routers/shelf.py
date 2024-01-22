@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
 # SQLAlchemy Imports
-from sqlalchemy import select
+from sqlalchemy import select, update, and_
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
@@ -12,7 +12,7 @@ from ..db import get_db
 from ..models import Shelves
 
 # Utils
-from ..utils.schemas import ShelfPostBody
+from ..utils.schemas import ShelfPostBody, ShelfUpdateBody
 from ..utils.responses import responses, generate_response
 
 # Define router
@@ -39,10 +39,7 @@ async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):
 
     try:
 
-        # Response to send back to client
-        response = []
-
-        # If shelf_id is provided
+        # Transform to int if provided
         if shelf_id:
             shelf_id = int(shelf_id)
 
@@ -57,37 +54,21 @@ async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):
                     )
                 )
 
-            # Send request to Shelves table, looking for rows with provided shelf_id
-            query = db.execute(
-                select(Shelves).where(Shelves.shelf_id == shelf_id)
-            )
+        # Conditions
+        conditions = [
+            Shelves.shelf_id == shelf_id if shelf_id else True
+        ]
 
-            # Commit changes to database
-            db.commit()
+        # Send request to Shelves table, looking for rows with provided shelf_id
+        shelves = db.execute(
+            select(Shelves).where(and_(*conditions))
+        ).mappings().all()
 
-            # Transform result into a list of dictionaries
-            transformed_query = map(lambda x: x["Shelves"], query.mappings().all())
+        # Transform result into a list of dictionaries
+        transformed_shelves = list(map(lambda x: x["Shelves"], shelves))
 
-            # Append results into response array
-            response.extend(transformed_query)
-
-        # Send all shelves if shelf_id is not provided
-        else:
-
-            # Send request to Shelves table getting all rows
-            query = db.execute(select(Shelves))
-
-            # Commit changes to database
-            db.commit()
-
-            # Transform result into a list of dictionaries
-            transformed_query = map(lambda x: x["Shelves"], query.mappings().all())
-
-            # Append results into response array
-            response.extend(transformed_query)
-
-        # Return found shelves from Shelves table
-        return response
+        # Return all found shelves
+        return transformed_shelves
 
     except ValueError:
         return JSONResponse(
@@ -125,7 +106,7 @@ async def shelf_post(body: ShelfPostBody, db: Session = Depends(get_db)):
 
         # If no color provided, setup default color to black
         if not body.color:
-            body.color = "#000000"
+            body.color = "#A0A0A0"
 
         # Insert new values to "Shelves" table
         db.execute(
@@ -156,7 +137,7 @@ async def shelf_post(body: ShelfPostBody, db: Session = Depends(get_db)):
 
 
 @router.post("/update")
-async def shelf_update_post():
+async def shelf_update_post(body: ShelfUpdateBody, db: Session = Depends(get_db)):
     """
     Updates a shelf(ves) data in a database table.
 
@@ -171,7 +152,63 @@ async def shelf_update_post():
     Returns:
         dict: Returns Operation Details.
     """
-    return {"test": True}
+
+    try:
+
+        # Get the new values from the request body
+        shelf_id, title, description, color = body
+
+        # Get a row with same id that's been provided
+        shelf = db.execute(select(Shelves).where(Shelves.shelf_id == shelf_id[1])).mappings().all()
+
+        # If provided shelf doesn't exist, return error
+        if not shelf:
+            return JSONResponse(
+                status_code=422,
+                content=generate_response(
+                    status=422,
+                    title="HTTP 422: Validation Error!",
+                    description="You tried to update what's never existed! May be just creating a new shelf?"
+                )
+            )
+
+        if not title:  # No title provided & Set existing
+            title = ('title', shelf[0]["Shelves"].title)
+
+        if not description:  # No description provided & Set existing
+            description = ('description', shelf[0]["Shelves"].description)
+
+        if not color:  # No color provided & Set existing
+            color = ('color', shelf[0]["Shelves"].color)
+
+        # Update the row
+        db.execute(
+            update(Shelves)
+            .where(Shelves.shelf_id == shelf_id[1])
+            .values(
+                title=title[1],  # Use key value from tuple
+                description=description[1],
+                color=color[1]
+            )
+        )
+
+        # Commit changes
+        db.commit()
+
+        # Return success, row updated
+        return JSONResponse(
+            status_code=200,
+            content=generate_response(
+                status=200,
+                title="HTTP 200: OK!",
+                description="Shelf successfully updated!"
+            )
+        )
+
+    except Exception as e:
+
+        print("Exception: ", e)
+        return JSONResponse(status_code=500, content=responses[500])
 
 
 @router.delete("/update")

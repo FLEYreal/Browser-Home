@@ -7,7 +7,7 @@ from config import DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME
 
 
 # Create database engine
-engine = create_engine(f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
+engine = create_engine(f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}", echo=True)
 
 # Create Base for tables' models
 Base = declarative_base()

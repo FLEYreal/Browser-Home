@@ -26,8 +26,8 @@ class Shelves(Base):
     # Columns
     shelf_id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(32), nullable=False)
-    description = Column(String(128), nullable=False)
-    color = Column(String(7), default="#000000")
+    description = Column(String(256), nullable=False)
+    color = Column(String(7), default="#A0A0A0")
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
 
     # Relationships
@@ -51,7 +51,8 @@ class Items(Base):
     # Columns
     item_id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(32), nullable=False)
-    description = Column(String(128), nullable=False)
+    link = Column(String, nullable=False)
+    description = Column(String(128))
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
     icon = Column(LargeBinary)
 
