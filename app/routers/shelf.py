@@ -19,7 +19,7 @@ from ..utils.responses import responses, generate_response
 router = APIRouter(
     prefix="/shelf",
     tags=["shelf"],
-    responses=responses
+    responses=responses  # type: ignore
 )
 
 
@@ -61,7 +61,7 @@ async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):
 
         # Send request to Shelves table, looking for rows with provided shelf_id
         shelves = db.execute(
-            select(Shelves).where(and_(*conditions))
+            select(Shelves).where(and_(*conditions))  # type: ignore
         ).mappings().all()
 
         # Transform result into a list of dictionaries
@@ -104,10 +104,6 @@ async def shelf_post(body: ShelfPostBody, db: Session = Depends(get_db)):
 
     try:
 
-        # If no color provided, setup default color to black
-        if not body.color:
-            body.color = "#A0A0A0"
-
         # Insert new values to "Shelves" table
         db.execute(
             insert(Shelves).values(
@@ -143,10 +139,10 @@ async def shelf_update_post(body: ShelfUpdateBody, db: Session = Depends(get_db)
 
     Queries: None
     Body: [{
-        id: int,
-        title?: str,
-        description?: str,
-        color?: str
+        shelf_id: int
+        title: Optional[str] = Field(None, min_length=1, max_length=32)
+        description: Optional[str] = Field(None, min_length=1, max_length=256)
+        color: Optional[str] = Field('#A0A0A0', min_length=1, max_length=7)
     ]}
 
     Returns:
@@ -172,13 +168,13 @@ async def shelf_update_post(body: ShelfUpdateBody, db: Session = Depends(get_db)
                 )
             )
 
-        if not title:  # No title provided & Set existing
+        if not title[1]:  # No title provided & Set existing
             title = ('title', shelf[0]["Shelves"].title)
 
-        if not description:  # No description provided & Set existing
+        if not description[1]:  # No description provided & Set existing
             description = ('description', shelf[0]["Shelves"].description)
 
-        if not color:  # No color provided & Set existing
+        if not color[1]:  # No color provided & Set existing
             color = ('color', shelf[0]["Shelves"].color)
 
         # Update the row

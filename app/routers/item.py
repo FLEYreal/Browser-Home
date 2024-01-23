@@ -1,5 +1,5 @@
 # FastAPI Imports
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile
 from fastapi.responses import JSONResponse
 
 # SQLAlchemy Imports
@@ -16,12 +16,13 @@ from ..models import Items
 
 # Utils
 from ..utils.responses import responses
+from ..utils.schemas import ItemPostBody
 
 # Define router
 router = APIRouter(
     prefix="/item",
     tags=["item"],
-    responses=responses
+    responses=responses  # type: ignore
 )
 
 
@@ -51,7 +52,7 @@ async def item_get(shelf_id: Optional[int] = None, item_id: Optional[int] = None
         # Find all items with or without conditions
         items = db.execute(
             select(Items)
-            .where(and_(*conditions))
+            .where(and_(*conditions))  # type: ignore
         ).mappings().all()
 
         # Transform result into a list of dictionaries
@@ -67,21 +68,40 @@ async def item_get(shelf_id: Optional[int] = None, item_id: Optional[int] = None
 
 
 @router.post("/")
-async def item_post():
+async def item_post(body: ItemPostBody):
     """
     Insert a list of item(s) data into a database table.
 
     Queries: None
     Body: [{
-        shelf_id: int,
-        title: str,
-        description: str
+        shelf_id: int
+        link: str
+        title: str = Field(min_length=1, max_length=32)
+        description: Optional[str] = Field(min_length=1, max_length=128)
     }]
-    Files: icon[]
 
     Returns:
         dict: Returns Operation Details.
     """
+
+    try:
+
+        pass
+
+    except Exception as e:
+
+        print("Exception: ", e)
+        return JSONResponse(status_code=500, content=responses[500])
+
+
+@router.post("/icon")
+async def item_update_icon_post(file: UploadFile):
+
+    if file:
+        file_name = file.filename
+
+        print('FILE NAME: ', file_name)
+
     return {"test": True}
 
 
