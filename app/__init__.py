@@ -1,12 +1,11 @@
 # FastAPI Imports
 from fastapi import FastAPI, Request, status
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 # Modules
-from .routers import item, shelf
+from .routers.item import router as item_router
+from .routers.shelf import router as shelf_router
 from .utils.responses import generate_response
 
 # Variables
@@ -18,14 +17,12 @@ app = FastAPI(
 # Customize Error Response
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    return JSONResponse(
+    return generate_response(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content=jsonable_encoder(generate_response(
-            status=422,
-            title="HTTP 422: Validation Error!",
-            description="Values you sent smell wrong, you know?",
-            details=exc.errors()
-        ))
+        status=422,
+        title="HTTP 422: Validation Error!",
+        description="Values you sent smell wrong, you know?",
+        details=exc.errors()
     )
 
 
@@ -44,5 +41,5 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(item.router)
-app.include_router(shelf.router)
+app.include_router(item_router)
+app.include_router(shelf_router)

@@ -1,0 +1,1 @@
+# FastAPI Importsfrom fastapi import APIRouter# Define routerrouter = APIRouter()@router.delete("/update")async def shelf_update_delete():    """    Deletes a shelf(ves) data in a database table.    Queries: None    Body: int[]    Returns:        dict: Returns Operation Details.    """    return {"test": True}
