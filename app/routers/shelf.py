@@ -25,7 +25,7 @@ router = APIRouter(
 
 # Endpoints
 @router.get("/")
-async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):
+async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):  # type: ignore
     """
     Provides a list of dictionaries containing the shelf data.
 
@@ -34,7 +34,7 @@ async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):
     Body: None
 
     Returns:
-        list[dict]: A list of dictionaries containing the shelf data.
+        JSONResponse: A list of dictionaries containing the shelf data.
     """
 
     try:
@@ -143,7 +143,7 @@ async def shelf_update_post(body: ShelfUpdateBody, db: Session = Depends(get_db)
         title: Optional[str] = Field(None, min_length=1, max_length=32)
         description: Optional[str] = Field(None, min_length=1, max_length=256)
         color: Optional[str] = Field('#A0A0A0', min_length=1, max_length=7)
-    ]}
+    ]}   
 
     Returns:
         dict: Returns Operation Details.
