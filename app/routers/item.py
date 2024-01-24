@@ -1,10 +1,10 @@
 # FastAPI Imports
 from fastapi import APIRouter, Depends, UploadFile
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 # SQLAlchemy Imports
-from sqlalchemy import select, and_
-from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 # Libs
@@ -15,7 +15,7 @@ from ..db import get_db
 from ..models import Items
 
 # Utils
-from ..utils.responses import responses
+from ..utils.responses import responses, generate_response
 from ..utils.schemas import ItemPostBody
 
 # Define router
@@ -47,19 +47,21 @@ async def item_get(shelf_id: Optional[int] = None, item_id: Optional[int] = None
         conditions = [
             Items.item_id == item_id if item_id else True,
             Items.shelf_fk == shelf_id if shelf_id else True,
+            # ... other conditions might be provided in the future.
         ]
 
         # Find all items with or without conditions
-        items = db.execute(
-            select(Items)
-            .where(and_(*conditions))
-        ).mappings().all()
-
-        # Transform result into a list of dictionaries
-        transformed_query = list(map(lambda x: x["Items"], items))
+        items = []
+        for item in db.query(Items).where(and_(*conditions)).all():
+            items.append(jsonable_encoder(item.__dict__))
 
         # Return all found items
-        return transformed_query
+        return generate_response(
+            status=200,
+            title="HTTP 200: OK!",
+            description="Here's the list items data!",
+            payload=items
+        )
 
     except Exception as e:
 

@@ -7,8 +7,7 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
 # SQLAlchemy Imports
-from sqlalchemy import select, update, and_
-from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 # Modules
