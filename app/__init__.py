@@ -8,7 +8,8 @@ from .routers.item import router as item_router
 from .routers.shelf import router as shelf_router
 from .utils.responses import generate_response
 
-# Variables
+# Global Project's Variables
+api_prefix = "/api/v1"
 app = FastAPI(
     title="Browser-Home-API"
 )
@@ -41,5 +42,5 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(item_router)
-app.include_router(shelf_router)
+app.include_router(item_router, prefix=api_prefix)
+app.include_router(shelf_router, prefix=api_prefix)
