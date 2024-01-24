@@ -22,7 +22,7 @@ from ..utils.schemas import ItemPostBody
 router = APIRouter(
     prefix="/item",
     tags=["item"],
-    responses=responses  # type: ignore
+    responses=responses
 )
 
 
@@ -52,7 +52,7 @@ async def item_get(shelf_id: Optional[int] = None, item_id: Optional[int] = None
         # Find all items with or without conditions
         items = db.execute(
             select(Items)
-            .where(and_(*conditions))  # type: ignore
+            .where(and_(*conditions))
         ).mappings().all()
 
         # Transform result into a list of dictionaries

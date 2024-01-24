@@ -1,5 +1,8 @@
-from pydantic import BaseModel, Field
+# Built-In Imports
 from typing import Optional
+
+# Libs
+from pydantic import BaseModel, Field
 
 
 class ShelfPostBody(BaseModel):
