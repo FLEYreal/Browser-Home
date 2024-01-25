@@ -55,6 +55,7 @@ class Items(Base):
     description = Column(String(128))
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
     icon = Column(LargeBinary)
+    icon_ext = Column(String, default='png')
 
     # Relationships
     shelf = relationship("Shelves", back_populates="items", uselist=False)

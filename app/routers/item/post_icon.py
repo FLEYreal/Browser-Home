@@ -38,18 +38,20 @@ async def item_icon_post(item_id: str, file: UploadFile, db: Session = Depends(g
 
     try:
 
-        # Filename
+        # File vars
         name = file.filename
+        ext = name.split('.')[-1]
 
         # Extension related vars
-        allowed_extensions = ['png']  # 'jpg', 'jpeg', 'svg', 'webp', 'ico', 'gif'
+        allowed_extensions = ['png', 'jpg', 'jpeg', 'gif']  # 'svg'
+        pillow_format = {'png': 'PNG', 'jpg': 'JPEG', 'jpeg': 'JPEG', 'gif': 'GIF'}
         is_allowed = False
 
         # Check if file extension is allowed
-        for ext in range(len(allowed_extensions)):
+        for allowed in range(len(allowed_extensions)):
 
             # If provided extension is allowed, break the loop
-            if allowed_extensions[ext] == name.split('.')[-1]:
+            if allowed_extensions[allowed] == ext:
                 is_allowed = True
                 break
 
@@ -69,7 +71,7 @@ async def item_icon_post(item_id: str, file: UploadFile, db: Session = Depends(g
 
         # Transform image to bytes
         icon_bytes = BytesIO()
-        icon.save(icon_bytes, format=name.split('.')[-1])
+        icon.save(icon_bytes, format=pillow_format[ext])
         icon_data = icon_bytes.getvalue()
 
         # Conditions
@@ -93,6 +95,7 @@ async def item_icon_post(item_id: str, file: UploadFile, db: Session = Depends(g
 
         # Update the icon
         item.icon = icon_data
+        item.icon_ext = ext
 
         # Commit changes to db
         db.commit()

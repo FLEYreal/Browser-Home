@@ -23,12 +23,6 @@ router = APIRouter()
 
 @router.get(
     "/icon",
-
-    responses={
-        200: {
-            "content": {"image/png": {}}
-        }
-    }
 )
 async def item_icon_get(
         item_id: Optional[int] = None,
@@ -69,13 +63,21 @@ async def item_icon_get(
                 description="The item exists, but... it has no icon yet!"
             )
 
-        # Get the icon after checking if it exists
-        icon: bytes = item.icon
+        icon: bytes = item.icon  # Get the icon after checking if it exists
+        icon_ext = item.icon_ext.lower() if item.icon_ext else "png"  # Get the extension of the icon
+
+        # Formats to media types
+        media_types = {
+            "png": "image/png",
+            "jpg": "image/jpeg",
+            "jpeg": "image/jpeg",
+            "gif": "image/gif"
+        }
 
         # Return found icon
         return Response(
             content=icon,
-            media_type="image/png"
+            media_type=media_types.get(icon_ext)  # Define media type using image extension
         )
 
     except Exception as e:
