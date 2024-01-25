@@ -13,6 +13,7 @@ from ...models import Shelves
 
 # Utils
 from ...utils.responses import responses, generate_response
+from ...utils.schemas import ShelfGetResponse
 
 # Router
 router = APIRouter()
@@ -54,7 +55,16 @@ async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):  # typ
         # Find all the shelves and append result into "shelves" list
         shelves = []
         for shelf in db.query(Shelves).where(and_(*conditions)).all():
-            shelves.append(jsonable_encoder(shelf.__dict__))
+
+            # Send only allowed fields to client
+            shelf_dict: ShelfGetResponse = {
+                "shelf_id": shelf.shelf_id,
+                "title": shelf.title,
+                "description": shelf.description,
+                "color": shelf.color,
+                "created_at": shelf.created_at
+            }
+            shelves.append(jsonable_encoder(shelf_dict))
 
         # Return all found shelves
         return generate_response(

@@ -16,6 +16,7 @@ from ...models import Items
 
 # Utils
 from ...utils.responses import responses, generate_response
+from ...utils.schemas import ItemGetResponse
 
 # Router
 router = APIRouter()
@@ -33,7 +34,7 @@ async def item_get(shelf_id: Optional[int] = None, item_id: Optional[int] = None
     Body: None
 
     Returns:
-        JSONResponse: A list of dictionaries containing the item(s) data.
+        JSONResponse: A list of dictionaries containing the item(s) data (except for icon, there's another route for it)
     """
 
     try:
@@ -48,7 +49,16 @@ async def item_get(shelf_id: Optional[int] = None, item_id: Optional[int] = None
         # Find all items with or without conditions
         items = []
         for item in db.query(Items).where(and_(*conditions)).all():
-            items.append(jsonable_encoder(item.__dict__))
+
+            # Send only allowed fields to client
+            item_dict: ItemGetResponse = {
+                "item_id": item.item_id,
+                "title": item.title,
+                "description": item.description,
+                "created_at": item.created_at,
+                "shelf_fk": item.shelf_fk
+            }
+            items.append(jsonable_encoder(item_dict))
 
         # Return all found items
         return generate_response(
