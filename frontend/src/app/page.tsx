@@ -1,7 +1,10 @@
 'use client'
-import ModalContent from '@/features/item/ui/create-modal'
+import ItemModal from '@/features/item/ui/create-modal'
+import SearchBox from '@/features/search-box/ui/search-box'
+import ShelfModal from '@/features/shelf/ui/create-modal'
 import { Button } from '@/shared/libs/ui/button'
 import { Switch } from '@/shared/libs/ui/switch'
+import CurrencyComponent from '@/shared/ui/CurrencyComponent'
 
 export default function Page() {
 	return (
@@ -31,12 +34,12 @@ export default function Page() {
 			<Button content='Upload Icon' className='m-2' variant='Uploaded' />
 			<Button content='Update' className='m-2' variant='Update' />
 
-			<ModalContent variant='CreateItem' />
-			<ModalContent variant='UpdateItem' />
-			<ModalContent variant='CreateShelf' />
-			<ModalContent variant='UpdateShelf' />
+			<ItemModal variant='create' />
+			<ItemModal variant='update' />
 
-			<Switch />
+			<ShelfModal variant='create'></ShelfModal>
+			<ShelfModal variant='update'></ShelfModal>
+			<SearchBox></SearchBox>
 		</>
 	)
 }
