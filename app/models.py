@@ -1,5 +1,5 @@
 # Imports
-from sqlalchemy import String, ForeignKey, LargeBinary, Column, Integer, TIMESTAMP
+from sqlalchemy import String, ForeignKey, LargeBinary, Column, Integer, TIMESTAMP, Text
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
@@ -55,6 +55,7 @@ class Items(Base):
     description = Column(String(128))
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
     icon = Column(LargeBinary)
+    icon_svg = Column(Text)
     icon_ext = Column(String, default='png')
 
     # Relationships

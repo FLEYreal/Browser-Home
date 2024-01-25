@@ -43,7 +43,7 @@ async def item_icon_post(item_id: str, file: UploadFile, db: Session = Depends(g
         ext = name.split('.')[-1]
 
         # Extension related vars
-        allowed_extensions = ['png', 'jpg', 'jpeg', 'gif']  # 'svg'
+        allowed_extensions = ['png', 'jpg', 'jpeg', 'gif', 'svg']
         pillow_format = {'png': 'PNG', 'jpg': 'JPEG', 'jpeg': 'JPEG', 'gif': 'GIF'}
         is_allowed = False
 
@@ -66,14 +66,6 @@ async def item_icon_post(item_id: str, file: UploadFile, db: Session = Depends(g
                 }
             )
 
-        # Get Icon
-        icon = Image.open(BytesIO(file.file.read()))
-
-        # Transform image to bytes
-        icon_bytes = BytesIO()
-        icon.save(icon_bytes, format=pillow_format[ext])
-        icon_data = icon_bytes.getvalue()
-
         # Conditions
         conditions = [
             Items.item_id == item_id
@@ -93,9 +85,29 @@ async def item_icon_post(item_id: str, file: UploadFile, db: Session = Depends(g
                 description="You tried to update what's never existed! May be just creating a new item?"
             )
 
-        # Update the icon
-        item.icon = icon_data
-        item.icon_ext = ext
+        if not ext == 'svg':
+
+            # Get Icon
+            icon = Image.open(BytesIO(file.file.read()))
+
+            # Transform image to bytes
+            icon_bytes = BytesIO()
+            icon.save(icon_bytes, format=pillow_format[ext])
+            icon_data = icon_bytes.getvalue()
+
+            # Update the icon
+            item.icon = icon_data
+            item.icon_ext = ext
+
+        else:
+
+            # Get SVG Icon
+            svg_icon = await file.read()
+            print(svg_icon)
+
+            # Insert SVG Icon to db & define extension
+            item.icon_svg = svg_icon
+            item.icon_ext = ext
 
         # Commit changes to db
         db.commit()

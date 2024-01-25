@@ -1,6 +1,5 @@
 # Built-In Imports
 from typing import Optional
-from io import BytesIO
 
 # FastAPI Imports
 from fastapi import APIRouter, Depends
@@ -56,22 +55,31 @@ async def item_icon_get(
                 title="HTTP 422: Unprocessable entity!",
                 description="No item with that ID exists!"
             )
-        if not item.icon:  # Check if it has icon
+        if not item.icon and not item.icon_svg:  # Check if it has icon
             return generate_response(
                 status=400,
                 title="HTTP 400: Bad Request!",
                 description="The item exists, but... it has no icon yet!"
             )
 
-        icon: bytes = item.icon  # Get the icon after checking if it exists
         icon_ext = item.icon_ext.lower() if item.icon_ext else "png"  # Get the extension of the icon
+        icon: bytes | str | None = None
+
+        # Get the icon after checking if it exists
+        if icon_ext == "svg":
+            hex_string = item.icon_svg.replace('\\x', '')  # Delete the start of hex (\x)
+            byte_icon = bytes.fromhex(hex_string)  # Convert hex string to bytes
+            icon = byte_icon.decode("utf-8")  # Decode the icon from bytes to valid svg
+        else:
+            icon = item.icon  # Raster Icon
 
         # Formats to media types
         media_types = {
             "png": "image/png",
             "jpg": "image/jpeg",
             "jpeg": "image/jpeg",
-            "gif": "image/gif"
+            "gif": "image/gif",
+            "svg": "image/svg+xml"
         }
 
         # Return found icon
