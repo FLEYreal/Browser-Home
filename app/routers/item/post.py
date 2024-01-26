@@ -9,8 +9,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 # Modules
-from ...db import get_db
-from ...models import Items
+from app.db.db import get_db
+from app.db.models import Items
 
 # Utils
 from ...utils.responses import responses, generate_response
@@ -44,7 +44,7 @@ async def item_post(body: List[ItemPostBody], db: Session = Depends(get_db)):
 
             # Create item object
             item = Items(
-                shelf_fk=row.shelf_id,
+                shelf_fk=row.shelf_fk,
                 link=row.link,
                 title=row.title,
                 description=row.description

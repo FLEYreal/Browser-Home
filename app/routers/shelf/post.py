@@ -9,8 +9,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 # Modules
-from ...db import get_db
-from ...models import Shelves
+from app.db.db import get_db
+from app.db.models import Shelves
 
 # Utils
 from ...utils.schemas import ShelfPostBody

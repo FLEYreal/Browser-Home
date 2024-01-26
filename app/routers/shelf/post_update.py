@@ -10,8 +10,8 @@ from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 # Modules
-from ...db import get_db
-from ...models import Shelves
+from app.db.db import get_db
+from app.db.models import Shelves
 
 # Utils
 from ...utils.schemas import ShelfUpdateBody
@@ -62,8 +62,7 @@ async def shelf_update_post(body: List[ShelfUpdateBody], db: Session = Depends(g
                         description="You tried to update what's never existed! May be just creating a new shelf?"
                     )
 
-            # Update the shelf
-            # Checks if value's provided and updates it if it is
+            # Update values that are provided
             shelf.title = row.title if row.title else shelf.title
             shelf.description = row.description if row.description else shelf.description
             shelf.color = row.color if row.color else shelf.color

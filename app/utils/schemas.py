@@ -1,6 +1,6 @@
 # Built-In Imports
 from datetime import datetime
-from typing import Optional, TypedDict
+from typing import Optional, TypedDict, List
 
 # Libs
 from pydantic import BaseModel, Field
@@ -20,25 +20,34 @@ class ShelfUpdateBody(BaseModel):
     color: Optional[str] = Field(None, min_length=1, max_length=7)  # New Color for the Shelf
 
 
+class ShelfDeleteBody(BaseModel):
+    shelf_ids: List[int]
+
+
 class ItemPostBody(BaseModel):
-    shelf_id: int
+    shelf_fk: int  # Shelf ID item belongs to
     link: str  # Link of the Item
     title: str = Field(min_length=1, max_length=32)  # Title of the Item
     description: Optional[str] = Field(None, min_length=1, max_length=128)  # Description of the Item
 
 
-# RESPONSE SCHEMAS
+class ItemUpdateBody(BaseModel):
+    item_id: int
+    shelf_fk: Optional[int] = None
+    link: Optional[str] = None  # New Link of the Item
+    title: Optional[str] = Field(None, min_length=1, max_length=32)  # New Title for the Item
+    description: Optional[str] = Field(None, min_length=1, max_length=128)  # New Description for the Item
+
+
+class ItemDeleteBody(BaseModel):
+    shelf_fk: Optional[int] = None
+    item_ids: Optional[List[int]] = None
+
+
+# RESPONSE SCHEMA
 class ShelfGetResponse(TypedDict):  # List of allowed fields from db
     shelf_id: int
     title: str
     description: str
     color: str
     created_at: datetime
-
-
-class ItemGetResponse(TypedDict):  # List of allowed fields from db
-    item_id: int
-    title: str
-    description: Optional[str]
-    created_at: datetime
-    shelf_fk: int

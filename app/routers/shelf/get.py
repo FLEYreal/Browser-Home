@@ -8,8 +8,8 @@ from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 # Modules
-from ...db import get_db
-from ...models import Shelves
+from app.db.db import get_db
+from app.db.models import Shelves
 
 # Utils
 from ...utils.responses import responses, generate_response

@@ -16,8 +16,8 @@ from PIL import Image
 from ...utils.responses import responses, generate_response
 
 # Modules
-from ...db import get_db
-from ...models import Items
+from app.db.db import get_db
+from app.db.models import Items
 
 # Router
 router = APIRouter()

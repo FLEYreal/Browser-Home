@@ -19,10 +19,9 @@ app = FastAPI(
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     return generate_response(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        status=422,
+        status=status.HTTP_422_UNPROCESSABLE_ENTITY,
         title="HTTP 422: Validation Error!",
-        description="Values you sent smell wrong, you know?",
+        description="Sent data is wrong!!!",
         details=exc.errors()
     )
 

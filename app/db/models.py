@@ -1,10 +1,13 @@
-# Imports
-from sqlalchemy import String, ForeignKey, LargeBinary, Column, Integer, TIMESTAMP, Text
-from sqlalchemy.orm import relationship
+# Built-In Imports
+from typing import Optional
 from datetime import datetime
 
+# SQLAlchemy Imports
+from sqlalchemy import String, ForeignKey, LargeBinary, Column, Integer, TIMESTAMP, Text, and_
+from sqlalchemy.orm import relationship, Session
+
 # Modules
-from .db import Base
+from app.db.db import Base, get_db
 
 
 # Tables' Models
@@ -32,6 +35,22 @@ class Shelves(Base):
 
     # Relationships
     items = relationship("Items", back_populates="shelf", uselist=True)
+
+    @classmethod
+    def get(cls):
+        pass
+
+    @classmethod
+    def create(cls):
+        pass
+
+    @classmethod
+    def update(cls):
+        pass
+
+    @classmethod
+    def delete(cls):
+        pass
 
 
 class Items(Base):
@@ -61,3 +80,56 @@ class Items(Base):
     # Relationships
     shelf = relationship("Shelves", back_populates="items", uselist=False)
     shelf_fk = Column(Integer, ForeignKey("shelves.shelf_id"))
+
+    @classmethod
+    def get(cls, db: Session, shelf_id: Optional[int] = None, item_id: Optional[int] = None):
+        try:
+            # Conditions for query
+            conditions = [
+                cls.item_id == item_id if item_id else True,
+                cls.shelf_fk == shelf_id if shelf_id else True,
+                # ... other conditions might be provided in the future.
+            ]
+
+            # Find all items with or without conditions
+            items = db.query(Items).where(and_(*conditions)).all()
+            db.commit()
+
+            return {
+                "details": {
+                    "code": 200
+                },
+                "payload": items
+            }
+
+        except Exception as e:
+
+            db.rollback()
+
+            return {
+                "details": {
+                    "code": 500,
+                    "exception": str(e)
+                },
+                "payload": None
+            }
+
+    @classmethod
+    def get_icon(cls):
+        pass
+
+    @classmethod
+    def create(cls):
+        pass
+
+    @classmethod
+    def update(cls):
+        pass
+
+    @classmethod
+    def update_icon(cls):
+        pass
+
+    @classmethod
+    def delete(cls):
+        pass

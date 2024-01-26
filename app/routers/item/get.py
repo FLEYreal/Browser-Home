@@ -1,30 +1,49 @@
 # Built-In Imports
-from typing import Optional
+from datetime import datetime
+from typing import Optional, TypedDict
 
 # FastAPI Imports
-from fastapi import Depends, APIRouter
 from fastapi.encoders import jsonable_encoder
+from fastapi import Depends, APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
 # SQLAlchemy Imports
-from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
+# Libs
+from pydantic import BaseModel, ValidationError
+
 # Modules
-from ...db import get_db
-from ...models import Items
+from app.db.db import get_db
+from app.db.models import Items
 
 # Utils
 from ...utils.responses import responses, generate_response
-from ...utils.schemas import ItemGetResponse
 
 # Router
 router = APIRouter()
 
 
+# Schemas
+class ItemGetParams(BaseModel):  # Queries endpoint accepts
+    shelf_id: Optional[int] = Query(None, description="shelf's ID")
+    item_id: Optional[int] = Query(None, description="item's ID")
+
+
+class ItemGetResponse(TypedDict):  # List of allowed fields from db
+    item_id: int
+    title: str
+    description: Optional[str]
+    created_at: datetime
+    shelf_fk: int
+
+
 # Endpoints
 @router.get("/")
-async def item_get(shelf_id: Optional[int] = None, item_id: Optional[int] = None, db: Session = Depends(get_db)):
+async def item_get(
+        queries: ItemGetParams = Depends(),
+        db: Session = Depends(get_db)
+):
     """
     Get item(s) data in a list of dictionaries.
 
@@ -39,16 +58,24 @@ async def item_get(shelf_id: Optional[int] = None, item_id: Optional[int] = None
 
     try:
 
-        # Conditions for query
-        conditions = [
-            Items.item_id == item_id if item_id else True,
-            Items.shelf_fk == shelf_id if shelf_id else True,
-            # ... other conditions might be provided in the future.
-        ]
+        # Get queries from params
+        queries_dict = {
+            "shelf_id": queries.shelf_id if queries and queries.shelf_id else None,
+            "item_id": queries.item_id if queries and queries.item_id else None
+        }
 
-        # Find all items with or without conditions
+        # Send request to db to get items
+        items_db = Items()
+        result = items_db.get(
+            db=db,
+            **queries_dict,
+        )
+
+        if result["details"]["code"] == 500:  # If Database returned exception
+            raise HTTPException(result["details"]["exception"])
+
         items = []
-        for item in db.query(Items).where(and_(*conditions)).all():
+        for item in result["payload"]:
 
             # Send only allowed fields to client
             item_dict: ItemGetResponse = {
@@ -65,7 +92,16 @@ async def item_get(shelf_id: Optional[int] = None, item_id: Optional[int] = None
             status=200,
             title="HTTP 200: OK!",
             description="Here's the list items data!",
-            payload=items
+            payload=result["payload"]
+        )
+
+    except ValidationError as e:
+
+        return generate_response(
+            status=422,
+            title="HTTP 422: Unprocessable Entity!",
+            description="You've sent invalid data!",
+            details=e.errors()
         )
 
     except Exception as e:
