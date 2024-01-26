@@ -1,23 +1,32 @@
 # Built-In Imports
-from typing import List
+from typing import Optional, List
 
 # FastAPI Imports
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
 # SQLAlchemy Imports
 from sqlalchemy.orm import Session
 
+# Libs
+from pydantic import BaseModel, Field
+
 # Modules
 from app.db.db import get_db
-from app.db.models import Items
+from app.db.model.Items import Items
 
 # Utils
 from ...utils.responses import responses, generate_response
-from ...utils.schemas import ItemPostBody
 
 # Router
 router = APIRouter()
+
+
+class ItemPostBody(BaseModel):
+    shelf_fk: int  # Shelf ID item belongs to
+    link: str  # Link of the Item
+    title: str = Field(min_length=1, max_length=32)  # Title of the Item
+    description: Optional[str] = Field(None, min_length=1, max_length=128)  # Description of the Item
 
 
 @router.post("/")
@@ -39,29 +48,33 @@ async def item_post(body: List[ItemPostBody], db: Session = Depends(get_db)):
 
     try:
 
-        # Iterate over each item in the provided list
-        for row in body:
+        items = []
+        for item in body:
+            items.append({
+                "shelf_fk": item.shelf_fk,
+                "link": item.link,
+                "title": item.title,
+                "description": item.description
+            })
 
-            # Create item object
-            item = Items(
-                shelf_fk=row.shelf_fk,
-                link=row.link,
-                title=row.title,
-                description=row.description
+        # Send request to db to create new items
+        item_db = Items()
+        result = item_db.create(items=items, db=db)
+
+        if result["details"]["code"] == 500:  # If Database returned exception
+            raise HTTPException(
+                status_code=result["details"]["code"],
+                detail=result["details"]["exception"]
             )
 
-            # Insert new values to "Items" table
-            db.add(item)
-
-        # Commit changes to database
-        db.commit()
-
-        # Return Operation Details
+        # Return all found items
         return generate_response(
-                status=201,
-                title="HTTP 201: Created!",
-                description="New item(s) successfully created!"
-            )
+            status=201,
+            title="HTTP 201: OK!",
+            description="Successfully added new item(s)!",
+            details=result["details"],
+            payload=result["payload"]
+        )
 
     except Exception as e:
 

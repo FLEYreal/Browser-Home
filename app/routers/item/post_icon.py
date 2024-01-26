@@ -17,7 +17,7 @@ from ...utils.responses import responses, generate_response
 
 # Modules
 from app.db.db import get_db
-from app.db.models import Items
+from app.db.model.Items import Items
 
 # Router
 router = APIRouter()

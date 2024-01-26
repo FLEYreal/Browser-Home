@@ -24,13 +24,6 @@ class ShelfDeleteBody(BaseModel):
     shelf_ids: List[int]
 
 
-class ItemPostBody(BaseModel):
-    shelf_fk: int  # Shelf ID item belongs to
-    link: str  # Link of the Item
-    title: str = Field(min_length=1, max_length=32)  # Title of the Item
-    description: Optional[str] = Field(None, min_length=1, max_length=128)  # Description of the Item
-
-
 class ItemUpdateBody(BaseModel):
     item_id: int
     shelf_fk: Optional[int] = None

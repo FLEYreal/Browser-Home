@@ -15,7 +15,7 @@ from pydantic import BaseModel, ValidationError
 
 # Modules
 from app.db.db import get_db
-from app.db.models import Items
+from app.db.model.Items import Items
 
 # Utils
 from ...utils.responses import responses, generate_response
@@ -72,7 +72,10 @@ async def item_get(
         )
 
         if result["details"]["code"] == 500:  # If Database returned exception
-            raise HTTPException(result["details"]["exception"])
+            raise HTTPException(
+                status_code=result["details"]["code"],
+                detail=result["details"]["exception"]
+            )
 
         items = []
         for item in result["payload"]:
@@ -92,6 +95,7 @@ async def item_get(
             status=200,
             title="HTTP 200: OK!",
             description="Here's the list items data!",
+            details=result["details"],
             payload=result["payload"]
         )
 

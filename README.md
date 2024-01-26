@@ -14,6 +14,8 @@ NextJS, Typescript, Tailwind, Shadcn/UI
 ### Backend Response Templates:
 
 ```js
+
+// Successful operation
 {
     status: 200;
     title: "HTTP 200: OK";
@@ -24,6 +26,7 @@ NextJS, Typescript, Tailwind, Shadcn/UI
     }];
 }
 
+// Raised Exception / Error
 {
     status: 500;
     title: "HTTP 500: Internal Server Error";
@@ -32,6 +35,7 @@ NextJS, Typescript, Tailwind, Shadcn/UI
     payload: null;
 }
 
+// Provided values are invalid / Data's validation failed
 {
     status: 422;
     title: "HTTP 500: Unprocessable Entity";
@@ -39,6 +43,31 @@ NextJS, Typescript, Tailwind, Shadcn/UI
     details: {
         // Contains details FastAPI generates for 422 HTTP error
     };
+    payload: null;
+}
+```
+
+Database Method Response Template
+```js
+
+// Raised Exception / Error
+{
+    // Details of the operation, code is using HTTP format
+    details: {
+        code: 500;
+        exceptions: "Text Error"; // Text of an exception
+    };
+    // Database response (in the case of "SELECT" it's a list of found rows)
+    payload: null;
+}
+
+// Successful Operation
+{
+    // Details of the operation, code is using HTTP format
+    details: {
+        code: 200;
+    };
+    // Database response (in the case of "SELECT" it's a list of found rows)
     payload: null;
 }
 ```

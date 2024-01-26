@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 # Modules
 from app.db.db import get_db
-from app.db.models import Items
+from app.db.model.Items import Items
 
 # Utils
 from app.utils.responses import generate_response, responses
