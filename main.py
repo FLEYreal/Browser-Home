@@ -1,3 +1,5 @@
+"""Run this file to launch project. If it's the first launch, run 'init.py' first to initialize the project. """
+
 # Libs
 import uvicorn
 import subprocess
