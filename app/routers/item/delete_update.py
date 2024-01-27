@@ -44,10 +44,10 @@ async def item_update_delete(body: ItemDeleteBody, db: Session = Depends(get_db)
 
     try:
 
-        items_db = Items()
-        result = items_db.delete(params=body, db=db)
+        items_db = Items()  # Get instance of Items table
+        result = items_db.delete(params=body, db=db)  # Delete by provided params
 
-        return generate_response(**result)
+        return generate_response(**result)  # Return Operation Details from database response.
 
     except Exception as e:
 

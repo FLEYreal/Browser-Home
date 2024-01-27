@@ -48,10 +48,10 @@ async def shelf_update_post(body: List[ShelfUpdateBody], db: Session = Depends(g
 
     try:
 
-        shelves_db = Shelves()
-        result = shelves_db.update(shelves=body, db=db)
+        shelves_db = Shelves()  # Get instance of Shelves table
+        result = shelves_db.update(shelves=body, db=db)  # Update provided items
 
-        return generate_response(**result)
+        return generate_response(**result)  # Return Operation Details from database response.
 
     except Exception as e:
 

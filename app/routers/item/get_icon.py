@@ -40,8 +40,8 @@ async def item_icon_get(
 
     try:
 
-        items_db = Items()
-        result = items_db.get(item_id=item_id, db=db)
+        items_db = Items()  # Get instance of Items table
+        result = items_db.get(item_id=item_id, db=db)  # Get by provided id
 
         # If request is not successful
         if not str(result["status"]).startswith("2"):

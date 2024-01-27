@@ -20,7 +20,7 @@ class ShelvesUpdateModel(BaseModel):
     item_id: int
     title: Optional[str] = Field(None, min_length=1, max_length=32)
     description: Optional[str] = Field(None, min_length=1, max_length=256)
-    color: Optional[str] = Field(None, '#A0A0A0', min_length=1, max_length=7)
+    color: Optional[str] = Field('#A0A0A0', min_length=1, max_length=7)
 
 
 class ShelvesModel(BaseModel):
@@ -111,7 +111,7 @@ class Shelves(Base):
             for row in shelves:
 
                 # Create new shelf in database
-                shelf = cls(**row)
+                shelf = cls(**row.model_dump())
 
                 # Insert into database
                 db.add(shelf)

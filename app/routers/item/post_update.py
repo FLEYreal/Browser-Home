@@ -51,10 +51,10 @@ async def item_update_post(body: List[ItemUpdateBody], db: Session = Depends(get
 
     try:
 
-        items_db = Items()
-        result = items_db.update(items=[*body], db=db)
+        items_db = Items()  # Get instance of Items table
+        result = items_db.update(items=[*body], db=db)  # Update items with provided values
 
-        return generate_response(**result)
+        return generate_response(**result)  # Return Operation Details from database response.
 
     except Exception as e:
 

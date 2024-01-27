@@ -48,6 +48,7 @@ async def item_post(body: List[ItemPostBody], db: Session = Depends(get_db)):
 
     try:
 
+        # Convert body to list of dictionaries
         items = []
         for item in body:
             items.append({
@@ -57,11 +58,10 @@ async def item_post(body: List[ItemPostBody], db: Session = Depends(get_db)):
                 "description": item.description
             })
 
-        # Send request to db to create new items
-        item_db = Items()
-        result = item_db.create(items=items, db=db)
+        item_db = Items()  # Get instance of Items table
+        result = item_db.create(items=items, db=db)  # Create provided item(s)
 
-        return generate_response(**result)
+        return generate_response(**result)  # Return Operation Details from database response.
 
     except Exception as e:
 

@@ -46,9 +46,10 @@ async def shelf_post(body: List[ShelfPostBody], db: Session = Depends(get_db)):
 
     try:
 
-        result = Shelves.create(shelves=body, db=db)
+        shelves_db = Shelves()  # Get instance of Shelves table
+        result = shelves_db.create(shelves=body, db=db)  # Create provided items
 
-        return generate_response(**result)
+        return generate_response(**result)  # Return Operation Details from database response.
 
     except Exception as e:
 

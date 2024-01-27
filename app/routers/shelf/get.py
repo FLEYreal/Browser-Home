@@ -44,9 +44,8 @@ async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):  # typ
 
     try:
 
-        # Send request to db to get shelves
-        shelves_db = Shelves()
-        result = shelves_db.get(db, int(shelf_id) if shelf_id else None)
+        shelves_db = Shelves()  # Get instance of Shelves table
+        result = shelves_db.get(db, int(shelf_id) if shelf_id else None)  # Get items by provided values
 
         # If request is not successful
         if not str(result["status"]).startswith("2"):
