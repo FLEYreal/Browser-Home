@@ -71,6 +71,7 @@ async def item_get(
             **queries_dict,
         )
 
+        # If request is not successful
         if not str(result["status"]).startswith("2"):
             return generate_response(**result)
 

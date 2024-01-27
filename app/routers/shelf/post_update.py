@@ -1,24 +1,32 @@
 # Built-In Imports
-from typing import List
+from typing import List, Optional
 
 # FastAPI Imports
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
 # SQLAlchemy Imports
-from sqlalchemy import and_
 from sqlalchemy.orm import Session
+
+# Libs
+from pydantic import BaseModel, Field
 
 # Modules
 from app.db.db import get_db
 from app.db.model.Shelves import Shelves
 
 # Utils
-from ...utils.schemas import ShelfUpdateBody
 from ...utils.responses import responses, generate_response
 
 # Router
 router = APIRouter()
+
+
+class ShelfUpdateBody(BaseModel):
+    shelf_id: int
+    title: Optional[str] = Field(None, min_length=1, max_length=32)  # New Title for the Shelf
+    description: Optional[str] = Field(None, min_length=1, max_length=256)  # New Description for the Shelf
+    color: Optional[str] = Field(None, min_length=1, max_length=7)  # New Color for the Shelf
 
 
 @router.post("/update")
@@ -40,42 +48,10 @@ async def shelf_update_post(body: List[ShelfUpdateBody], db: Session = Depends(g
 
     try:
 
-        # Iterate over each shelf in the provided list
-        for row in body:
+        shelves_db = Shelves()
+        result = shelves_db.update(shelves=body, db=db)
 
-            # Conditions
-            conditions = [
-                Shelves.shelf_id == row.shelf_id,
-                # ... other conditions might be provided in the future.
-            ]
-
-            # Get the existing shelf
-            shelf = db.query(Shelves)\
-                .filter(and_(*conditions))\
-                .first()
-
-            # If provided shelf doesn't exist, return error
-            if not shelf:
-                return generate_response(
-                        status=422,
-                        title="HTTP 422: Validation Error!",
-                        description="You tried to update what's never existed! May be just creating a new shelf?"
-                    )
-
-            # Update values that are provided
-            shelf.title = row.title if row.title else shelf.title
-            shelf.description = row.description if row.description else shelf.description
-            shelf.color = row.color if row.color else shelf.color
-
-        # Commit changes after iterating over each shelf
-        db.commit()
-
-        # Return success, row updated
-        return generate_response(
-                status=200,
-                title="HTTP 200: OK!",
-                description="Shelf(ves) successfully updated!"
-            )
+        return generate_response(**result)
 
     except Exception as e:
 

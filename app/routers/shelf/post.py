@@ -1,5 +1,5 @@
 # Built-In Imports
-from typing import List
+from typing import List, Optional
 
 # FastAPI Imports
 from fastapi import APIRouter, Depends
@@ -8,16 +8,24 @@ from fastapi.responses import JSONResponse
 # SQLAlchemy Imports
 from sqlalchemy.orm import Session
 
+# Libs
+from pydantic import BaseModel, Field
+
 # Modules
 from app.db.db import get_db
 from app.db.model.Shelves import Shelves
 
 # Utils
-from ...utils.schemas import ShelfPostBody
 from ...utils.responses import responses, generate_response
 
 # Router
 router = APIRouter()
+
+
+class ShelfPostBody(BaseModel):
+    title: str = Field(min_length=1, max_length=32)  # Title of the Shelf
+    description: str = Field(min_length=1, max_length=256)  # Description of the Shelf
+    color: Optional[str] = Field('#A0A0A0', min_length=1, max_length=7)  # Which color to use for the Shelf
 
 
 @router.post("/")
@@ -38,28 +46,9 @@ async def shelf_post(body: List[ShelfPostBody], db: Session = Depends(get_db)):
 
     try:
 
-        # Iterate over each shelf in the provided list
-        for item in body:
+        result = Shelves.create(shelves=body, db=db)
 
-            # Create shelf object
-            shelf = Shelves(
-                title=item.title,
-                description=item.description,
-                color=item.color
-            )
-
-            # Insert new values to "Shelves" table
-            db.add(shelf)
-
-        # Commit changes to database
-        db.commit()
-
-        # Return Operation Details
-        return generate_response(
-                status=201,
-                title="HTTP 201: Created!",
-                description="New shelf(ves) successfully created!"
-            )
+        return generate_response(**result)
 
     except Exception as e:
 

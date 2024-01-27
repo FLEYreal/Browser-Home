@@ -81,7 +81,7 @@ class Items(Base):
             ]
 
             # Find all items with or without conditions
-            items = db.query(Items).where(and_(*conditions)).all()
+            items = db.query(cls).where(and_(*conditions)).all()
             db.commit()
 
             return generate_response(
@@ -112,7 +112,7 @@ class Items(Base):
             for row in items:
 
                 # Insert new item
-                item = Items(**row)
+                item = cls(**row)
                 db.add(item)
 
             # Commit changes to database after creating all items in the list
@@ -154,13 +154,14 @@ class Items(Base):
                         description="You can't update the created_at field!"
                     )
 
+                # Conditions
                 conditions = [
-                    Items.item_id == row.item_id,
+                    cls.item_id == row.item_id,
                     # ... other conditions might be provided in the future.
                 ]
 
                 # Update values
-                item = db.query(Items).filter(*conditions).first()
+                item = db.query(cls).filter(*conditions).first()
 
                 # If provided item doesn't exist, return error
                 if not item:
@@ -174,7 +175,7 @@ class Items(Base):
                     )
 
                 for key, value in row.model_dump().items():
-                    if value is not None:
+                    if value:
                         setattr(item, key, value)
 
             # Commit changes after iterating over each item
@@ -212,13 +213,13 @@ class Items(Base):
 
                     # Conditions
                     conditions = [
-                        Items.item_id == item_id,
-                        (Items.shelf_fk == params.shelf_fk) if params.shelf_fk else True,
+                        cls.item_id == item_id,
+                        (cls.shelf_fk == params.shelf_fk) if params.shelf_fk else True,
                         # ... other conditions might be provided in the future.
                     ]
 
                     # Get the existing shelf
-                    item = db.query(Items).filter(*conditions).first()
+                    item = db.query(cls).filter(*conditions).first()
 
                     # If provided shelf doesn't exist, return error
                     if not item:
@@ -238,11 +239,11 @@ class Items(Base):
 
                 # Conditions
                 conditions = [
-                    Items.shelf_fk == params.shelf_fk,
+                    cls.shelf_fk == params.shelf_fk,
                     # ... other conditions might be provided in the future.
                 ]
 
-                items = db.query(Items).filter(*conditions).all()
+                items = db.query(cls).filter(*conditions).all()
 
                 if not items:
                     return generate_response(

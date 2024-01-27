@@ -43,6 +43,7 @@ async def item_icon_get(
         items_db = Items()
         result = items_db.get(item_id=item_id, db=db)
 
+        # If request is not successful
         if not str(result["status"]).startswith("2"):
             return generate_response(**result)
 

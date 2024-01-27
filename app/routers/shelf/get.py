@@ -1,10 +1,13 @@
 # FastAPI Imports
+from datetime import datetime
+from typing import TypedDict
+
+# FastAPI Imports
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
 # SQLAlchemy Imports
-from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 # Modules
@@ -13,10 +16,17 @@ from app.db.model.Shelves import Shelves
 
 # Utils
 from ...utils.responses import responses, generate_response
-from ...utils.schemas import ShelfGetResponse
 
 # Router
 router = APIRouter()
+
+
+class ShelfGetResponse(TypedDict):  # List of allowed fields from db
+    shelf_id: int
+    title: str
+    description: str
+    color: str
+    created_at: datetime
 
 
 @router.get("/")
@@ -34,27 +44,17 @@ async def shelf_get(shelf_id: str = None, db: Session = Depends(get_db)):  # typ
 
     try:
 
-        # Transform to int if provided
-        if shelf_id:
-            shelf_id = int(shelf_id)
+        # Send request to db to get shelves
+        shelves_db = Shelves()
+        result = shelves_db.get(db, int(shelf_id) if shelf_id else None)
 
-            # If shelf_id is lower than 0
-            if shelf_id <= 0:
-                return generate_response(
-                        status=422,
-                        title="HTTP 422: Validation Error!",
-                        description="Well, there's no shelf_id lower than 0!"
-                )
-
-        # Conditions
-        conditions = [
-            Shelves.shelf_id == shelf_id if shelf_id else True,
-            # ... other conditions might be provided in the future.
-        ]
+        # If request is not successful
+        if not str(result["status"]).startswith("2"):
+            return generate_response(**result)
 
         # Find all the shelves and append result into "shelves" list
         shelves = []
-        for shelf in db.query(Shelves).where(and_(*conditions)).all():
+        for shelf in result["payload"]:
 
             # Send only allowed fields to client
             shelf_dict: ShelfGetResponse = {
