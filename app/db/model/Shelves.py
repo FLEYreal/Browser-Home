@@ -14,6 +14,11 @@ from app.utils.responses import generate_response
 
 # Modules
 from app.db.db import Base
+from .Items import Items, ItemDeleteModel
+
+
+class ShelvesDeleteModel(BaseModel):
+    shelf_ids: List[int]
 
 
 class ShelvesUpdateModel(BaseModel):
@@ -200,5 +205,62 @@ class Shelves(Base):
             )
 
     @classmethod
-    def delete(cls):
-        pass
+    def delete(cls, db: Session, params: ShelvesDeleteModel):
+
+        try:
+
+            for shelf_id in params.shelf_ids:
+
+                # Conditions
+                conditions = [
+                    cls.shelf_id == shelf_id,
+                    # ... other conditions might be provided in the future.
+                ]
+
+                # Get the existing shelf
+                shelf = db.query(cls).filter(*conditions).first()
+
+                # If provided shelf doesn't exist, return error
+                if not shelf:
+                    db.rollback()
+
+                    return generate_response(
+                        is_content=True,
+                        status=422,
+                        title="HTTP 422: Unprocessable Entity!",
+                        description="You tried to delete what's never existed! May be just creating a new item?"
+                    )
+
+                # Get instance of Items table & Delete all items in the shelf
+                items_db = Items()
+                result = items_db.delete(params=ItemDeleteModel(shelf_fk=shelf_id), db=db)
+
+                # If request is not successful
+                if not str(result["status"]).startswith("2"):
+                    db.rollback()
+                    return generate_response(**result)
+
+                # Delete the item from the database table
+                db.delete(shelf)
+
+            # Commit changes after iterating over each shelf
+            db.commit()
+
+            return generate_response(
+                is_content=True,
+                status=200,
+                title="HTTP 200: OK!",
+                description="Successfully Deleted!"
+            )
+
+        except Exception as e:
+
+            db.rollback()
+            print("Exception: ", e)
+
+            return generate_response(
+                is_content=True,
+                status=500,
+                title="HTTP 500: Internal Server Error!",
+                description="Something bad happened to database!"
+            )

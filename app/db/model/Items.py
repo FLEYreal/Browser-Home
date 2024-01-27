@@ -68,7 +68,7 @@ class Items(Base):
 
     # Relationships
     shelf = relationship("Shelves", back_populates="items", uselist=False)
-    shelf_fk = Column(Integer, ForeignKey("shelves.shelf_id"))
+    shelf_fk = Column(Integer, ForeignKey("shelves.shelf_id"), nullable=False)
 
     @classmethod
     def get(cls, db: Session, shelf_id: Optional[int] = None, item_id: Optional[int] = None):
