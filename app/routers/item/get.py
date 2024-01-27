@@ -71,11 +71,8 @@ async def item_get(
             **queries_dict,
         )
 
-        if result["details"]["code"] == 500:  # If Database returned exception
-            raise HTTPException(
-                status_code=result["details"]["code"],
-                detail=result["details"]["exception"]
-            )
+        if not str(result["status"]).startswith("2"):
+            return generate_response(**result)
 
         items = []
         for item in result["payload"]:
@@ -95,8 +92,7 @@ async def item_get(
             status=200,
             title="HTTP 200: OK!",
             description="Here's the list items data!",
-            details=result["details"],
-            payload=result["payload"]
+            payload=items
         )
 
     except ValidationError as e:

@@ -24,19 +24,6 @@ class ShelfDeleteBody(BaseModel):
     shelf_ids: List[int]
 
 
-class ItemUpdateBody(BaseModel):
-    item_id: int
-    shelf_fk: Optional[int] = None
-    link: Optional[str] = None  # New Link of the Item
-    title: Optional[str] = Field(None, min_length=1, max_length=32)  # New Title for the Item
-    description: Optional[str] = Field(None, min_length=1, max_length=128)  # New Description for the Item
-
-
-class ItemDeleteBody(BaseModel):
-    shelf_fk: Optional[int] = None
-    item_ids: Optional[List[int]] = None
-
-
 # RESPONSE SCHEMA
 class ShelfGetResponse(TypedDict):  # List of allowed fields from db
     shelf_id: int

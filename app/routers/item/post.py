@@ -61,20 +61,7 @@ async def item_post(body: List[ItemPostBody], db: Session = Depends(get_db)):
         item_db = Items()
         result = item_db.create(items=items, db=db)
 
-        if result["details"]["code"] == 500:  # If Database returned exception
-            raise HTTPException(
-                status_code=result["details"]["code"],
-                detail=result["details"]["exception"]
-            )
-
-        # Return all found items
-        return generate_response(
-            status=201,
-            title="HTTP 201: OK!",
-            description="Successfully added new item(s)!",
-            details=result["details"],
-            payload=result["payload"]
-        )
+        return generate_response(**result)
 
     except Exception as e:
 

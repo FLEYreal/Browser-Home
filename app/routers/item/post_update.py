@@ -1,15 +1,17 @@
 # Built-In Imports
-from typing import List
+from typing import List, Optional
 
 # FastAPI Imports
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 
 # SQLAlchemy Imports
 from sqlalchemy.orm import Session
 
+# Libs
+from pydantic import BaseModel, Field
+
 # Utils
-from ...utils.schemas import ItemUpdateBody
 from ...utils.responses import generate_response, responses
 
 # Modules
@@ -18,6 +20,14 @@ from app.db.model.Items import Items
 
 # Router
 router = APIRouter()
+
+
+class ItemUpdateBody(BaseModel):
+    item_id: int
+    shelf_fk: Optional[int] = None
+    link: Optional[str] = None  # New Link of the Item
+    title: Optional[str] = Field(None, min_length=1, max_length=32)  # New Title for the Item
+    description: Optional[str] = Field(None, min_length=1, max_length=128)  # New Description for the Item
 
 
 @router.post("/update")
@@ -40,40 +50,11 @@ async def item_update_post(body: List[ItemUpdateBody], db: Session = Depends(get
     """
 
     try:
-        for row in body:
 
-            # Conditions
-            conditions = [
-                Items.item_id == row.item_id,
-                # ... other conditions might be provided in the future.
-            ]
+        items_db = Items()
+        result = items_db.update(items=[*body], db=db)
 
-            # Update values
-            item = db.query(Items).filter(*conditions).first()
-
-            # If provided item doesn't exist, return error
-            if not item:
-                return generate_response(
-                    status=422,
-                    title="HTTP 422: Validation Error!",
-                    description="You tried to update what's never existed! May be just creating a new item?"
-                )
-
-            # Update values that are provided
-            item.shelf_fk = row.shelf_fk if row.shelf_fk else item.shelf_fk
-            item.link = row.link if row.link else item.link
-            item.title = row.title if row.title else item.title
-            item.description = row.description if row.description else item.description
-
-        # Commit changes after iterating over each shelf
-        db.commit()
-
-        # Return success, row updated
-        return generate_response(
-            status=200,
-            title="HTTP 200: OK!",
-            description="Item(s) successfully updated!"
-        )
+        return generate_response(**result)
 
     except Exception as e:
 

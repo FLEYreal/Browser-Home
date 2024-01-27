@@ -11,6 +11,23 @@ from pydantic import BaseModel, Field
 
 # Modules
 from app.db.db import Base
+from app.utils.responses import generate_response
+
+
+class ItemDeleteModel(BaseModel):
+    shelf_fk: Optional[int] = None
+    item_ids: Optional[List[int]] = None
+
+
+class ItemsUpdateModel(BaseModel):
+    item_id: int
+    title: Optional[str] = Field(None, min_length=1, max_length=32)
+    link: Optional[str] = None
+    description: Optional[str] = Field(None, min_length=1, max_length=128)
+    icon: Optional[bytes] = None
+    icon_svg: Optional[str] = None
+    icon_ext: Optional[str] = None,
+    shelf_fk: Optional[int] = None
 
 
 class ItemsModel(BaseModel):
@@ -18,7 +35,7 @@ class ItemsModel(BaseModel):
     title: str = Field(min_length=1, max_length=32)
     link: str
     description: Optional[str] = Field(None, min_length=1, max_length=128)
-    created_at: datetime
+    created_at: Optional[datetime] = None
     icon: Optional[bytes] = None
     icon_svg: Optional[str] = None
     icon_ext: Optional[str] = 'png',
@@ -67,28 +84,25 @@ class Items(Base):
             items = db.query(Items).where(and_(*conditions)).all()
             db.commit()
 
-            return {
-                "details": {
-                    "code": 200
-                },
-                "payload": items
-            }
+            return generate_response(
+                is_content=True,
+                payload=items,
+                status=200,
+                title="HTTP 200: OK!",
+                description="Here we go!"
+            )
 
         except Exception as e:
 
             db.rollback()
+            print("Exception: ", e)
 
-            return {
-                "details": {
-                    "code": 500,
-                    "exception": str(e)
-                },
-                "payload": None
-            }
-
-    @classmethod
-    def get_icon(cls):
-        pass
+            return generate_response(
+                is_content=True,
+                status=500,
+                title="HTTP 500: Internal Server Error!",
+                description="Something bad happened to database!"
+            )
 
     @classmethod
     def create(cls, db: Session, items: List[ItemsModel]):
@@ -105,33 +119,170 @@ class Items(Base):
             db.commit()
 
             # Return Success Operation
-            return {
-                "details": {
-                    "code": 201
-                },
-                "payload": None
-            }
+            return generate_response(
+                is_content=True,
+                status=201,
+                title="HTTP 201: Created!",
+                description="Successfully Created!"
+            )
 
         except Exception as e:
 
             db.rollback()
+            print("Exception: ", e)
 
-            return {
-                "details": {
-                    "code": 500,
-                    "exception": str(e)
-                },
-                "payload": None
-            }
-
-    @classmethod
-    def update(cls):
-        pass
+            return generate_response(
+                is_content=True,
+                status=500,
+                title="HTTP 500: Internal Server Error!",
+                description="Something bad happened to database!"
+            )
 
     @classmethod
-    def update_icon(cls):
-        pass
+    def update(cls, db: Session, items: List[ItemsUpdateModel]):
+
+        try:
+            for row in items:
+
+                if hasattr(row, 'created_at'):  # Check if forbidden value attempted to be updated
+                    db.rollback()
+
+                    return generate_response(
+                        is_content=True,
+                        status=422,
+                        title="HTTP 422: Unprocessable Entity!",
+                        description="You can't update the created_at field!"
+                    )
+
+                conditions = [
+                    Items.item_id == row.item_id,
+                    # ... other conditions might be provided in the future.
+                ]
+
+                # Update values
+                item = db.query(Items).filter(*conditions).first()
+
+                # If provided item doesn't exist, return error
+                if not item:
+                    db.rollback()
+
+                    return generate_response(
+                        is_content=True,
+                        status=422,
+                        title="HTTP 422: Unprocessable Entity!",
+                        description="You tried to update what's never existed! May be just creating a new item?"
+                    )
+
+                for key, value in row.model_dump().items():
+                    if value is not None:
+                        setattr(item, key, value)
+
+            # Commit changes after iterating over each item
+            db.commit()
+
+            # Return success, rows updated
+            return generate_response(
+                is_content=True,
+                status=200,
+                title="HTTP 200: OK!",
+                description="Successfully Updated!"
+            )
+
+        except Exception as e:
+
+            db.rollback()
+            print("Exception: ", e)
+
+            return generate_response(
+                is_content=True,
+                status=500,
+                title="HTTP 500: Internal Server Error!",
+                description="Something bad happened to database!"
+            )
 
     @classmethod
-    def delete(cls):
-        pass
+    def delete(cls, db: Session, params: ItemDeleteModel):
+
+        try:
+
+            if params.item_ids:
+
+                # Iterate over each item in the provided VALID list!
+                for item_id in params.item_ids:
+
+                    # Conditions
+                    conditions = [
+                        Items.item_id == item_id,
+                        (Items.shelf_fk == params.shelf_fk) if params.shelf_fk else True,
+                        # ... other conditions might be provided in the future.
+                    ]
+
+                    # Get the existing shelf
+                    item = db.query(Items).filter(*conditions).first()
+
+                    # If provided shelf doesn't exist, return error
+                    if not item:
+                        db.rollback()
+
+                        return generate_response(
+                            is_content=True,
+                            status=422,
+                            title="HTTP 422: Unprocessable Entity!",
+                            description="You tried to delete what's never existed! May be just creating a new item?"
+                        )
+
+                    # Delete the item from the database table
+                    db.delete(item)
+
+            elif params.shelf_fk:
+
+                # Conditions
+                conditions = [
+                    Items.shelf_fk == params.shelf_fk,
+                    # ... other conditions might be provided in the future.
+                ]
+
+                items = db.query(Items).filter(*conditions).all()
+
+                if not items:
+                    return generate_response(
+                        is_content=True,
+                        status=422,
+                        title="HTTP 422: Unprocessable Entity!",
+                        description="Well, such shelf whether doesn't exist or just empty."
+                    )
+
+                # Iterate over each item found in the shelf.
+                for item in items:
+                    db.delete(item)
+
+            else:  # In the case of no item_ids or shelf_fk are provided.
+                return generate_response(
+                    is_content=True,
+                    status=422,
+                    title="HTTP 422: Unprocessable Entity!",
+                    description="None of the values provided but we'd prefer at least 1 to be."
+                )
+
+            # Commit changes after iterating over each shelf
+            db.commit()
+
+            # If all deleted successfully, return Success Operation
+            return generate_response(
+                is_content=True,
+                status=200,
+                title="HTTP 200: OK!",
+                description="Successfully Deleted!"
+            )
+
+        except Exception as e:
+
+            db.rollback()
+            print("Exception: ", e)
+
+            return generate_response(
+                is_content=True,
+                status=500,
+                title="HTTP 500: Internal Server Error!",
+                description="Something bad happened to database!"
+            )

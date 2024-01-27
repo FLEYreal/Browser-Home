@@ -1,5 +1,5 @@
 # Built-in Imports
-from typing import List, Optional, Dict
+from typing import List, Optional
 
 # FastAPI Imports
 from fastapi.responses import JSONResponse
@@ -44,7 +44,7 @@ def generate_response(
     if is_content:
         return content
 
-    # Return completed JSONResponseq
+    # Return completed JSONResponse
     return JSONResponse(
         status_code=status,
         content=content,

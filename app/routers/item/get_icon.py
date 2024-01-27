@@ -2,7 +2,7 @@
 from typing import Optional
 
 # FastAPI Imports
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse, Response
 
 # SQLAlchemy Imports
@@ -24,7 +24,7 @@ router = APIRouter()
     "/icon",
 )
 async def item_icon_get(
-        item_id: Optional[int] = None,
+        item_id: int,
         db: Session = Depends(get_db)
 ):
     """
@@ -40,14 +40,13 @@ async def item_icon_get(
 
     try:
 
-        # Conditions for query
-        conditions = [
-            Items.item_id == item_id if item_id else True,
-            # ... other conditions might be provided in the future.
-        ]
+        items_db = Items()
+        result = items_db.get(item_id=item_id, db=db)
 
-        # Get received item
-        item = db.query(Items).where(and_(*conditions)).first()
+        if not str(result["status"]).startswith("2"):
+            return generate_response(**result)
+
+        item = result["payload"][0] if result["payload"] and result["payload"][0] else None
 
         if not item:  # Check if exists
             return generate_response(
