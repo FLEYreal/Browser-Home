@@ -1,8 +1,37 @@
 # Libs
 import uvicorn
+import subprocess
+import multiprocessing
+import os
+
+# Environment variables
+from config import SERVER_PORT
+
+
+# Launch Frontend Server : NextJS
+def run_frontend_server():
+    # Define path to NextJS frontend directory
+    frontend_path = os.path.join(os.path.dirname(__file__), "client")
+
+    # Define command to run frontend
+    command = "npm run dev"  # In production change to: "npm start"
+
+    # Launch NextJS frontend server
+    result = subprocess.run(command, shell=True, text=True, cwd=frontend_path)
+
+
+# Launch Backend Server : FastAPI
+def run_backend_server():
+    uvicorn.run("app:app", host="127.0.0.1", port=SERVER_PORT)
+
 
 # If main.py is run
 if __name__ == "__main__":
 
-    # Launch FastAPI server
-    uvicorn.run("app:app", host="0.0.0.0", port=8000)
+    # Get variables to work with processes of Backend and Frontend Servers
+    frontend_server = multiprocessing.Process(target=run_frontend_server)
+    backend_server = multiprocessing.Process(target=run_backend_server)
+
+    # Start processes
+    frontend_server.start()
+    backend_server.start()

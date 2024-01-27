@@ -8,6 +8,9 @@ from .routers.item import router as item_router
 from .routers.shelf import router as shelf_router
 from .utils.responses import generate_response
 
+# Environment variables
+from config import SERVER_PORT, CLIENT_PORT
+
 # Global Project's Variables
 api_prefix = "/api/v1"
 app = FastAPI(
@@ -32,8 +35,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost",
         "https://localhost",
-        "http://localhost:7979",  # Backend Port
-        "http://localhost:9797"  # Frontend Port
+        f"http://localhost:{SERVER_PORT}",  # Backend Port
+        f"http://localhost:{CLIENT_PORT}"  # Frontend Port
     ],
     allow_credentials=True,
     allow_methods=["*"],
