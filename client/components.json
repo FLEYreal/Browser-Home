@@ -5,13 +5,13 @@
   "tsx": true,
   "tailwind": {
     "config": "tailwind.config.ts",
-    "css": "src/shared/css/globalStyles.css",
+    "css": "src/shared/css/global.css",
     "baseColor": "slate",
     "cssVariables": true,
     "prefix": ""
   },
   "aliases": {
-    "components": "@/shared/libs",
-    "utils": "@/lib/utils"
+    "components": "@/shared",
+    "utils": "@/shared/libs/shadcn/utils"
   }
 }

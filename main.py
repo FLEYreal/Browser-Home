@@ -24,7 +24,7 @@ def run_frontend_server():
 
 # Launch Backend Server : FastAPI
 def run_backend_server():
-    uvicorn.run("app:app", host="127.0.0.1", port=SERVER_PORT)
+    uvicorn.run("app:app", host="127.0.0.1", port=int(SERVER_PORT))
 
 
 # If main.py is run

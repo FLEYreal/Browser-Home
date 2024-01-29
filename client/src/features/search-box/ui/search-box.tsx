@@ -1,12 +1,12 @@
 'use client'
 
-import { Input } from '@/shared/libs/ui/input'
+import { Input } from '@/shared/ui/input'
 import Image from 'next/image'
 import Google from '@/public/icons/Google.svg'
 import Yandex from '@/public/icons/Yandex.svg'
 import Bing from '@/public/icons/Bing.svg'
-import { Switch } from '@/shared/libs/ui/switch'
-import CurrencyComponent from '@/shared/ui/CurrencyComponent'
+import { Switch } from '@/shared/ui/switch'
+import { Currency } from '@/features/currency'
 
 export default function SearchBox() {
 	return (
@@ -38,7 +38,7 @@ export default function SearchBox() {
 						<Switch />
 					</div>
 					<div>
-						<CurrencyComponent />
+						<Currency />
 					</div>
 				</div>
 			</div>
