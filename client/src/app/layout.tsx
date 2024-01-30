@@ -18,7 +18,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
-		<html lang='en' className='dark'>
+		<html lang='en' className='dark' suppressHydrationWarning>
 			<DesignProvider className='bg-background'>
 				<QueryClientProvider>
 

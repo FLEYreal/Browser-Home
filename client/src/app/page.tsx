@@ -9,7 +9,7 @@ import {
 	CardTitle,
 } from "@/shared/ui/card"
 
-export default function Page() {
+export default function Home() {
 	return (
 		<>
 

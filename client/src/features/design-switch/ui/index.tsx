@@ -1,7 +1,7 @@
 'use client'
 
 // Basics
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 // Shadcn / Tailwind
 import { Button } from "@/shared/ui/button";
@@ -52,7 +52,7 @@ function DesignSwitch() {
             Array.from(btnList).forEach((item) => {
 
                 // Remove current theme's class from all buttons that aren't current theme's buttons
-                if (item.getAttribute('id') !== `toggle-${design ? design : 'normal'}-theme-btn`) {
+                if (item.getAttribute('id') !== `toggle-${design}-theme-btn`) {
                     item.classList.remove(s['current-btn'])
                 }
 
@@ -70,7 +70,7 @@ function DesignSwitch() {
         <Drawer>
 
             {/* Container for component triggering drawer's open */}
-            <DrawerTrigger>
+            <DrawerTrigger asChild>
                 <Button>Themes</Button>
             </DrawerTrigger>
 
@@ -90,10 +90,7 @@ function DesignSwitch() {
                     <div ref={themeToggleRef} className="flex mb-8 gap-4 px-5 py-3">
                         {
                             // Make button for each design
-                            designs.map((item) => {
-
-                                // Define name for designs
-                                const name = item.name ? item.name : 'normal';
+                            designs.map((item, key) => {
 
                                 // Class for chosen theme / No class
                                 const current = design === item.name ? s['current-btn'] : ''
@@ -101,21 +98,21 @@ function DesignSwitch() {
                                 return (
 
                                     // Add hover card to each theme option to display its name
-                                    <HoverCard>
+                                    <HoverCard key={key}>
                                         <HoverCardTrigger asChild>
 
                                             {/* Button to trigger new theme */}
                                             <Button
-                                                id={`toggle-${name}-theme-btn`}
+                                                id={`toggle-${item.name}-theme-btn`}
                                                 onClick={() => handleDesignSwitch(item.name)}
-                                                className={`${current} ${s[`theme-btn-${name}`]} ${s['theme-btn']}`}
+                                                className={`${current} ${s[`theme-btn-${item.name}`]} ${s['theme-btn']}`}
                                             />
 
                                         </HoverCardTrigger>
 
                                         {/* Display popover with theme's name */}
                                         <HoverCardContent className="flex justify-center items-center w-auto mb-3 px-6">
-                                            {item.emoji || ''} {name.charAt(0).toUpperCase() + name.slice(1)} Theme
+                                            {item.emoji || ''} {item.name.charAt(0).toUpperCase() + item.name.slice(1)} Theme
                                         </HoverCardContent>
 
                                     </HoverCard>

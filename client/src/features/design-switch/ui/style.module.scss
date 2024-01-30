@@ -7,13 +7,13 @@
     @apply ring-2 ring-offset-4;
 }
 
-.theme-btn-normal {
-    @apply bg-white  hover:bg-gray-300;
+.theme-btn-default {
+    @apply bg-white hover:bg-gray-300;
     @apply ring-white hover:ring-gray-300;
 }
 
 .theme-btn-future {
-    @apply bg-purple-600  hover:bg-purple-700;
+    @apply bg-purple-600 hover:bg-purple-700;
     @apply ring-purple-600 hover:ring-purple-700;
 }
 
