@@ -1,7 +1,7 @@
 'use client'
 
 // Basics
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 // Shadcn / Tailwind
 import { Button } from "@/shared/ui/button";
@@ -71,7 +71,7 @@ function DesignSwitch() {
 
             {/* Container for component triggering drawer's open */}
             <DrawerTrigger>
-                <Button variant='outline'>Themes</Button>
+                <Button>Themes</Button>
             </DrawerTrigger>
 
             {/* Container for drawer's content */}
@@ -115,7 +115,7 @@ function DesignSwitch() {
 
                                         {/* Display popover with theme's name */}
                                         <HoverCardContent className="flex justify-center items-center w-auto mb-3 px-6">
-                                            {name.charAt(0).toUpperCase() + name.slice(1)} Theme
+                                            {item.emoji || ''} {name.charAt(0).toUpperCase() + name.slice(1)} Theme
                                         </HoverCardContent>
 
                                     </HoverCard>

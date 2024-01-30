@@ -19,16 +19,24 @@ const config = {
             },
         },
         extend: {
+            fontSize: {
+                'btn-xl': 'var(--text-btn-xl)',
+                'btn-lg': 'var(--text-btn-lg)',
+                'btn-sm': 'var(--text-btn-sm)',
+                'btn-xs': 'var(--text-btn-xs)',
+            },
             borderColor: {
                 DEFAULT: 'hsl(var(--border))'
             },
             colors: {
                 DEFAULT: 'var(--text-color-h3)',
-                xl: 'var(--text-color-xl)',
-                lg: 'var(--text-color-lg)',
-                md: 'var(--text-color-md)',
-                sm: 'var(--text-color-sm)',
-                xs: 'var(--text-color-xs)',
+                'xl': 'var(--text-color-xl)',
+                'lg': 'var(--text-color-lg)',
+                'sm': 'var(--text-color-sm)',
+                'xs': 'var(--text-color-xs)',
+                'btn': 'var(--text-color-btn)',
+                'btn-outline': 'var(--text-color-btn-outline)',
+                'btn-secondary': 'var(--text-color-btn-secondary)',
 
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",

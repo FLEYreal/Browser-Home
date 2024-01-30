@@ -16,7 +16,6 @@ export default function Page() {
 			<h1>Modals & Actions</h1>
 			<h2 className="text-xl">Text XL</h2>
 			<h2 className="text-lg">Text LG</h2>
-			<h2 className="text-md">Text MD</h2>
 			<h2 className="text-sm">Text SM</h2>
 			<h2 className="text-xs">Text XS</h2>
 			<DesignSwitch />

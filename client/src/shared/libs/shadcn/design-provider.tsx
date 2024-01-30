@@ -8,6 +8,7 @@ export type designType = 'future' | 'nature' | 'cold' | 'strawberry' | ''
 export interface DesignsListProps {
     name: designType;
     color: string;
+    emoji?: string;
 }
 export interface DesignContextProps {
     design: designType
@@ -16,10 +17,10 @@ export interface DesignContextProps {
 
 // Vairables
 export const designs: DesignsListProps[] = [
-    { name: 'future', color: 'white' }, 
-    { name: 'nature', color: 'lime' },
-    { name: 'cold', color: 'blue' }, 
-    { name: 'strawberry', color: 'red' },
+    { name: 'future', color: 'white', emoji: '💜' }, 
+    { name: 'nature', color: 'lime', emoji: '🍀' },
+    { name: 'cold', color: 'blue', emoji: '❄️' }, 
+    { name: 'strawberry', color: 'red', emoji:'🍓' },
     { name: '', color: 'gray' }
 ]
 
