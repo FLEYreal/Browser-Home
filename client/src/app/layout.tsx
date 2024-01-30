@@ -1,9 +1,6 @@
 // Basics
 import { ReactNode } from 'react'
 
-// Widgets
-import { Header } from '@/widgets/header'
-
 // Shared
 import QueryClientProvider from '@/shared/libs/react-query/provider'
 import { Toaster } from '@/shared/ui/toaster'
@@ -22,21 +19,16 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang='en' className='dark'>
-			<body className=' bg-black'>
+			<DesignProvider className='bg-background'>
 				<QueryClientProvider>
-					<DesignProvider>
 
-						{/* Header of the website */}
-						<Header />
+					{children}
 
-						{children}
+					{/* Display Notifications */}
+					<Toaster />
 
-						{/* Display Notifications */}
-						<Toaster />
-
-					</DesignProvider>
 				</QueryClientProvider>
-			</body>
+			</DesignProvider>
 		</html>
 	)
 }

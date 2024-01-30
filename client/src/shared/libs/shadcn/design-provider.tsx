@@ -1,13 +1,27 @@
 'use client'
 
+// Basics
 import { useContext, createContext, ReactNode, Dispatch, SetStateAction, useState, useLayoutEffect } from 'react'
 
 // Types & Interfaces
 export type designType = 'future' | 'nature' | 'cold' | 'strawberry' | ''
+export interface DesignsListProps {
+    name: designType;
+    color: string;
+}
 export interface DesignContextProps {
     design: designType
     setDesign: Dispatch<SetStateAction<designType>>
 }
+
+// Vairables
+export const designs: DesignsListProps[] = [
+    { name: 'future', color: 'white' }, 
+    { name: 'nature', color: 'lime' },
+    { name: 'cold', color: 'blue' }, 
+    { name: 'strawberry', color: 'red' },
+    { name: '', color: 'gray' }
+]
 
 // Create Context Item
 export const DesignContext = createContext<DesignContextProps>({
@@ -26,14 +40,14 @@ export default function DesignProvider({ children, className }: { children?: Rea
 
     // Save / Update design state in localstorage
     useLayoutEffect(() => {
-        localStorage.setItem('design', 'future')
+        localStorage.setItem('design', design)
     }, [design])
 
     return (
         <DesignContext.Provider value={{ design, setDesign }}>
-            <main className={`${design} ${className}`}>
+            <body className={`${design} ${className}`}>
                 {children}
-            </main>
+            </body>
         </DesignContext.Provider>
     )
 

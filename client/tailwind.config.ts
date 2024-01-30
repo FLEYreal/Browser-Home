@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config = {
-    darkMode: ["class"],
+    darkMode: 'class',
     content: [
         "./pages/**/*.{ts,tsx}",
         "./components/**/*.{ts,tsx}",
@@ -19,10 +19,17 @@ const config = {
             },
         },
         extend: {
-            width: {
-                normal: "400px",
+            borderColor: {
+                DEFAULT: 'hsl(var(--border))'
             },
             colors: {
+                DEFAULT: 'var(--text-color-h3)',
+                xl: 'var(--text-color-xl)',
+                lg: 'var(--text-color-lg)',
+                md: 'var(--text-color-md)',
+                sm: 'var(--text-color-sm)',
+                xs: 'var(--text-color-xs)',
+
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",

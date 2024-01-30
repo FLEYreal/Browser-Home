@@ -1,0 +1,33 @@
+.theme-btn {
+    @apply rounded-lg w-10 h-10;
+    @apply cursor-pointer;
+}
+
+.current-btn {
+    @apply ring-2 ring-offset-4;
+}
+
+.theme-btn-normal {
+    @apply bg-white  hover:bg-gray-300;
+    @apply ring-white hover:ring-gray-300;
+}
+
+.theme-btn-future {
+    @apply bg-purple-600  hover:bg-purple-700;
+    @apply ring-purple-600 hover:ring-purple-700;
+}
+
+.theme-btn-nature {
+    @apply bg-lime-500 hover:bg-lime-600;
+    @apply ring-lime-500 hover:ring-lime-600;
+}
+
+.theme-btn-cold {
+    @apply bg-blue-700 hover:bg-blue-800;
+    @apply ring-blue-700 hover:ring-blue-800;
+}
+
+.theme-btn-strawberry {
+    @apply bg-red-600 hover:bg-red-700;
+    @apply ring-red-600 hover:ring-red-700;
+}

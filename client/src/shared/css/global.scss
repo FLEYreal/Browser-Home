@@ -23,6 +23,12 @@
         --border: 240 3.7% 15.9%;
         --input: 240 3.7% 15.9%;
         --ring: 240 4.9% 83.9%;
+
+        --text-color-xl: theme('colors.gray.100');
+        --text-color-lg: theme('colors.gray.200');
+        --text-color-md: theme('colors.gray.400');
+        --text-color-sm: theme('colors.gray.500');
+        --text-color-xs: theme('colors.gray.600');
     }
 
     .future {
@@ -45,6 +51,12 @@
         --border: 215 27.9% 16.9%;
         --input: 215 27.9% 16.9%;
         --ring: 263.4 70% 50.4%;
+
+        --text-color-xl: theme('colors.gray.100');
+        --text-color-lg: theme('colors.gray.200');
+        --text-color-md: theme('colors.gray.400');
+        --text-color-sm: theme('colors.gray.500');
+        --text-color-xs: theme('colors.gray.600');
     }
 
     .nature {
@@ -67,6 +79,12 @@
         --border: 240 3.7% 15.9%;
         --input: 240 3.7% 15.9%;
         --ring: 142.4 71.8% 29.2%;
+
+        --text-color-xl: theme('colors.neutral.100');
+        --text-color-lg: theme('colors.neutral.200');
+        --text-color-md: theme('colors.neutral.400');
+        --text-color-sm: theme('colors.neutral.500');
+        --text-color-xs: theme('colors.neutral.600');
     }
 
     .cold {
@@ -89,6 +107,12 @@
         --border: 217.2 32.6% 17.5%;
         --input: 217.2 32.6% 17.5%;
         --ring: 224.3 76.3% 48%;
+
+        --text-color-xl: theme('colors.slate.100');
+        --text-color-lg: theme('colors.slate.200');
+        --text-color-md: theme('colors.slate.400');
+        --text-color-sm: theme('colors.slate.500');
+        --text-color-xs: theme('colors.slate.600');
     }
 
     .strawberry {
@@ -111,5 +135,11 @@
         --border: 240 3.7% 15.9%;
         --input: 240 3.7% 15.9%;
         --ring: 346.8 77.2% 49.8%;
+
+        --text-color-xl: theme('colors.stone.100');
+        --text-color-lg: theme('colors.stone.200');
+        --text-color-md: theme('colors.stone.400');
+        --text-color-sm: theme('colors.stone.500');
+        --text-color-xs: theme('colors.stone.600');
     }
 }
