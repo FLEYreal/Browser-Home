@@ -40,9 +40,6 @@ function Currency() {
 
     // If error occured in any of queries
     if (resultBTC.isError || resultUSD.isError) {
-
-        console.log('Well, error!?')
-
         // Display loading component until error is resolved
         return <LoadingCurrency />
     }
@@ -50,8 +47,8 @@ function Currency() {
     // If everything is OK, display exchange rates
     return (
         <div className='flex gap-5'>
-            <h2>$ {usdToRubRate}</h2>
-            <h2>₿ {usdToBtcRate}</h2>
+            <h2 className='text-sm'>$ {usdToRubRate}</h2>
+            <h2 className='text-sm'>₿ {usdToBtcRate}</h2>
         </div>
     )
 }
