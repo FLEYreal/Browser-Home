@@ -4,7 +4,7 @@
 import { useContext, createContext, useState, Dispatch, SetStateAction, ReactNode } from 'react';
 
 // Interfaces & Types
-export type EngineState = 'google' | 'yandex' | 'bing';
+export type EngineState = 'google' | 'yandex' | 'bing' | 'duckduckgo';
 export type EngineStates = EngineState[];
 export interface SearchContextProps {
     engines: EngineStates
@@ -26,7 +26,7 @@ export const useSearchContext = () => {
 export default function SearchProvider({ children }: { children: ReactNode }) {
 
     // Search Engines to use
-    const [engines, setEngines] = useState<EngineStates>(['google'])
+    const [engines, setEngines] = useState<EngineStates>(['bing', 'duckduckgo', 'google', 'yandex'])
 
     return (
         <SearchContext.Provider value={{ engines, setEngines }}>

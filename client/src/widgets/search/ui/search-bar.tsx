@@ -9,7 +9,7 @@ import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 
 // Insides
-import { googleFormat } from './formtatter';
+import { bingFormat, googleFormat, yandexFormat, duckduckgoFormat } from './formtatter';
 import { useSearchContext } from './provider'
 
 export default function SearchBar() {
@@ -28,12 +28,22 @@ export default function SearchBar() {
         if (event.key === 'Enter') {
             engines.forEach(engine => {
 
-                if (engine === 'google') {
+                switch(engine) {
+                    case 'google':
+                        window.open(googleFormat(query), '_blank')
+                        break;
+                    case 'duckduckgo':
+                        window.open(duckduckgoFormat(query), '_blank')
+                        break;
+                    case 'bing':
+                        window.open(bingFormat(query), '_blank');
+                        break;
+                    case 'yandex':
+                        window.open(yandexFormat(query), '_blank');
+                        break;
 
-                    let link = `https://google.com/search?q=${googleFormat(query)}`
-
-                    console.log(link)
-                    window.open(link, '_blank')
+                    default:
+                        break;
                 }
 
             })

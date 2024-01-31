@@ -1,6 +1,7 @@
 'use client'
 
 // Basics
+import { useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -9,9 +10,9 @@ import { useSearchContext, EngineState } from './provider'
 
 // Assets
 import Google from '@/public/icons/Google.svg'
+import DuckDuckGo from '@/public/icons/DuckDuckGo.svg'
 import Yandex from '@/public/icons/Yandex.svg'
 import Bing from '@/public/icons/Bing.svg'
-import { useMemo } from 'react'
 
 export default function UsedEngines() {
 
@@ -34,6 +35,11 @@ export default function UsedEngines() {
             name: 'Yandex',
             url: 'https://dzen.ru',
             icon: Yandex
+        },
+        'duckduckgo': {
+            name: 'DuckDuckGO',
+            url: 'https://duckduckgo.com',
+            icon: DuckDuckGo
         }
     }), [])
     
