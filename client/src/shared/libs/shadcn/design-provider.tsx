@@ -37,7 +37,7 @@ export const DesignContext = createContext<DesignContextProps>({
 })
 
 // Create Context Hook
-export const useDesign = () => useContext<DesignContextProps>(DesignContext)
+export const useDesignContext = () => useContext<DesignContextProps>(DesignContext)
 
 // Provider
 export default function DesignProvider({ children, className }: { children?: ReactNode, className?: string }) {

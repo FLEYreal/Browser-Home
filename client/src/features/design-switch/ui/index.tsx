@@ -20,7 +20,7 @@ import {
 } from "@/shared/ui/hover-card"
 
 // Shared
-import { useDesign, designType, designs } from "@/shared/libs/shadcn/design-provider";
+import { useDesignContext, designType, designs } from "@/shared/libs/shadcn/design-provider";
 
 // Styles
 import s from './style.module.scss'
@@ -28,7 +28,7 @@ import s from './style.module.scss'
 function DesignSwitch() {
 
     // Context Values
-    const { design, setDesign } = useDesign();
+    const { design, setDesign } = useDesignContext();
 
     // Reference to theme toggle container
     const themeToggleRef = useRef<HTMLDivElement>(null);
