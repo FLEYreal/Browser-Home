@@ -1,7 +1,3 @@
-// Shadcn / Tailwind
-import { Button } from '@/shared/ui/button'
-import { Settings } from 'lucide-react'
-
 // Features
 import { Currency } from '@/features/currency'
 
@@ -9,6 +5,7 @@ import { Currency } from '@/features/currency'
 import SearchBar from './search-bar'
 import UsedEngines from './used-engines'
 import SearchProvider from './provider'
+import SearchSettings from './settings'
 
 // Assets
 import { Switch } from '@/shared/ui/switch'
@@ -21,10 +18,8 @@ export default function Search() {
                 <div className='flex flex-row items-center justify-center gap-6'>
 
                     <SearchBar />
+                    <SearchSettings/>
 
-                    <Button variant="ghost" size="icon">
-                        <Settings size="28" />
-                    </Button>
                 </div>
                 <div className='flex flex-row items-center justify-between mt-3'>
                     <UsedEngines />
