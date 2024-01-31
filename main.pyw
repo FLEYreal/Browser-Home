@@ -16,10 +16,10 @@ def run_frontend_server():
     frontend_path = os.path.join(os.path.dirname(__file__), "client")
 
     # Define command to run frontend
-    command = "npm run dev"  # In production change to: "npm start"
+    command = "npm start"
 
     # Launch NextJS frontend server
-    result = subprocess.run(command, shell=True, text=True, cwd=frontend_path)
+    subprocess.run(command, shell=True, text=True, cwd=frontend_path)
 
 
 # Launch Backend Server : FastAPI

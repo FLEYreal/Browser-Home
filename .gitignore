@@ -5,3 +5,4 @@
 venv
 environment
 migrations
+startup.bat
