@@ -9,20 +9,38 @@ import {
     DrawerDescription,
     DrawerTitle
 } from '@/shared/ui/drawer';
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/shared/ui/hover-card"
+
 
 // Insides
 import SearchEngines from './search-engines';
+import SameTab from './same-tab';
 
 export default function SearchSettings() {
 
     return (
         <Drawer>
+            
+            <HoverCard>
+                <HoverCardTrigger asChild>
+                    <DrawerTrigger asChild>
 
-            <DrawerTrigger asChild>
-                <Button variant="ghost" size="icon">
-                    <Settings size="28" />
-                </Button>
-            </DrawerTrigger>
+                        <Button variant="ghost" size="icon">
+                            <Settings size="28" />
+                        </Button>
+
+                    </DrawerTrigger>
+                </HoverCardTrigger>
+
+                {/* Display button's name */}
+                <HoverCardContent className="flex justify-center items-center w-auto mt-4 px-6">
+                    Search Settings
+                </HoverCardContent>
+            </HoverCard>
 
             <DrawerContent>
                 <div className="mx-auto w-full max-w-xl">
@@ -42,6 +60,7 @@ export default function SearchSettings() {
 
                     <div className='px-4 mt-4 mb-12'>
                         <SearchEngines />
+                        <SameTab />
                     </div>
 
                 </div>

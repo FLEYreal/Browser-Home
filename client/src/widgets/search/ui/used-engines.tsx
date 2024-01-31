@@ -42,13 +42,13 @@ export default function UsedEngines() {
             icon: DuckDuckGo
         }
     }), [])
-    
+
 
     return (
         <div className='text-sm text-color-sm flex flex-row items-center justify-start gap-2'>
             <h1 className='-mt-[2px]'>Search Engines:</h1>
             {
-                engines.map((item: EngineState, key) => {
+                engines && engines.length > 0 ? engines.map((item: EngineState, key) => {
 
                     return (
                         <div key={key} className='w-4 h-4 flex items-center justify-center'>
@@ -57,7 +57,7 @@ export default function UsedEngines() {
                             </Link>
                         </div>
                     )
-                })
+                }) : <p className='text-white'>{'None :)'}</p>
             }
         </div>
     )

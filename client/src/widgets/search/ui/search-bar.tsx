@@ -2,11 +2,17 @@
 
 // Basics
 import { useRef, useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 // Shadcn / Tailwind
 import { SearchIcon } from 'lucide-react'
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/shared/ui/hover-card"
 
 // Insides
 import { bingFormat, googleFormat, yandexFormat, duckduckgoFormat } from './formtatter';
@@ -15,31 +21,37 @@ import { useSearchContext } from './provider'
 export default function SearchBar() {
 
     // Hooks
-    const { engines } = useSearchContext();
+    const { engines, sameTab } = useSearchContext();
+    const router = useRouter();
     const searchRef = useRef(null);
 
     // States
     const [query, setQuery] = useState<string>('');
     const [focused, setFocused] = useState(false);
 
-    // Handlers
-    const handleKeyup = (event: KeyboardEvent) => {
+    // Utils
+    const openEngine = (link: string) => {
+        if (sameTab) router.push(link)
+        else window.open(link, '_blank')
+    }
 
-        if (event.key === 'Enter') {
+    // Handlers
+    const handleSearch = () => {
+        if (engines) {
             engines.forEach(engine => {
 
-                switch(engine) {
+                switch (engine) {
                     case 'google':
-                        window.open(googleFormat(query), '_blank')
+                        openEngine(googleFormat(query))
                         break;
                     case 'duckduckgo':
-                        window.open(duckduckgoFormat(query), '_blank')
+                        openEngine(duckduckgoFormat(query))
                         break;
                     case 'bing':
-                        window.open(bingFormat(query), '_blank');
+                        openEngine(bingFormat(query));
                         break;
                     case 'yandex':
-                        window.open(yandexFormat(query), '_blank');
+                        openEngine(yandexFormat(query));
                         break;
 
                     default:
@@ -48,6 +60,11 @@ export default function SearchBar() {
 
             })
         }
+    }
+
+    const handleKeyup = (event: KeyboardEvent) => {
+
+        if (event.key === 'Enter') handleSearch()
 
         if (event.key === 'Escape' && searchRef.current) {
             // Exit input focus
@@ -93,9 +110,24 @@ export default function SearchBar() {
                 placeholder='Search'
                 className='p-6 text-xl font-medium leading-normal h-16 rounded-lg'
             />
-            <Button variant="ghost" size="icon" className='bg-background absolute right-4 h-10 w-10 top-3'>
-                <SearchIcon />
-            </Button>
+            <HoverCard>
+                <HoverCardTrigger asChild>
+                    <Button
+                        onClick={handleSearch}
+                        variant="ghost"
+                        size="icon"
+                        className='bg-background absolute right-4 h-10 w-10 top-3'
+                    >
+                        <SearchIcon />
+                    </Button>
+                </HoverCardTrigger>
+
+                {/* Display button's name */}
+                <HoverCardContent className="flex justify-center items-center w-auto mt-4 px-6">
+                    Search
+                </HoverCardContent>
+
+            </HoverCard>
         </div>
     )
 }

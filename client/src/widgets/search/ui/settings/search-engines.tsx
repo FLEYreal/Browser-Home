@@ -12,6 +12,7 @@ import {
 
 // Insides
 import { useSearchContext, EngineState } from '../provider';
+import { useToast } from '@/shared/ui/use-toast';
 
 // Interfaces & Types
 export interface searchEnginesProps {
@@ -20,8 +21,14 @@ export interface searchEnginesProps {
 }
 
 export default function SearchEngines() {
-    const { engines, setEngines } = useSearchContext();
 
+    // Hooks
+    const { toast } = useToast();
+
+    // Context
+    const { engines, setEngines, sameTab } = useSearchContext();
+
+    // List of available engines to set
     const searchEnginesList: searchEnginesProps[] = useMemo(
         () => [
             { name: 'google', label: 'Google' },
@@ -32,15 +39,29 @@ export default function SearchEngines() {
         []
     );
 
-    const handleCheckboxChange = (engineName: EngineState) => {
+    const handleCheckboxChange = (engineName: EngineState, checked: boolean) => {
 
-        // Toggle the state of the engine in the list
-        const updatedEngines = engines.includes(engineName)
-            ? engines.filter((name) => name !== engineName)
-            : [...engines, engineName];
+        if (engines) {
 
-        // Update the context with the new list of engines
-        setEngines(updatedEngines);
+            if (sameTab && engines.length >= 1 && checked) {
+                toast({
+                    title: 'Turn off "Use Same Tab"',
+                    description: 'You cannot open more than 1 search engine in the same tab!',
+                    variant: 'destructive'
+                })
+            } else {
+
+                // Toggle the state of the engine in the list
+                const updatedEngines = engines.includes(engineName)
+                    ? engines.filter((name) => name !== engineName)
+                    : [...engines, engineName];
+
+                // Update the context with the new list of engines
+                setEngines(updatedEngines);
+
+            }
+
+        }
     };
 
     return (
@@ -53,19 +74,26 @@ export default function SearchEngines() {
 
             {/* Setting's Options */}
             <div className='grid grid-cols-2 gap-2 mt-6 w-1/2'>
-                {searchEnginesList.map((engine) => (
-                    <div
-                        key={engine.name}
-                        className='flex gap-4 items-center justify-start text-primary'
-                    >
-                        <Checkbox
-                            className='w-5 h-5'
-                            checked={engines.includes(engine.name)}
-                            onChange={() => handleCheckboxChange(engine.name)}
-                        />
-                        <p>{engine.label}</p>
-                    </div>
-                ))}
+                {searchEnginesList.map((engine) => {
+
+                    if (engines) {
+
+                        return (
+                            <div
+                                key={engine.name}
+                                className='flex gap-4 items-center justify-start text-primary'
+                            >
+                                <Checkbox
+                                    className='w-5 h-5'
+                                    checked={engines.includes(engine.name)}
+                                    onClick={() => handleCheckboxChange(engine.name, !engines.includes(engine.name))}
+                                />
+                                <p>{engine.label}</p>
+                            </div>
+                        )
+                    }
+
+                })}
             </div>
         </section>
     );
