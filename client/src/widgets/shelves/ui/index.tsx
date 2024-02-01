@@ -5,6 +5,9 @@ import { HTMLAttributes } from "react";
 // Features
 import { CreatesShelfWidget } from "@/features/new-shelf";
 
+// API
+import { useItems } from "@/shared/api/item-api";
+
 // Insides
 import Shelf from './shelf';
 
@@ -12,6 +15,8 @@ import Shelf from './shelf';
 export interface ShelvesProps extends HTMLAttributes<HTMLDivElement> { }
 
 export default function Shelves({ ...props }: ShelvesProps) {
+
+
 
     return (
         <>

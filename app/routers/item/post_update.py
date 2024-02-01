@@ -2,7 +2,7 @@
 from typing import List, Optional
 
 # FastAPI Imports
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
 # SQLAlchemy Imports
