@@ -1,2 +1,5 @@
 // UI
-export { default as Item } from './ui';
+export { 
+    default as Item,
+    type ItemProps
+} from './ui';
