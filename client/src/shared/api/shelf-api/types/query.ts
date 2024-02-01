@@ -1,4 +1,4 @@
 // [GET] "/shelf"
 export type getShelfQuery = {
-    shelfId?: number;
+    shelf_id?: number;
 } | undefined;

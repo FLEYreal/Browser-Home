@@ -13,5 +13,12 @@ export type {
 // Hooks
 export { 
     useGetItems,
-    useCreateItems
+    useCreateItems,
+    useUpdateItems,
+    useDeleteItems
 } from './use-items';
+
+export {
+    useGetIcon,
+    useUpdateIcon
+} from './use-icons';

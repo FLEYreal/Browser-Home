@@ -13,5 +13,4 @@ DB_NAME = environ.get("DB_NAME")
 DB_HOST = environ.get("DB_HOST")
 DB_PORT = environ.get("DB_PORT")
 
-CLIENT_PORT = environ.get("CLIENT_PORT")
 SERVER_PORT = environ.get("SERVER_PORT")

@@ -1,6 +1,6 @@
 // [POST] "/item"
 export type createItemBody = {
-    shelfFk: number;
+    shelf_fk: number;
     link: string;
     title: string;
     description?: string;
@@ -8,8 +8,8 @@ export type createItemBody = {
 
 // [POST] "/item/update"
 export type updateItemBody = {
-    itemId: number;
-    shelfFk?: number;
+    item_id: number;
+    shelf_fk?: number;
     link?: number;
     title?: string;
     description?: string;
@@ -17,6 +17,6 @@ export type updateItemBody = {
 
 // [DELETE] "/item/update"
 export type deleteItemBody = {
-    shelfFk?: number;
-    itemIds?: number[];
+    shelf_fk?: number;
+    item_ids?: number[];
 }

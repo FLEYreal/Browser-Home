@@ -1,29 +1,37 @@
+'use client'
+
 // Basics
 import axios from "axios";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
 
 // Shared
-import { SERVER_IP, SERVER_PORT, API_PREFIX } from "../../config/vars";
+import { BACKEND_URL } from "@/shared/config/vars";
+import { customQuery } from "@/shared/config/types";
 import { getItemQuery } from "./types/query";
-import { createItemBody } from './types/body';
 
-export const useGetItems = (
-    query?: getItemQuery,
-) => {
+export interface getItemsProps extends customQuery {
+    query?: getItemQuery
+}
+export const useGetItems = ({ query, ...props }: getItemsProps = {}) => {
 
     return useQuery({
         queryKey: ['get-items'],
-        queryFn: () => axios.get(`${SERVER_IP}:${SERVER_PORT}${API_PREFIX}/`)
+        queryFn: async (_: QueryFunctionContext) => axios.get(`${BACKEND_URL}/item/`, {
+            params: query
+        }),
+        ...props
     })
 
 }
 
-export const useCreateItems = (
-    body: createItemBody
-) => {
+export const useCreateItems = () => {
 
-    return useMutation({
-        mutationFn: () => axios.post(`${SERVER_IP}:${SERVER_PORT}${API_PREFIX}/`, body)
-    })
+}
+
+export const useUpdateItems = () => {
+
+}
+
+export const useDeleteItems = () => {
 
 }

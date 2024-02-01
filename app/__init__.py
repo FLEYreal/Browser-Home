@@ -8,9 +8,6 @@ from .routers.item import router as item_router
 from .routers.shelf import router as shelf_router
 from .utils.responses import generate_response
 
-# Environment variables
-from config import SERVER_PORT, CLIENT_PORT
-
 # Global Project's Variables
 api_prefix = "/api/v1"
 app = FastAPI(
@@ -20,7 +17,7 @@ app = FastAPI(
 
 # Customize Error Response
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
+async def validation_exception_handler(_: Request, exc: RequestValidationError):
     return generate_response(
         status=status.HTTP_422_UNPROCESSABLE_ENTITY,
         title="HTTP 422: Validation Error!",
@@ -28,21 +25,20 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         details=exc.errors()
     )
 
+# Allowed origins
+origins = ["*"]
 
-# Middlewares
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost",
-        "https://localhost",
-        f"http://localhost:{SERVER_PORT}",  # Backend Port
-        f"http://localhost:{CLIENT_PORT}"  # Frontend Port
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 # Include routers
 app.include_router(item_router, prefix=api_prefix)
 app.include_router(shelf_router, prefix=api_prefix)
+
+
+# Middlewares
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
