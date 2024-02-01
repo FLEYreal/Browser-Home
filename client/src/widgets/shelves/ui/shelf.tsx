@@ -99,6 +99,7 @@ export default function ({ data, ...props }: ShelvesProps) {
 
                         return (
                             <Item
+                                key={key}
                                 color={color}
                                 title={item.title}
                                 link={item.link}
