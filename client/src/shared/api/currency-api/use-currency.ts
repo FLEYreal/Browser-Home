@@ -5,9 +5,9 @@ import { useQuery } from '@tanstack/react-query'
 import axios, { AxiosResponse } from 'axios'
 
 // Get USD to RUB rates
-const usdKey = ['usd-rate']
-const usdUrl = "https://api.exchangerate-api.com/v4/latest/USD"
-const getUsd = () => axios.get(usdUrl)
+export const usdKey = ['usd-rate']
+export const usdUrl = "https://api.exchangerate-api.com/v4/latest/USD"
+export const getUsd = () => axios.get(usdUrl)
 export const useUSD = () => useQuery({
     queryKey: usdKey,
     queryFn: getUsd,
@@ -23,9 +23,9 @@ export const useUSD = () => useQuery({
 })
 
 // Get BTC to USD rates
-const btcKey = ['btc-rate']
-const btcUrl = "https://blockchain.info/ticker"
-const getBtc = () => axios.get(btcUrl)
+export const btcKey = ['btc-rate']
+export const btcUrl = "https://blockchain.info/ticker"
+export const getBtc = () => axios.get(btcUrl)
 export const useBTC = () => useQuery({
     queryKey: btcKey,
     queryFn: getBtc,

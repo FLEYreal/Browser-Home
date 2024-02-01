@@ -3,11 +3,13 @@
 // Basics
 import React, { useEffect } from 'react'
 
-// Shared
+// Shadcn / Tailwind
 import { useToast } from "@/shared/ui/use-toast"
 
+// API
+import { useUSD, useBTC } from '../../../shared/api/currency-api'
+
 // Insides
-import { useUSD, useBTC } from '../api/use-currency'
 import LoadingCurrency from './loading'
 
 function Currency() {
