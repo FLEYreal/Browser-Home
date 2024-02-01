@@ -2,7 +2,7 @@
 from typing import Optional, List
 
 # FastAPI Imports
-from fastapi import Depends, APIRouter, HTTPException
+from fastapi import Depends, APIRouter
 from fastapi.responses import JSONResponse
 
 # SQLAlchemy Imports
@@ -10,6 +10,8 @@ from sqlalchemy.orm import Session
 
 # Libs
 from pydantic import BaseModel, Field
+import requests
+import favicon
 
 # Modules
 from app.db.db import get_db
@@ -48,15 +50,40 @@ async def item_post(body: List[ItemPostBody], db: Session = Depends(get_db)):
 
     try:
 
+        items = []  # List of item's data
+        icons = []  # List of item's icons
+
         # Convert body to list of dictionaries
-        items = []
         for item in body:
+
+            # Insert data into list of items
             items.append({
                 "shelf_fk": item.shelf_fk,
                 "link": item.link,
                 "title": item.title,
                 "description": item.description
             })
+
+            try:
+                icons = favicon.get(item.link)
+
+                # If icons are found
+                if icons and len(icons) > 0:
+                    icon_url = ""  # Icon URL
+
+                    # Try to find icon with ".ico" format
+                    ico = list(filter(lambda x: x.format == 'ico', icons))
+
+                    if ico:  # If icon with ".ico" format is found
+                        icon_url = ico[0].url
+                    else:  # If not, get the first found icon
+                        icon_url = icons[0]
+
+                    icon = requests.get(icon_url)
+                    print(icon)
+
+            except Exception as e:
+                print("Unable to find Icon for this website: ", e)
 
         item_db = Items()  # Get instance of Items table
         result = item_db.create(items=items, db=db)  # Create provided item(s)

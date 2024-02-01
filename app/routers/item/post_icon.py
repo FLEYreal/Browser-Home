@@ -1,5 +1,3 @@
-# Built-In Imports
-from io import BytesIO
 
 # FastAPI Imports
 from fastapi import UploadFile, APIRouter, Depends
@@ -9,11 +7,9 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 
-# Libs
-from PIL import Image
-
 # Utils
 from ...utils.responses import responses, generate_response
+from ...utils.icon import transform_icon, validate_format
 
 # Modules
 from app.db.db import get_db
@@ -38,33 +34,16 @@ async def item_icon_post(item_id: str, file: UploadFile, db: Session = Depends(g
 
     try:
 
-        # File vars
-        name = file.filename
-        ext = name.split('.')[-1]
+        # Validate file extension
+        validate_result = validate_format(file)
 
-        # Extension related vars
-        allowed_extensions = ['png', 'jpg', 'jpeg', 'gif', 'svg']
-        pillow_format = {'png': 'PNG', 'jpg': 'JPEG', 'jpeg': 'JPEG', 'gif': 'GIF'}
-        is_allowed = False
+        # If validation failed
+        if not str(validate_result["status"]).startswith("2"):
+            return generate_response(**validate_result)
 
-        # Check if file extension is allowed
-        for allowed in range(len(allowed_extensions)):
-
-            # If provided extension is allowed, break the loop
-            if allowed_extensions[allowed] == ext:
-                is_allowed = True
-                break
-
-        # If extension is not allowed, return error
-        if not is_allowed:
-            return generate_response(
-                status=400,
-                title="HTTP 400: Bad Request!",
-                description="Invalid file extension!",
-                details={
-                    "allowed_extensions": allowed_extensions
-                }
-            )
+        # Get validation details
+        is_allowed = validate_result['details']['is_allowed']
+        ext = validate_result['details']['ext']
 
         # Conditions
         conditions = [
@@ -85,28 +64,24 @@ async def item_icon_post(item_id: str, file: UploadFile, db: Session = Depends(g
                 description="You tried to update what's never existed! May be just creating a new item?"
             )
 
+        # Transform icon
+        icon_data = await transform_icon(file, ext)
+
+        if not icon_data:
+            return JSONResponse(status_code=500, content=responses[500])
+
+        # If icon is bitmap type
         if not ext == 'svg':
-
-            # Get Icon
-            icon = Image.open(BytesIO(file.file.read()))
-
-            # Transform image to bytes
-            icon_bytes = BytesIO()
-            icon.save(icon_bytes, format=pillow_format[ext])
-            icon_data = icon_bytes.getvalue()
 
             # Update the icon
             item.icon = icon_data
             item.icon_ext = ext
 
+        # If icon is vector type
         else:
 
-            # Get SVG Icon
-            svg_icon = await file.read()
-            print(svg_icon)
-
             # Insert SVG Icon to db & define extension
-            item.icon_svg = svg_icon
+            item.icon_svg = icon_data
             item.icon_ext = ext
 
         # Commit changes to db

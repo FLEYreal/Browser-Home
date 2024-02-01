@@ -79,7 +79,8 @@ async def item_icon_get(
             "jpg": "image/jpeg",
             "jpeg": "image/jpeg",
             "gif": "image/gif",
-            "svg": "image/svg+xml"
+            "svg": "image/svg+xml",
+            "ico": "image/x-icon"
         }
 
         # Return found icon
