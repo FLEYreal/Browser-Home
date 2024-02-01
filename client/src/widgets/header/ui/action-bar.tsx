@@ -1,9 +1,6 @@
 // Shadcn / Tailwind
 import { Button } from '@/shared/ui/button'
 
-// Styles
-import '@/shared/css/global.scss'
-
 // Features
 import { DesignSwitch } from '@/features/design-switch'
 

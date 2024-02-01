@@ -9,6 +9,7 @@ import { ColorPicker } from "@/features/color-picker";
 // Shadcn / Tailwind
 import { ChevronUp } from 'lucide-react';
 import { Button } from "@/shared/ui/button";
+import { useToast } from "@/shared/ui/use-toast";
 import {
     Collapsible,
     CollapsibleContent,
@@ -17,6 +18,10 @@ import {
 
 export default function Intefrations() {
 
+    // Hooks
+    const { toast } = useToast();
+
+    // States
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
     return (
@@ -28,7 +33,11 @@ export default function Intefrations() {
                 <p>Integrations</p>
             </CollapsibleTrigger>
             <CollapsibleContent className="text-lg flex flex-row gap-3">
-                <Button>Social AI</Button>
+                <Button onClick={() => { toast({
+                    title: 'Not Supported Yet',
+                    description: 'Social AI is not completed yet so this button doesn\'t work',
+                    variant: 'destructive'
+                }) }}>Social AI</Button>
                 <ColorPicker />
             </CollapsibleContent>
         </Collapsible>

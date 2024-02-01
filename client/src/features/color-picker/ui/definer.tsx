@@ -11,16 +11,12 @@ import { useToast } from "@/shared/ui/use-toast"
 // Libs
 import hexRgb from 'hex-rgb'
 
-// Interfaces & Types
-export type ColorType = 'hex' | 'rgb'
-
 export default function Definer() {
 
     // Hooks
     const { toast } = useToast();
 
     // States
-    const [type, setType] = useState('hex') // TODO: Create option to choose wether to insert HEX or RGBA type of color
     const [value, setValue] = useState('')
 
     // Utils

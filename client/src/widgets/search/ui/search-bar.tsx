@@ -15,7 +15,7 @@ import {
 } from "@/shared/ui/hover-card"
 
 // Insides
-import { bingFormat, googleFormat, yandexFormat, duckduckgoFormat } from './formtatter';
+import { bingFormat, googleFormat, yandexFormat, duckduckgoFormat } from '../utils/formtatter';
 import { useSearchContext } from './provider'
 
 export default function SearchBar() {
@@ -73,6 +73,18 @@ export default function SearchBar() {
 
     }
 
+    // When focused, update focus state
+    const handleFocus = () => {
+        setFocused(true)
+    }
+
+    // When user focuses out, remove listener to perevent their multiplication / conflicts with other keyup listeners
+    const handleFocusOut = () => {
+        setFocused(false)
+        document.removeEventListener('keyup', handleKeyup)
+    }
+
+    // Effects
     useEffect(() => {
 
         // When focused, add event listener to add key interaction to search bar
@@ -88,16 +100,11 @@ export default function SearchBar() {
 
     }, [query, focused])
 
-    // When focused, update focus state
-    const handleFocus = () => {
-        setFocused(true)
-    }
-
-    // When user focuses out, remove listener to perevent their multiplication / conflicts with other keyup listeners
-    const handleFocusOut = () => {
-        setFocused(false)
-        document.removeEventListener('keyup', handleKeyup)
-    }
+    useEffect(() => {
+        if(searchRef.current) {
+            (searchRef.current as HTMLInputElement).focus()
+        }
+    }, [searchRef.current])
 
     return (
         <div className='flex-1 relative'>

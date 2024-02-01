@@ -8,7 +8,6 @@ import { Button } from '@/shared/ui/button'
 // Assets
 import Github from '@/public/icons/Github.svg'
 
-
 export default function TitleContainer() {
 
     return (
