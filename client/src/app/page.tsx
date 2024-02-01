@@ -2,8 +2,7 @@
 import { Header } from "@/widgets/header";
 import { Search } from "@/widgets/search";
 import { Intergrations } from "@/widgets/integrations";
-
-import { Item } from "@/features/item";
+import { Shelves } from "@/widgets/shelves";
 
 export default function Home() {
 	return (
@@ -11,7 +10,7 @@ export default function Home() {
 			<Header />
 			<Search />
 			<Intergrations />
-			<Item title="Discord" link="https://discord.gg"/>
+			<Shelves className="mt-8 text-xl" />
 		</main>
 	)
 }

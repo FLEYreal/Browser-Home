@@ -15,31 +15,29 @@ export default function TitleContainer() {
         <div className='flex items-center'>
 
             {/* Github logo near project title */}
-            <Image alt='Github' src={Github} width={43} height={43} />
+            <Link target='_blank' href="https://github.com/FLEYreal/Browser-Home">
+                <Image alt='Github' src={Github} width={46} height={46} />
+            </Link>
 
             {/* Content */}
-            <div className='ml-2 text-gray-500'>
+            <div className='ml-3 text-gray-500'>
 
                 {/* Title of the project */}
-                <div className='font-medium text-lg leading-tight text-white'>
-                    Browser Home
-                </div>
+                <Link target='_blank' href="https://github.com/FLEYreal/Browser-Home">
+                    <Button variant="link" className='p-0 m-0 h-auto font-medium text-[20px] leading-tight'>
+                        Browser Home
+                    </Button>
+                </Link>
 
                 {/* Description of the project (Who made it) */}
                 <div>
 
-                    by{' '}
-                    <Button variant="link" className='p-0 m-0 px-1 h-auto'>
-                        <Link target='_blank' href="https://github.com/FLEYreal">
+                    <span className='text-sm'>by</span>
+                    <Link target='_blank' href="https://github.com/FLEYreal">
+                        <Button variant="link" className='p-0 m-0 px-1 h-auto text-sm'>
                             FLEYreal
-                        </Link>
-                    </Button> &{' '}
-
-                    <Button variant="link" className='p-0 m-0 px-1 h-auto'>
-                        <Link target='_blank' href="https://github.com/avariceJS">
-                            AvariceJS
-                        </Link>
-                    </Button>
+                        </Button>
+                    </Link>
 
                 </div>
 

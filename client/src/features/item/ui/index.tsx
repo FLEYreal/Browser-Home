@@ -1,6 +1,7 @@
 'use client'
 
 // Basics
+import { HTMLAttributes } from "react";
 import Link from "next/link";
 
 // Shadcn / Tailwind
@@ -19,18 +20,31 @@ export interface ItemProps {
     link: string;
     description?: string;
     icon?: string; // TODO: Define proper type for icon
+    itemAttrs?: HTMLAttributes<HTMLDivElement>;
+    cardAttrs?: HTMLAttributes<HTMLDivElement>;
 }
 
-export default function Item({ title = "Item Name", description, icon, link }: ItemProps) {
+export default function Item({
+    title = "Item Name",
+    description,
+    icon,
+    link,
+    itemAttrs,
+    cardAttrs
+}: ItemProps) {
 
     return (
         <HoverCard>
 
             <HoverCardTrigger asChild>
-                <div className="
-                    w-[95px] cursor-pointer
-                    flex flex-col items-center justify-center gap-2
-                ">
+                <div
+                    {...itemAttrs}
+                    className={`
+                        w-[95px] cursor-pointer
+                        flex flex-col items-center justify-center gap-2
+                        ${itemAttrs?.className}
+                    `}
+                >
 
                     <div className="
                         w-[95px] h-[95px] overflow-hidden
@@ -48,7 +62,10 @@ export default function Item({ title = "Item Name", description, icon, link }: I
             </HoverCardTrigger>
 
             <HoverCardContent className="mt-2 w-[300px]">
-                <div className="flex flex-row items-center gap-3">
+                <div 
+                    {...cardAttrs}
+                    className={`flex flex-row items-center gap-3 ${cardAttrs?.className}`}
+                >
                     <Avatar>
                         <AvatarImage src={icon} />
                         <AvatarFallback>{title.charAt(0).toUpperCase()}</AvatarFallback>
