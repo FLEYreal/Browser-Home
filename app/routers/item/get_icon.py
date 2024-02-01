@@ -1,16 +1,13 @@
-# Built-In Imports
-from typing import Optional
-
 # FastAPI Imports
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse, Response
 
 # SQLAlchemy Imports
 from sqlalchemy.orm import Session
-from sqlalchemy import and_
 
 # Utils
 from ...utils.responses import responses, generate_response
+from ...utils.icon import media_types
 
 # Modules
 from app.db.db import get_db
@@ -72,16 +69,6 @@ async def item_icon_get(
             icon = byte_icon.decode("utf-8")  # Decode the icon from bytes to valid svg
         else:
             icon = item.icon  # Raster Icon
-
-        # Formats to media types
-        media_types = {
-            "png": "image/png",
-            "jpg": "image/jpeg",
-            "jpeg": "image/jpeg",
-            "gif": "image/gif",
-            "svg": "image/svg+xml",
-            "ico": "image/x-icon"
-        }
 
         # Return found icon
         return Response(

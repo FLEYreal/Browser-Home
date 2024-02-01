@@ -19,6 +19,7 @@ from app.db.model.Items import Items
 
 # Utils
 from ...utils.responses import responses, generate_response
+from ...utils.icon import mime_types
 
 # Router
 router = APIRouter()
@@ -56,37 +57,65 @@ async def item_post(body: List[ItemPostBody], db: Session = Depends(get_db)):
         # Convert body to list of dictionaries
         for item in body:
 
-            # Insert data into list of items
-            items.append({
+            item_dict = {
                 "shelf_fk": item.shelf_fk,
                 "link": item.link,
                 "title": item.title,
                 "description": item.description
-            })
+            }
 
             try:
-                icons = favicon.get(item.link)
+                favicons = favicon.get(item.link)
 
                 # If icons are found
-                if icons and len(icons) > 0:
+                if favicons and len(favicons) > 0:
                     icon_url = ""  # Icon URL
 
                     # Try to find icon with ".ico" format
-                    ico = list(filter(lambda x: x.format == 'ico', icons))
+                    ico = list(filter(lambda x: x.format == 'ico', favicons))
 
                     if ico:  # If icon with ".ico" format is found
                         icon_url = ico[0].url
                     else:  # If not, get the first found icon
                         icon_url = icons[0]
 
-                    icon = requests.get(icon_url)
-                    print(icon)
+                    # Get Icon & Append to icons list
+                    res = requests.get(icon_url)
+
+                    # If icon successfully found
+                    if res.status_code == 200:
+
+                        # Get its mime type
+                        content_type = res.headers.get('Content-Type')
+                        is_allowed = False
+
+                        # Check if mime type is allowed
+                        if content_type in mime_types:
+                            is_allowed = True
+
+                        # If mime type is allowed, append to icon list
+                        if is_allowed:
+
+                            # Save extension in database
+                            item_dict["icon_ext"] = mime_types[content_type][0]
+
+                            if content_type == "image/svg+xml":  # If vector type
+                                item_dict["icon_svg"] = res.text
+                            else:  # If bitmap type
+                                item_dict["icon"] = res.content
 
             except Exception as e:
                 print("Unable to find Icon for this website: ", e)
 
+            # Insert data into list of items
+            items.append(item_dict)
+
         item_db = Items()  # Get instance of Items table
         result = item_db.create(items=items, db=db)  # Create provided item(s)
+
+        # If request is not successful
+        if not str(result["status"]).startswith("2"):
+            return generate_response(**result)
 
         return generate_response(**result)  # Return Operation Details from database response.
 

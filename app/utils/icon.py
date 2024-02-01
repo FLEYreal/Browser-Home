@@ -12,7 +12,29 @@ from .responses import generate_response
 
 # Variables
 allowed_extensions = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'ico']
-pillow_format = {'png': 'PNG', 'jpg': 'JPEG', 'jpeg': 'JPEG', 'gif': 'GIF', "ico": "ICO"}
+pillow_format = {
+    'png': 'PNG',
+    'jpg': 'JPEG',
+    'jpeg': 'JPEG',
+    'gif': 'GIF',
+    'ico': 'ICO'
+}
+media_types = {
+    "png": "image/png",
+    "jpg": "image/jpeg",
+    "jpeg": "image/jpeg",
+    "gif": "image/gif",
+    "svg": "image/svg+xml",
+    "ico": "image/x-icon"
+}
+
+mime_types = {
+    "image/png": ["png"],
+    "image/jpeg": ["jpg", "jpeg"],
+    "image/gif": ["gif"],
+    "image/svg+xml": ["svg"],
+    "image/x-icon": ["ico"]
+}
 
 
 def validate_format(icon: UploadFile):
