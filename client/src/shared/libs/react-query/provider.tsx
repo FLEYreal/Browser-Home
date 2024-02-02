@@ -2,17 +2,45 @@
 
 // Basics
 import { ReactNode, useState } from "react";
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+import { QueryClientProvider, QueryClient, QueryCache } from '@tanstack/react-query';
+import { AxiosError } from "axios";
+
+// Shadcn / Tailwind
+import { useToast } from "@/shared/ui/use-toast";
+
+// Shared
+import { BackendResponseType } from "@/shared/config/types";
 
 // Provider
 export default function Provider({ children }: { children: ReactNode }) {
 
+    // Hooks
+    const { toast } = useToast();
+
     // Create instance of Query Client
-    const [queryClient] = useState(() => new QueryClient())
+    const [queryClient] = useState(() => new QueryClient({
+        queryCache: new QueryCache({
+
+            // Global on Error callback
+            onError: (error, query) => {
+
+                // Get JSON error body from backend
+                const data = (error as AxiosError<BackendResponseType>).response!.data
+
+                // Show UI notification of an error
+                toast({
+                    title: data.title,
+                    description: `${(query.queryKey[0] as string).toUpperCase()} : ${data.description}`,
+                    variant: 'destructive'
+                })
+
+            }
+        })
+    }))
 
     return (
         <QueryClientProvider client={queryClient}>
-                {children}
+            {children}
         </QueryClientProvider>
     )
 }

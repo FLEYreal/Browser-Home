@@ -4,7 +4,7 @@ export type createItemBody = {
     link: string;
     title: string;
     description?: string;
-}
+}[]
 
 // [POST] "/item/update"
 export type updateItemBody = {
@@ -13,7 +13,7 @@ export type updateItemBody = {
     link?: number;
     title?: string;
     description?: string;
-}
+}[]
 
 // [DELETE] "/item/update"
 export type deleteItemBody = {

@@ -4,38 +4,31 @@
 import { HTMLAttributes } from "react";
 
 // Features
-import { CreatesShelfWidget } from "@/features/new-shelf";
+import { CreateShelfWidget } from "@/features/new-shelf";
 
-// API
+// Shared
 import { useGetItems } from "@/shared/api/item-api";
 
 // Insides
 import Shelf from './shelf';
+import { BtnFallback } from "@/shared/ui/error-fallback";
+import { LoadingFallback } from "@/shared/ui/loading-fallback";
 
 // Interfaces
 export interface ShelvesProps extends HTMLAttributes<HTMLDivElement> { }
 
 export default function Shelves({ ...props }: ShelvesProps) {
 
-    // TODO: Delete this on experiment's completion
-    const { isError, data, isLoading, error } = useGetItems();
+    const { isError, isLoading, refetch } = useGetItems();
 
-    console.log(data)
+    // When shelves are loading
+    if (isLoading) return <LoadingFallback />
 
-    if (isLoading) {
-        return (
-            <div className="text-xl">LOADING</div>
-        )
-    }
+    // When error occured
+    else if (isError) return <BtnFallback refetch={refetch} />
 
-    else if (isError) {
-        console.log((error as Error).message)
-        return (
-            <div className="text-xl">ERROR</div>
-        )
-    }
-
-    return (
+    // If everything succeed
+    else return (
         <>
             <div {...props}>
                 <Shelf data={{
@@ -62,7 +55,7 @@ export default function Shelves({ ...props }: ShelvesProps) {
                     ]
                 }} />
             </div>
-            <CreatesShelfWidget className="mt-20" />
+            <CreateShelfWidget className="mt-20" />
         </>
     )
 }

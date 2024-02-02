@@ -3,7 +3,7 @@ export type createShelfBody = {
     title: string;
     description: string;
     color?: string;
-}
+}[]
 
 // [POST] "/shelf/update"
 export type updateShelfBody = {
@@ -11,7 +11,7 @@ export type updateShelfBody = {
     title?: string;
     description?: string;
     color?: string;
-}
+}[]
 
 // [DELETE] "/shelf/update"
 export type deleteShelfBody = {
