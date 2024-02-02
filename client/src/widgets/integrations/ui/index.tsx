@@ -5,6 +5,7 @@ import { useState } from "react";
 
 // Features
 import { ColorPicker } from "@/features/color-picker";
+import { Converter } from "@/features/converter";
 
 // Shadcn / Tailwind
 import { ChevronUp } from 'lucide-react';
@@ -33,12 +34,18 @@ export default function Intefrations() {
                 <p>Integrations</p>
             </CollapsibleTrigger>
             <CollapsibleContent className="text-lg flex flex-row gap-3">
-                <Button onClick={() => { toast({
-                    title: 'Not Supported Yet',
-                    description: 'Social AI is not completed yet so this button doesn\'t work',
-                    variant: 'destructive'
-                }) }}>Social AI</Button>
+
+                <Button onClick={() => {
+                    toast({
+                        title: 'Not Supported Yet',
+                        description: 'Social AI is not completed yet so this button doesn\'t work',
+                        variant: 'destructive'
+                    })
+                }}>Social AI</Button>
+
                 <ColorPicker />
+                <Converter />
+
             </CollapsibleContent>
         </Collapsible>
     )
