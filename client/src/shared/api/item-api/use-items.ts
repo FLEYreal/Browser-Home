@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-query";
 
 // Shared
-import { BACKEND_URL } from "@/shared/config/vars";
+import { BACKEND_URL, QUERY_KEYS } from "@/shared/config/vars";
 import { customQuery, customMutation, BackendResponseType } from "@/shared/config/types";
 import { getItemQuery } from "./types/query";
 import { createItemBody } from "./types/body";
@@ -27,7 +27,7 @@ export const useGetItems = (
     return useQuery({
 
         // Key of "useGetItems" hook
-        queryKey: ['get-items'],
+        queryKey: ['get-items', ...QUERY_KEYS],
 
         // Gets response from backend in a promise to process
         queryFn: () => axios.get(`${BACKEND_URL}/item/`, {
@@ -53,7 +53,7 @@ export const useCreateItems = (
 {
 
     return useMutation({
-        mutationKey: ['create-items'],
+        mutationKey: ['create-items', ...QUERY_KEYS],
         mutationFn: async (body: createItemBody) => axios.post(`${BACKEND_URL}/item/`, body),
         ...props
     })

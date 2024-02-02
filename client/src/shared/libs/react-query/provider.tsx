@@ -10,6 +10,7 @@ import { useToast } from "@/shared/ui/use-toast";
 
 // Shared
 import { BackendResponseType } from "@/shared/config/types";
+import { QUERY_KEYS } from "@/shared/config/vars";
 
 // Provider
 export default function Provider({ children }: { children: ReactNode }) {
@@ -24,15 +25,31 @@ export default function Provider({ children }: { children: ReactNode }) {
             // Global on Error callback
             onError: (error, query) => {
 
-                // Get JSON error body from backend
-                const data = (error as AxiosError<BackendResponseType>).response!.data
+                // Error handling for own backend enpdoints
+                if (query.queryKey.find(i => i === QUERY_KEYS)) {
 
-                // Show UI notification of an error
-                toast({
-                    title: data.title,
-                    description: `${(query.queryKey[0] as string).toUpperCase()} : ${data.description}`,
-                    variant: 'destructive'
-                })
+                    // Get JSON error body from backend
+                    const data = (error as AxiosError<BackendResponseType>).response!.data
+
+                    // Show UI notification of an error
+                    toast({
+                        title: data.title,
+                        description: `[${(query.queryKey[0] as string).toUpperCase()}] ${data.description}`,
+                        variant: 'destructive'
+                    })
+
+                }
+
+                // If other API used, like binance one for currencies
+                else {
+                    // Show UI notification of an error
+                    toast({
+                        title: 'Network Error Occured!',
+                        description: `[${(query.queryKey[0] as string).toUpperCase()}] ${error.message}`,
+                        variant: 'destructive'
+                    })
+                }
+
 
             }
         })
