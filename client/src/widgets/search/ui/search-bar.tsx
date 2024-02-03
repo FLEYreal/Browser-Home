@@ -101,7 +101,7 @@ export default function SearchBar() {
     }, [query, focused])
 
     useEffect(() => {
-        if(searchRef.current) {
+        if (searchRef.current) {
             (searchRef.current as HTMLInputElement).focus()
         }
     }, [searchRef.current])

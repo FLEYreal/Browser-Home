@@ -7,7 +7,9 @@ import {
     useMutation,
     UseQueryResult,
     UseMutationResult,
-    MutationKey
+    MutationKey,
+    useQueryClient,
+    QueryKey
 } from "@tanstack/react-query";
 
 // Shared
@@ -20,6 +22,7 @@ import { createItemBody } from "./types/body";
 export interface getItemsProps extends customQuery {
     query?: getItemQuery
 }
+export const getItemsKey: QueryKey = ['get-items']
 export const useGetItems = (
     { query, ...props }: getItemsProps = {} // Props types
     ): UseQueryResult<AxiosResponse<BackendResponseType, any>, unknown> => // Return types
@@ -27,7 +30,7 @@ export const useGetItems = (
     return useQuery({
 
         // Key of "useGetItems" hook
-        queryKey: ['get-items', ...QUERY_KEYS],
+        queryKey: [...getItemsKey, ...QUERY_KEYS],
 
         // Gets response from backend in a promise to process
         queryFn: () => axios.get(`${BACKEND_URL}/item/`, {
@@ -52,9 +55,18 @@ export const useCreateItems = (
     : UseMutationResult<AxiosResponse<BackendResponseType, any>, unknown, createItemBody, MutationKey> => // Return types
 {
 
+    // Get RQ context
+    const queryClient = useQueryClient()
+
     return useMutation({
         mutationKey: ['create-items', ...QUERY_KEYS],
         mutationFn: async (body: createItemBody) => axios.post(`${BACKEND_URL}/item/`, body),
+        onSuccess: () => {
+
+            // Expire old item list
+            queryClient.invalidateQueries({ queryKey: getItemsKey })
+
+        },
         ...props
     })
 

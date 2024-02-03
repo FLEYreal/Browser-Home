@@ -30,13 +30,10 @@ export type selectedState = {
 export default function ConverterContent() {
 
     // Get Currency rates
-    const { data: rates, isLoading } = useRates<{ [key in currencyType['id']]: number }>({ key: ['currency-rates'] });
+    const { data: rates, isLoading } = useRates({ key: ['currency-rates'] });
 
     // Currently selected currencies to convert
-    const [selected, setSelected] = useState<selectedState>({
-        from: "usd",
-        to: "rub"
-    });
+    const [selected, setSelected] = useState({ from: "usd", to: "rub" });
 
     // Values of the converted currnecies
     const [inputs, setInputs] = useState({
@@ -77,10 +74,12 @@ export default function ConverterContent() {
                 // Define new values, calculate new ratios for "newTo"
                 const newFrom = String(value)
                 const newTo =
-                    (value === '' || Number(value) < 0.01) && 
-                    (prev.from === '' || Number(prev.from) < 0.01) ? '' :
+                    (value === '' || Number(value) < 0.01) &&
+                        (prev.from === '' || Number(prev.from) < 0.01) ? '' :
                         String((
-                            (Number(value) / rates[selected.from]) * rates[selected.to]
+                            (Number(value) /
+                                (rates as { [key in currencyType['id']]: number })[selected.from as currencyType['id']]) *
+                                (rates as { [key in currencyType['id']]: number })[selected.to as currencyType['id']]
                         ).toFixed(2))
 
                 return {
@@ -95,10 +94,12 @@ export default function ConverterContent() {
 
                 // Define new values, calculate new ratios for "newFrom"
                 const newFrom =
-                    (prev.to === '' || Number(prev.to) < 0.01) && 
-                    (value === '' || Number(value) < 0.01) ? '' :
+                    (prev.to === '' || Number(prev.to) < 0.01) &&
+                        (value === '' || Number(value) < 0.01) ? '' :
                         String((
-                            (Number(value) / rates[selected.to]) * rates[selected.from]
+                            (Number(value) /
+                                (rates as { [key in currencyType['id']]: number })[selected.from as currencyType['id']]) *
+                                (rates as { [key in currencyType['id']]: number })[selected.to as currencyType['id']]
                         ).toFixed(2))
                 const newTo = String(value)
 

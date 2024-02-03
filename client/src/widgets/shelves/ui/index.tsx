@@ -22,10 +22,11 @@ export default function Shelves({ ...props }: ShelvesProps) {
     const { isError, isLoading, refetch } = useGetItems();
 
     // When shelves are loading
-    if (isLoading) return <LoadingFallback />
+    if (isLoading) return <LoadingFallback className="mt-8" />
+
 
     // When error occured
-    else if (isError) return <BtnFallback refetch={refetch} />
+    else if (isError) return <BtnFallback className="mt-8" refetch={refetch} />
 
     // If everything succeed
     else return (

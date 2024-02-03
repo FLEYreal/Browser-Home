@@ -52,22 +52,21 @@ export interface ratesProps extends customQuery {
 
 export type responseType = { date: string; usd: object }
 export const ratesApiUrl = "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd.json"
-export const getRates = () => axios.get(ratesApiUrl)
-export const useRates = <TReturn = unknown>({
+export const getRates = () => axios.get<responseType>(ratesApiUrl)
+export const useRates = ({
     key, ...props
 }: ratesProps) => {
+    
+    return useQuery({
 
-
-    return useQuery<AxiosResponse<responseType, any>, unknown, TReturn>({
         queryKey: key,
         queryFn: getRates,
         staleTime: Infinity,
-        select: (d) => {
+        select: (data: unknown) => {
             // Get body response
-            return (d as AxiosResponse<responseType, any>).data.usd
+            return (data as AxiosResponse<responseType, any>).data.usd;
         },
+
         ...props
-    })
-
+    });
 }
-

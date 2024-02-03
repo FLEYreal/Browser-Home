@@ -24,7 +24,7 @@ export default function SearchSettings() {
 
     return (
         <Drawer>
-            
+
             <HoverCard>
                 <HoverCardTrigger asChild>
                     <DrawerTrigger asChild>

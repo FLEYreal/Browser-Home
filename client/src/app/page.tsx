@@ -10,7 +10,7 @@ export default function Home() {
 			<Header />
 			<Search />
 			<Intergrations />
-			<Shelves className="mt-8 text-xl" />
+			{/* <Shelves className="mt-8 text-xl" /> */}
 		</main>
 	)
 }
