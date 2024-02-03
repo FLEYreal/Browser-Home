@@ -1,49 +1,58 @@
 // Supported Currencies
 export const currencies = [
     {
-        id: "USD",
+        id: "usd",
+        type: 'fiat',
         label: "🇺🇸",
-        className: "mr-[6px]"
+        className: "mr-[10px]"
     },
     {
-        id: "EUR",
+        id: "eur",
+        type: 'fiat',
         label: "🇪🇺",
-        className: "mr-[6px]"
+        className: "mr-[10px]"
     },
     {
-        id: "RUB",
+        id: "rub",
+        type: 'fiat',
         label: "🇷🇺",
-        className: "mr-[6px]"
+        className: "mr-[10px]"
     },
     {
-        id: "BUN",
+        id: "byn",
+        type: 'fiat',
         label: "🇧🇾",
-        className: "mr-[6px]"
+        className: "mr-[10px]"
     },
     {
-        id: "UAH",
+        id: "uah",
+        type: 'fiat',
         label: "🇺🇦",
-        className: "mr-[6px]"
+        className: "mr-[10px]"
     },
     {
-        id: "TRY",
+        id: "try",
+        type: 'fiat',
         label: "🇹🇷",
-        className: "mr-[6px]"
+        className: "mr-[10px]"
     },
     {
-        id: "BTC",
+        id: "btc",
+        type: 'crypto',
         label: "₿",
-        className: "text-yellow-500 mr-[12px]"
+        className: "text-yellow-500 mr-[16px]"
     },
     {
-        id: "ETH",
+        id: "eth",
+        type: 'crypto',
         label: "Ξ",
-        className: "text-purple-500 mr-[12px]"
+        className: "text-purple-500 mr-[16px]"
     },
 ] as const;
 
 export type currencyType = {
     id: typeof currencies[number]['id'],
+    type: typeof currencies[number]['type'],
     label: typeof currencies[number]['label'],
     className: typeof currencies[number]['className']
 }

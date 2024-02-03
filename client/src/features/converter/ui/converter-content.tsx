@@ -16,11 +16,11 @@ import {
 } from "@/shared/ui/select";
 
 // Shared
-import { useRates } from '@/shared/api/currency-api/use-currency';
+import { useRates } from '@/shared/api/currency-api';
+import { LoadIndicator } from '@/shared/ui/load-indicator';
 
 // Insides
 import { currencyType, currencies } from '../config/supported-currencies';
-import { LoadIndicator } from '@/shared/ui/load-indicator';
 
 export type selectedState = {
     from: currencyType['id'];
@@ -29,21 +29,27 @@ export type selectedState = {
 
 export default function ConverterContent() {
 
-    // Get Currency rates from binance
-    const { data: rates, isLoading } = useRates({ key: ['currency-rates'] });
+    // Get Currency rates
+    const { data: rates, isLoading } = useRates<{ [key in currencyType['id']]: number }>({ key: ['currency-rates'] });
 
     // Currently selected currencies to convert
     const [selected, setSelected] = useState<selectedState>({
-        from: "RUB",
-        to: "USD"
+        from: "usd",
+        to: "rub"
     });
-    const [price, setPrice] = useState<string>('0');
+
+    // Values of the converted currnecies
+    const [inputs, setInputs] = useState({
+        from: '',
+        to: ''
+    });
 
     // Handlers
     const onValueChange = (
         value: currencyType['id'], // New value
         type: keyof selectedState // Type of selected state
     ) => {
+
         if (!rates) return; // It can only work in the case of rates being fully loaded
 
         // Update the state
@@ -53,22 +59,55 @@ export default function ConverterContent() {
         }));
     };
 
-    useEffect(() => {
-        if (rates) {
-            const { from, to } = selected;
-            const rate = rates.find(r => {
-                return r.from === from && r.to === to;
-            });
 
-            if (rate && rate.price) setPrice(rate.price);
+    const onInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+        direction: keyof selectedState // Direction of the input: from | to
+    ) => {
+
+        // New value
+        const value = event.target.value;
+
+        if (isNaN(Number(value)) || !rates) return;
+
+        // Update the currencies' ratios
+        if (direction === 'from') {
+            setInputs({
+                from: String(value),
+                to: String((
+                        (Number(value) / rates[selected.from]) * rates[selected.to]
+                    ).toFixed(2)),
+            });
+        } 
+        
+        else if (direction === 'to') {
+            setInputs({
+                to: String(value),
+                from: String((
+                        (Number(value) / rates[selected.to]) * rates[selected.from]
+                    ).toFixed(2)),
+            });
         }
-    }, [selected.from, selected.to, rates]);
+    
+    };
+
+
+    useEffect(() => {
+
+        // Clean up inputs on currencies change
+        setInputs({ from: '', to: '' });
+
+    }, [selected]);
+
+
 
     return (
         <>
 
+            {/* Title */}
             <h2 className='mb-2 text-lg flex flex-row items-center gap-2'>
                 {
+                    // Show loading when query is loading and title when it's loaded
                     isLoading ?
                         <>
                             <LoadIndicator />
@@ -77,8 +116,10 @@ export default function ConverterContent() {
                         <>Currency Converter</>
                 }
             </h2>
+
+            {/* Container for FROM input */}
             <div className='flex flex-row gap-2'>
-                <Input className='flex-8' placeholder="From" />
+                <Input value={inputs.from} onChange={(event) => onInputChange(event, 'from')} className='flex-8' placeholder="From" />
                 <Select
                     defaultValue={selected.from}
                     onValueChange={(value) => onValueChange(value as currencyType['id'], 'from')}
@@ -93,7 +134,7 @@ export default function ConverterContent() {
                                 return (
                                     <SelectItem value={currency.id} key={key}>
                                         <span className={currency.className}>{currency.label}</span>
-                                        {currency.id}
+                                        {currency.id.toUpperCase()}
                                     </SelectItem>
                                 )
                             })
@@ -102,8 +143,10 @@ export default function ConverterContent() {
                 </Select>
 
             </div>
+
+            {/* Container for TO input */}
             <div className='flex flex-row gap-2'>
-                <Input className='flex-8' placeholder="To" />
+                <Input value={inputs.to} onChange={(event) => onInputChange(event, 'to')} className='flex-8' placeholder="To" />
                 <Select
                     defaultValue={selected.to}
                     onValueChange={(value) => onValueChange(value as currencyType['id'], 'to')}
@@ -118,7 +161,7 @@ export default function ConverterContent() {
                                 return (
                                     <SelectItem value={currency.id} key={key}>
                                         <span className={currency.className}>{currency.label}</span>
-                                        {currency.id}
+                                        {currency.id.toUpperCase()}
                                     </SelectItem>
                                 )
                             })

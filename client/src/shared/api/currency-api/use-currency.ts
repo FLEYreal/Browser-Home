@@ -2,7 +2,7 @@
 
 // Basics
 import { QueryKey, useQuery } from '@tanstack/react-query';
-import axios, { Axios, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 // Shared
 import { customQuery } from '@/shared/config/types';
@@ -43,40 +43,28 @@ export const useBTC = () => useQuery({
     }
 })
 
-// Binance API exchange rates for currency exchanger
+
+// API exchange rates
 export interface ratesProps extends customQuery {
     key: QueryKey;
 }
 
-export const binanceApiUrl = "https://api.binance.com/api/v3/ticker/price"
-export const getBinanceRates = () => axios.get(binanceApiUrl)
-export const useRates = ({
+
+export type responseType = { date: string; usd: object }
+export const ratesApiUrl = "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd.json"
+export const getRates = () => axios.get(ratesApiUrl)
+export const useRates = <TReturn = unknown>({
     key, ...props
 }: ratesProps) => {
 
-    type responseType = { symbol: string, price: string }[]
-    type returnType = { from: string, to: string, price: string }[]
 
-    return useQuery<AxiosResponse<responseType, any>, unknown, returnType>({
+    return useQuery<AxiosResponse<responseType, any>, unknown, TReturn>({
         queryKey: key,
-        queryFn: getBinanceRates,
+        queryFn: getRates,
         staleTime: Infinity,
         select: (d) => {
-
             // Get body response
-            const data = (d as AxiosResponse<responseType, any>).data
-            
-            // Transform array to properly work with
-            const transformed: returnType = data.map(i => {
-                return {
-                    from: i.symbol.slice(0, 3),
-                    to: i.symbol.slice(-3),
-                    price: i.price
-                }
-            })
-
-            // Return transformed array
-            return transformed;
+            return (d as AxiosResponse<responseType, any>).data.usd
         },
         ...props
     })
