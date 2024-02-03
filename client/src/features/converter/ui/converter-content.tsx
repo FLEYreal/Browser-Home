@@ -72,23 +72,43 @@ export default function ConverterContent() {
 
         // Update the currencies' ratios
         if (direction === 'from') {
-            setInputs({
-                from: String(value),
-                to: String((
-                        (Number(value) / rates[selected.from]) * rates[selected.to]
-                    ).toFixed(2)),
-            });
-        } 
-        
-        else if (direction === 'to') {
-            setInputs({
-                to: String(value),
-                from: String((
-                        (Number(value) / rates[selected.to]) * rates[selected.from]
-                    ).toFixed(2)),
+            setInputs(prev => {
+
+                // Define new values, calculate new ratios for "newTo"
+                const newFrom = String(value)
+                const newTo =
+                    (value === '' || Number(value) < 0.01) && 
+                    (prev.from === '' || Number(prev.from) < 0.01) ? '' :
+                        String((
+                            (Number(value) / rates[selected.from]) * rates[selected.to]
+                        ).toFixed(2))
+
+                return {
+                    from: newFrom,
+                    to: newTo,
+                }
             });
         }
-    
+
+        else if (direction === 'to') {
+            setInputs(prev => {
+
+                // Define new values, calculate new ratios for "newFrom"
+                const newFrom =
+                    (prev.to === '' || Number(prev.to) < 0.01) && 
+                    (value === '' || Number(value) < 0.01) ? '' :
+                        String((
+                            (Number(value) / rates[selected.to]) * rates[selected.from]
+                        ).toFixed(2))
+                const newTo = String(value)
+
+                return {
+                    from: newFrom,
+                    to: newTo
+                }
+            });
+        }
+
     };
 
 

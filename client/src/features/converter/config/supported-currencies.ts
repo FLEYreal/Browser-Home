@@ -37,6 +37,24 @@ export const currencies = [
         className: "mr-[10px]"
     },
     {
+        id: 'cny',
+        type: 'fiat',
+        label: "🇨🇳",
+        className: "mr-[10px]"
+    },
+    {
+        id: 'jpy',
+        type: 'fiat',
+        label: "🇯🇵",
+        className: "mr-[10px]"
+    },
+    {
+        id: 'pln',
+        type: 'fiat',
+        label: '🇵🇱',
+        className: "mr-[10px]"
+    },
+    {
         id: "btc",
         type: 'crypto',
         label: "₿",
@@ -47,6 +65,24 @@ export const currencies = [
         type: 'crypto',
         label: "Ξ",
         className: "text-purple-500 mr-[16px]"
+    },
+    {
+        id: "bnb",
+        type: 'crypto',
+        label: "₿",
+        className: "text-orange-600 mr-[16px]"
+    },
+    {
+        id: "ltc",
+        type: 'crypto',
+        label: "Ł",
+        className: "text-blue-400 mr-[16px]"
+    },
+    {
+        id: "usdt",
+        type: 'crypto',
+        label: "$",
+        className: "text-green-400 mr-[16px]"
     },
 ] as const;
 
