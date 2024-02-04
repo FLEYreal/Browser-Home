@@ -1,12 +1,12 @@
 // [POST] "/shelf"
-export type createShelfBody = {
+export type createShelvesBody = {
     title: string;
     description: string;
     color?: string;
 }[]
 
 // [POST] "/shelf/update"
-export type updateShelfBody = {
+export type updateShelvesBody = {
     shelf_id: number;
     title?: string;
     description?: string;
@@ -14,6 +14,6 @@ export type updateShelfBody = {
 }[]
 
 // [DELETE] "/shelf/update"
-export type deleteShelfBody = {
+export type deleteShelvesBody = {
     shelf_ids?: number[];
 }

@@ -248,9 +248,9 @@ class Items(Base):
                 if not items:
                     return generate_response(
                         is_content=True,
-                        status=422,
-                        title="HTTP 422: Unprocessable Entity!",
-                        description="Well, such shelf whether doesn't exist or just empty."
+                        status=200,
+                        title="HTTP 200: Success but no items found!",
+                        description="Successfully deleted nothing!"
                     )
 
                 # Iterate over each item found in the shelf.

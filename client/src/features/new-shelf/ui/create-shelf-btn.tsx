@@ -11,7 +11,6 @@ import ShelfBtnHoverCard from "./shelf-btn-hover-card";
 
 export default function CreateShelfBtn({ ...props }: CreateShelfWidgetProps) {
 
-
     return (
         <ShelfBtnHoverCard>
             <Button variant="secondary" {...props}>New Shelf</Button>

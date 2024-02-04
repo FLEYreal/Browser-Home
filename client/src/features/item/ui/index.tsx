@@ -23,7 +23,7 @@ export interface ItemProps {
     link: string;
     description?: string;
     color?: string;
-    icon?: string; // TODO: Define proper type for icon
+    icon?: string;
     itemAttrs?: HTMLAttributes<HTMLDivElement>;
     cardAttrs?: HTMLAttributes<HTMLDivElement>;
 }

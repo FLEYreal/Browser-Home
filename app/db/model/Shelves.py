@@ -238,7 +238,10 @@ class Shelves(Base):
                 # If request is not successful
                 if not str(result["status"]).startswith("2"):
                     db.rollback()
-                    return generate_response(**result)
+                    return generate_response(
+                        is_content=True,
+                        **result
+                    )
 
                 # Delete the item from the database table
                 db.delete(shelf)

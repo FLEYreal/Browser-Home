@@ -1,7 +1,15 @@
 // Types
-export type { getShelfQuery } from './types/query';
+export type { getShelvesQuery } from './types/query';
 export type {
-    createShelfBody,
-    updateShelfBody,
-    deleteShelfBody
+    createShelvesBody,
+    updateShelvesBody,
+    deleteShelvesBody
 } from './types/body';
+
+// Hooks
+export {
+    useGetShelves,
+    useCreateShelves,
+    useUpdateShelves,
+    useDeleteShelves
+} from './use-shelf'

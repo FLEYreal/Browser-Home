@@ -26,7 +26,7 @@ export const useGetIcon = ({ query, ...props }: getIconProps = {}): UseQueryResu
 
         queryFn: async () => {
 
-            const response = await axios.get(`${BACKEND_URL}/item/icon`, { 
+            const response = await axios.get(`${BACKEND_URL}/item/icon`, {
                 params: query,
                 responseType: 'arraybuffer'
             });

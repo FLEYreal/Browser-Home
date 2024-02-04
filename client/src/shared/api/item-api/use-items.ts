@@ -26,8 +26,8 @@ export interface getItemsProps extends customQuery {
 }
 export const getItemsKey: QueryKey = ['get-items']
 export const useGetItems = (
-    { query, ...props }: getItemsProps = {} // Props types
-): UseQueryResult<AxiosResponse<BackendResponseType, any>, unknown> => // Return types
+    { query, ...props }: getItemsProps = {}) // Props types
+    : UseQueryResult<AxiosResponse<BackendResponseType, any>, unknown> => // Return types
 {
     return useQuery({
 
@@ -39,9 +39,9 @@ export const useGetItems = (
             params: query
         }),
 
-        // After queryFn worked out, we get data and we select the JSON body backend sent us
-        // interface "BackendResponseType" contains type of backend's body response
-        select: (data: unknown) => {
+        // 1. After queryFn worked out, we get data and select the JSON body that backend sent
+        // 2. Interface "BackendResponseType" contains type of backend's body response
+        select: (data) => {
             return (data as AxiosResponse<BackendResponseType, any>).data;
         },
 
@@ -66,7 +66,7 @@ export const useCreateItems = (
         // Unique keys for this query + keys to define backend query hook
         mutationKey: [...createItemsKey, ...QUERY_KEYS],
 
-        mutationFn: async (body: createItemBody) => axios.post(`${BACKEND_URL}/item/`, body),
+        mutationFn: (body: createItemBody) => axios.post(`${BACKEND_URL}/item/`, body),
 
         // Invalidate & Refetch items once list's updated (Created items)
         onSuccess: () => {
@@ -94,7 +94,7 @@ export const useUpdateItems = (
         // Unique keys for this query + keys to define backend query hook
         mutationKey: [...updateItemsKey, ...QUERY_KEYS],
 
-        mutationFn: async (body: updateItemBody) => axios.post(`${BACKEND_URL}/item/update`, body),
+        mutationFn: (body: updateItemBody) => axios.post(`${BACKEND_URL}/item/update`, body),
 
         // Invalidate & Refetch items once list's updated
         onSuccess: () => {
@@ -123,7 +123,7 @@ export const useDeleteItems = (
         // Unique keys for this query + keys to define backend query hook
         mutationKey: [...deleteItemsKey, ...QUERY_KEYS],
 
-        mutationFn: async (body: deleteItemBody) => axios.post(`${BACKEND_URL}/item/delete`, body),
+        mutationFn: (body: deleteItemBody) => axios.post(`${BACKEND_URL}/item/delete`, body),
 
         // Invalidate & Refetch items once list's updated (Deleted items)
         onSuccess: () => {
