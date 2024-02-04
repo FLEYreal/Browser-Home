@@ -28,7 +28,7 @@ export interface getShelvesProps extends customQuery {
 export const getShelvesKey: QueryKey = ['get-shelves']
 export const useGetShelves = (
     { query, ...props }: getShelvesProps = {})
-    : UseQueryResult<AxiosResponse<BackendResponseType, any>, unknown> => {
+    : UseQueryResult<BackendResponseType, unknown> => {
 
     return useQuery({
 
@@ -47,7 +47,7 @@ export const useGetShelves = (
         },
 
         ...props
-    }) as UseQueryResult<AxiosResponse<BackendResponseType, any>, unknown>;
+    }) as UseQueryResult<BackendResponseType, unknown>;
 
 }
 

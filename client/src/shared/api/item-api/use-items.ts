@@ -27,8 +27,9 @@ export interface getItemsProps extends customQuery {
 export const getItemsKey: QueryKey = ['get-items']
 export const useGetItems = (
     { query, ...props }: getItemsProps = {}) // Props types
-    : UseQueryResult<AxiosResponse<BackendResponseType, any>, unknown> => // Return types
+    : UseQueryResult<BackendResponseType, unknown> => // Return types
 {
+
     return useQuery({
 
         // Unique keys for this query + keys to define backend query hook
@@ -47,7 +48,7 @@ export const useGetItems = (
 
         // Custom hook inherits all useQuery's props and provides them with rest operator
         ...props
-    }) as UseQueryResult<AxiosResponse<BackendResponseType, any>, unknown>;
+    }) as UseQueryResult<BackendResponseType, unknown>;
 }
 
 

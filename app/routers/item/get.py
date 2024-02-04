@@ -33,6 +33,7 @@ class ItemGetParams(BaseModel):  # Queries endpoint accepts
 class ItemGetResponse(TypedDict):  # List of allowed fields from db
     item_id: int
     title: str
+    link: str
     description: Optional[str]
     created_at: datetime
     shelf_fk: int
@@ -82,6 +83,7 @@ async def item_get(
             item_dict: ItemGetResponse = {
                 "item_id": item.item_id,
                 "title": item.title,
+                "link": item.link,
                 "description": item.description,
                 "created_at": item.created_at,
                 "shelf_fk": item.shelf_fk

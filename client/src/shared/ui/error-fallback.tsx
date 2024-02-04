@@ -5,18 +5,34 @@ import { HTMLAttributes } from "react";
 
 // Shadcn / Tailwind
 import { Button } from "@/shared/ui/button";
+import { useToast } from "./use-toast";
+import { BackendResponseType } from "../config/types";
 
 // Display a plain message of unavailability with button to refetch
 export interface BtnFallbackProps extends HTMLAttributes<HTMLDivElement> {
     refetch: () => void;
     item?: string;
+    response?: BackendResponseType;
 }
 export const BtnFallback = ({ 
     refetch, 
-    item = 'items', 
+    item = 'items',
+    response,
     ...props
 }: BtnFallbackProps) => {
 
+    // Toast to display notifications
+    const { toast } = useToast()
+
+    // Show toast if error response is provided
+    if(response) {
+        toast({
+            title: response.title,
+            description: response.description,
+            variant: 'destructive'
+        })
+    }
+    
     return (
         <div
             {...props}

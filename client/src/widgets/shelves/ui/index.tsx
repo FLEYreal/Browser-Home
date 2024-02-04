@@ -2,61 +2,102 @@
 
 // Basics
 import { HTMLAttributes } from "react";
+import { AxiosError } from "axios";
 
 // Features
-import { CreateShelfWidget } from "@/features/new-shelf";
+import { CreateShelfBtn, CreateShelfWidget } from "@/features/new-shelf";
 
 // Shared
+import { BackendResponseType } from "@/shared/config/types";
+import { useGetShelves } from "@/shared/api/shelf-api";
+import { BtnFallback } from "@/shared/ui/error-fallback";
+import { LoadingFallback } from "@/shared/ui/loading-fallback";
 import { useGetItems } from "@/shared/api/item-api";
 
 // Insides
 import Shelf from './shelf';
-import { BtnFallback } from "@/shared/ui/error-fallback";
-import { LoadingFallback } from "@/shared/ui/loading-fallback";
 
 // Interfaces
 export interface ShelvesProps extends HTMLAttributes<HTMLDivElement> { }
 
 export default function Shelves({ ...props }: ShelvesProps) {
 
-    const { isError, isLoading, refetch } = useGetItems();
+    // Get all items
+    const items = useGetItems()
+
+    // When all items are loaded, request to get all shelves
+    const shelves = useGetShelves({ enabled: !!items.data });
 
     // When shelves are loading
-    if (isLoading) return <LoadingFallback className="mt-8" />
-
+    if (shelves.isLoading || items.isLoading) return <LoadingFallback className="mt-8" />
 
     // When error occured
-    else if (isError) return <BtnFallback className="mt-8" refetch={refetch} />
+    else if (shelves.isError || items.isError) return (
+        <BtnFallback
+
+            // Data for toast notification
+            response={
+                (shelves.error as AxiosError<BackendResponseType, any>).response?.data ||
+                (items.error as AxiosError<BackendResponseType, any>).response?.data
+            }
+
+            // To add refetch button to UI
+            refetch={() => {
+                items.refetch();
+                shelves.refetch();
+            }}
+
+            className="mt-8"
+        />
+    )
 
     // If everything succeed
-    else return (
+    else if (
+        shelves.data && shelves.data.payload &&
+        items.data && items.data.payload
+    ) return (
         <>
             <div {...props}>
-                <Shelf data={{
-                    title: 'Social Media',
-                    description: 'This is a description of the shelf',
-                    color: '#b1ff47',
-                    created_at: '2021-01-01',
-                    items: [
-                        {
-                            title: 'Discord',
-                            link: 'https://discord.gg',
-                            description: 'This is a description of the item',
-                        },
-                        {
-                            title: 'YouTube',
-                            link: 'https://youtube.com',
-                            description: 'This is a description of the item',
-                        },
-                        {
-                            title: 'Google',
-                            link: 'https://google.com',
-                            description: 'This is a description of the item',
-                        }
-                    ]
-                }} />
+
+                {
+                    // Show shelves if there's at least 1
+                    shelves.data.payload.length > 0 ?
+                        (
+                            <>
+                                {/* Iterate and display each shelf */}
+                                {
+                                    shelves.data.payload!.map((shelf, key) => {
+
+                                        // Find all items of this shelf
+                                        const shelf_items = items.data?.payload!.filter(item => item.shelf_fk === shelf.shelf_id) || []
+
+                                        // Display Shelf
+                                        return (
+                                            <Shelf key={key} data={{
+                                                ...shelf,
+                                                items: shelf_items
+                                            }} />
+                                        )
+
+                                    })
+                                }
+
+                                {/* Big button to create new shelf */}
+                                <CreateShelfWidget className="my-20" />
+                            </>
+                        ) : (
+
+                            // If there's not shelves found, display message and button to create one
+                            <div className="mb-6 mt-12 text-center flex flex-col items-center gap-2">
+                                <div className="text-xl">No Shelves Found!</div>
+                                <div className="text-sm text-[16px] w-1/2">Time to create one, you can do it by clicking "+" or the button in the header.</div>
+                                <CreateShelfBtn className="text-sm px-8 mt-4" />
+                            </div>
+                        )
+
+                }
+
             </div>
-            <CreateShelfWidget className="mt-20" />
         </>
     )
 }

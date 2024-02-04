@@ -19,7 +19,7 @@ export default function ShelfBtnHoverCard({ children }: { children: ReactNode })
                 {children}
             </HoverCardTrigger>
 
-            <HoverCardContent className="text-center w-auto px-6">
+            <HoverCardContent className="text-center text-sm w-auto px-6">
                 Click to create new shelf!
             </HoverCardContent>
 
