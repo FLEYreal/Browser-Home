@@ -27,8 +27,8 @@ class ItemDeleteBody(BaseModel):
     item_ids: Optional[List[int]] = None
 
 
-@router.delete("/update")
-async def item_update_delete(body: ItemDeleteBody, db: Session = Depends(get_db)):
+@router.post("/delete")
+async def item_delete(body: ItemDeleteBody, db: Session = Depends(get_db)):
     """
     Delete item(s) from database table.
 

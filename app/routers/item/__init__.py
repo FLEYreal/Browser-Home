@@ -9,7 +9,7 @@ from .get import router as get
 from .post import router as post
 from .post_icon import router as post_icon
 from .post_update import router as post_update
-from .delete_update import router as delete_update
+from .delete import router as delete
 from .get_icon import router as get_icon
 
 # Initialize router for "/item" API
@@ -25,4 +25,4 @@ router.include_router(get_icon)
 router.include_router(post)
 router.include_router(post_icon)
 router.include_router(post_update)
-router.include_router(delete_update)
+router.include_router(delete)

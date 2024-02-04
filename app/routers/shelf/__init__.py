@@ -8,7 +8,7 @@ from ...utils.responses import responses
 from .get import router as get
 from .post import router as post
 from .post_update import router as post_update
-from .delete_update import router as delete_update
+from .delete import router as delete
 
 # Initialize router for "/shelf" API
 router = APIRouter(
@@ -21,4 +21,4 @@ router = APIRouter(
 router.include_router(get)
 router.include_router(post)
 router.include_router(post_update)
-router.include_router(delete_update)
+router.include_router(delete)

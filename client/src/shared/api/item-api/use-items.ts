@@ -15,8 +15,10 @@ import {
 // Shared
 import { BACKEND_URL, QUERY_KEYS } from "@/shared/config/vars";
 import { customQuery, customMutation, BackendResponseType } from "@/shared/config/types";
+
+// Insides
 import { getItemQuery } from "./types/query";
-import { createItemBody } from "./types/body";
+import { createItemBody, deleteItemBody, updateItemBody } from "./types/body";
 
 // Hook to get list of items, has 2 filters, see them in "getItemQuery"
 export interface getItemsProps extends customQuery {
@@ -25,11 +27,11 @@ export interface getItemsProps extends customQuery {
 export const getItemsKey: QueryKey = ['get-items']
 export const useGetItems = (
     { query, ...props }: getItemsProps = {} // Props types
-    ): UseQueryResult<AxiosResponse<BackendResponseType, any>, unknown> => // Return types
+): UseQueryResult<AxiosResponse<BackendResponseType, any>, unknown> => // Return types
 {
     return useQuery({
 
-        // Key of "useGetItems" hook
+        // Unique keys for this query + keys to define backend query hook
         queryKey: [...getItemsKey, ...QUERY_KEYS],
 
         // Gets response from backend in a promise to process
@@ -50,6 +52,7 @@ export const useGetItems = (
 
 
 // Hook to get create new item(s), see required and optional fields in "createItemBody"
+export const createItemsKey: QueryKey = ['create-items']
 export const useCreateItems = (
     props: customMutation = {}) // Props types
     : UseMutationResult<AxiosResponse<BackendResponseType, any>, unknown, createItemBody, MutationKey> => // Return types
@@ -59,8 +62,13 @@ export const useCreateItems = (
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationKey: ['create-items', ...QUERY_KEYS],
+
+        // Unique keys for this query + keys to define backend query hook
+        mutationKey: [...createItemsKey, ...QUERY_KEYS],
+
         mutationFn: async (body: createItemBody) => axios.post(`${BACKEND_URL}/item/`, body),
+
+        // Invalidate & Refetch items once list's updated (Created items)
         onSuccess: () => {
 
             // Expire old item list
@@ -72,10 +80,59 @@ export const useCreateItems = (
 
 }
 
-export const useUpdateItems = () => {
+export const updateItemsKey: QueryKey = ['update-items']
+export const useUpdateItems = (
+    props: customMutation = {}) // Props types
+    : UseMutationResult<AxiosResponse<BackendResponseType, any>, unknown, updateItemBody, MutationKey> => // Return types
+{
+
+    // Get RQ context
+    const queryClient = useQueryClient()
+
+    return useMutation({
+
+        // Unique keys for this query + keys to define backend query hook
+        mutationKey: [...updateItemsKey, ...QUERY_KEYS],
+
+        mutationFn: async (body: updateItemBody) => axios.post(`${BACKEND_URL}/item/update`, body),
+
+        // Invalidate & Refetch items once list's updated
+        onSuccess: () => {
+
+            // Expire old item list
+            queryClient.invalidateQueries({ queryKey: getItemsKey })
+
+        },
+        ...props
+    })
 
 }
 
-export const useDeleteItems = () => {
+
+export const deleteItemsKey: QueryKey = ['delete-items']
+export const useDeleteItems = (
+    props: customMutation = {}) // Props types
+    : UseMutationResult<AxiosResponse<BackendResponseType, any>, unknown, deleteItemBody, MutationKey> => // Return types
+{
+
+    // Get RQ context
+    const queryClient = useQueryClient()
+
+    return useMutation({
+
+        // Unique keys for this query + keys to define backend query hook
+        mutationKey: [...deleteItemsKey, ...QUERY_KEYS],
+
+        mutationFn: async (body: deleteItemBody) => axios.post(`${BACKEND_URL}/item/delete`, body),
+
+        // Invalidate & Refetch items once list's updated (Deleted items)
+        onSuccess: () => {
+
+            // Expire old item list
+            queryClient.invalidateQueries({ queryKey: getItemsKey })
+
+        },
+        ...props
+    })
 
 }
