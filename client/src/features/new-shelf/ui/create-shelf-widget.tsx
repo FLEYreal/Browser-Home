@@ -8,7 +8,7 @@ import { Button } from "@/shared/ui/button";
 import { Plus as PlusIcon } from "lucide-react";
 
 // Insides
-import ShelfBtnHoverCard from "./shelf-btn-hover-card";
+import CreateShelfDialog from "./create-shelf-dialog";
 
 // Interfaces & Types
 export interface CreateShelfWidgetProps extends HTMLAttributes<HTMLDivElement> { }
@@ -16,12 +16,12 @@ export interface CreateShelfWidgetProps extends HTMLAttributes<HTMLDivElement> {
 export default function CreateShelfWidget({ ...props }: CreateShelfWidgetProps) {
 
     return (
-        <ShelfBtnHoverCard>
+        <CreateShelfDialog>
             <div {...props} className={`flex ${props.className}`}>
                 <Button variant="secondary" className="py-6 flex-1">
                     <PlusIcon />
                 </Button>
             </div>
-        </ShelfBtnHoverCard>
+        </CreateShelfDialog>
     )
 }

@@ -8,8 +8,9 @@ export type {
 
 // Hooks
 export {
-    useGetShelves,
-    useCreateShelves,
-    useUpdateShelves,
-    useDeleteShelves
+    type getShelvesProps,
+    getShelvesKey, useGetShelves,
+    createShelvesKey, useCreateShelves,
+    updateShelvesKey, useUpdateShelves,
+    deleteShelvesKey, useDeleteShelves
 } from './use-shelf'

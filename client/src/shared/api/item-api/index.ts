@@ -12,13 +12,15 @@ export type {
 
 // Hooks
 export { 
-    useGetItems,
-    useCreateItems,
-    useUpdateItems,
-    useDeleteItems
+    type getItemsProps,
+    getItemsKey, useGetItems,
+    createItemsKey, useCreateItems,
+    updateItemsKey, useUpdateItems,
+    deleteItemsKey, useDeleteItems
 } from './use-items';
 
 export {
-    useGetIcon,
+    type getIconProps,
+    getIconKey, useGetIcon,
     useUpdateIcon
 } from './use-icons';

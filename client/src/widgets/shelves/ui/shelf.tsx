@@ -78,7 +78,7 @@ export default function ({ data, ...props }: ShelvesProps) {
                             Shelf Creation TIme
                         </div>
                         <div>
-                            {created_at.split(" ")[0]}
+                            {created_at.split("T")[0]}
                         </div>
                     </HoverCardContent>
                 </HoverCard>
