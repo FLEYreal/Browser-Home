@@ -1,7 +1,7 @@
 'use client'
 
 // Basics
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 // Shadcn / Tailwind
 import { Button } from '@/shared/ui/button';
@@ -13,7 +13,11 @@ import { Copy } from 'lucide-react';
 import { RgbaColor, RgbaColorPicker } from 'react-colorful';
 import rgbHex from 'rgb-hex';
 
-export default function ColorPicker() {
+export interface ColorPickerInterface {
+    color?: RgbaColor;
+    setColor?: Dispatch<SetStateAction<RgbaColor>>;
+}
+export default function ColorPicker({ color: customColor, setColor: setCustomColor }: ColorPickerInterface) {
 
     // Hooks
     const { toast } = useToast()
@@ -27,13 +31,17 @@ export default function ColorPicker() {
         toast({ title: 'Copied!' })
     }
 
+    // Use customColor & setCustomColor if defined, otherwise use color & setColor
+    const currentColor = customColor && setCustomColor ? customColor : color;
+    const setCurrentColor = customColor && setCustomColor ? setCustomColor : setColor;
+
     return (
         <>
 
             {/* Color Picker */}
             <RgbaColorPicker
-                color={color}
-                onChange={setColor}
+                color={currentColor}
+                onChange={(newColor) => setCurrentColor(newColor)}
                 style={{ width: '240px', height: '240px' }}
             />
 
@@ -43,13 +51,13 @@ export default function ColorPicker() {
                 {/* Rgba Color */}
                 <div className='relative'>
 
-                    <Input value={`rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`} readOnly />
+                    <Input value={`rgba(${currentColor.r}, ${currentColor.g}, ${currentColor.b}, ${currentColor.a})`} readOnly />
 
                     {/* Copy Button */}
                     <Button
                         variant="ghost" size="icon"
                         className='absolute top-[10px] right-3 z-10 w-5 h-5 active:text-primary'
-                        onClick={() => handleCopy(`rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`)}
+                        onClick={() => handleCopy(`rgba(${currentColor.r}, ${currentColor.g}, ${currentColor.b}, ${currentColor.a})`)}
                     >
                         <Copy size="20" />
                     </Button>
@@ -59,13 +67,13 @@ export default function ColorPicker() {
                 {/* Hex Color */}
                 <div className='relative'>
 
-                    <Input value={`#${rgbHex(color.r, color.g, color.b)}`} readOnly />
+                    <Input value={`#${rgbHex(currentColor.r, currentColor.g, currentColor.b)}`} readOnly />
 
                     {/* Copy Button */}
                     <Button
                         variant="ghost" size="icon"
                         className='absolute top-[10px] right-3 z-10 w-5 h-5 active:text-primary'
-                        onClick={() => handleCopy(`#${rgbHex(color.r, color.g, color.b)}`)}
+                        onClick={() => handleCopy(`#${rgbHex(currentColor.r, currentColor.g, currentColor.b)}`)}
                     >
                         <Copy size="20" />
                     </Button>

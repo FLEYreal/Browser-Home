@@ -13,8 +13,8 @@ import {
 } from "@/shared/ui/popover";
 
 // Insides
-import Picker from './picker';
-import Definer from './definer';
+import Picker from '@/shared/ui/picker';
+import Definer from '@/shared/ui/definer';
 
 export default function ColorPicker() {
 
