@@ -40,6 +40,14 @@ export const useGetShelves = (
             params: query
         }),
 
+        // To never update them unless invalidating manually
+        staleTime: Infinity,
+
+        // Don't update shelf list autmatically at all
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+
         // 1. After queryFn worked out, we get data and select the JSON body that backend sent
         // 2. Interface "BackendResponseType" contains type of backend's body response
         select: (data) => {

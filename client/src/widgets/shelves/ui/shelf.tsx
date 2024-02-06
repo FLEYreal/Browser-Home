@@ -10,10 +10,12 @@ import { Button } from "@/shared/ui/button";
 // Features
 import { Item, ItemProps } from "@/features/item";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/shared/ui/hover-card";
+import { CreateItemDialog } from "@/features/new-item";
 
 // Interfaces
 export interface ShelfDataProps {
     // Properties of the Shelf
+    shelf_id: number;
     title: string;
     description: string;
     color: string;
@@ -30,7 +32,7 @@ export interface ShelvesProps extends HTMLAttributes<HTMLDivElement> {
 export default function ({ data, ...props }: ShelvesProps) {
 
     // Shelf's content data
-    const { title, description, color, created_at, items } = data;
+    const { shelf_id, title, description, color, created_at, items } = data;
 
     return (
         <div
@@ -46,10 +48,7 @@ export default function ({ data, ...props }: ShelvesProps) {
                 {/* Title & Divider Section */}
                 <HoverCard>
                     <HoverCardTrigger asChild>
-                        <section className="
-                            flex flex-row justify-start items-center 
-                            gap-2 cursor-default
-                        ">
+                        <section className="flex flex-row justify-start items-center gap-2">
 
                             {/* Title */}
                             <div style={{ color: color }} className='text-lg'>
@@ -63,24 +62,39 @@ export default function ({ data, ...props }: ShelvesProps) {
                             <div className="
                                 flex flex-row justify-start items-center gap-1
                             ">
+                                {/* Settings */}
                                 <Button className="w-8 h-8" size="icon" variant="ghost">
                                     <SettingsIcon size="23" style={{ color: color }} />
                                 </Button>
-                                <Button className="w-8 h-8" size="icon" variant="ghost">
-                                    <PlusIcon size="23" style={{ color: color }} />
-                                </Button>
+
+                                {/* Create Item for the Shelf */}
+                                <CreateItemDialog defaultShelf={shelf_id}>
+                                    <Button className="w-8 h-8" size="icon" variant="ghost">
+                                        <PlusIcon size="23" style={{ color: color }} />
+                                    </Button>
+                                </CreateItemDialog>
                             </div>
 
                         </section>
                     </HoverCardTrigger>
-                    <HoverCardContent className="text-center text-lg w-auto px-8">
-                        <div className="text-sm">
-                            Shelf Creation TIme
+                    {/* <HoverCardContent className="w-auto px-8 flex flex-col gap-3">
+                        <div>
+                            <div className="text-xs">
+                                Unique ID
+                            </div>
+                            <div className="text-sm">
+                                {shelf_id}
+                            </div>
                         </div>
                         <div>
-                            {created_at.split("T")[0]}
+                            <div className="text-xs">
+                                Shelf Creation TIme
+                            </div>
+                            <div className="text-sm">
+                                {created_at.split("T")[0]}
+                            </div>
                         </div>
-                    </HoverCardContent>
+                    </HoverCardContent> */}
                 </HoverCard>
 
                 {/* Description Section */}
@@ -101,10 +115,10 @@ export default function ({ data, ...props }: ShelvesProps) {
                             <Item
                                 key={key}
                                 color={color}
+                                item_id={item.item_id}
                                 title={item.title}
                                 link={item.link}
                                 description={item.description || undefined}
-                                icon={item.icon || undefined}
                             />
                         )
                     })

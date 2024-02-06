@@ -109,21 +109,27 @@ class Items(Base):
 
         try:
 
+            id_list = []
             for row in items:
 
                 # Insert new item
                 item = cls(**row)
                 db.add(item)
 
-            # Commit changes to database after creating all items in the list
-            db.commit()
+                # Commit changes to database after creating all items in the list
+                db.commit()
+
+                # Refresh data and if insert into db succeed, get the id of the new item
+                db.refresh(item)
+                id_list.append(item.item_id)
 
             # Return Success Operation
             return generate_response(
                 is_content=True,
                 status=201,
                 title="HTTP 201: Created!",
-                description="Successfully Created!"
+                description="Successfully Created!",
+                payload=id_list
             )
 
         except Exception as e:

@@ -30,9 +30,6 @@ async def item_icon_get(
     Queries:
         item_id (str): Update item icon of the specified item.
     Files: icon
-
-    Returns:
-        JSONResponse: Returns Operation Details.
     """
 
     try:
@@ -48,32 +45,39 @@ async def item_icon_get(
 
         if not item:  # Check if exists
             return generate_response(
-                status=422,
-                title="HTTP 422: Unprocessable entity!",
-                description="No item with that ID exists!"
-            )
-        if not item.icon and not item.icon_svg:  # Check if it has icon
-            return generate_response(
-                status=400,
-                title="HTTP 400: Bad Request!",
-                description="The item exists, but... it has no icon yet!"
+                status=404,
+                title="HTTP 404: Not Found!",
+                description="No item with that ID exists!",
+                headers={"content-type": "application/json"}
             )
 
-        icon_ext = item.icon_ext.lower() if item.icon_ext else "png"  # Get the extension of the icon
+        if not item.icon and not item.icon_svg:  # Check if it has icon
+            return Response(
+                content="",
+                status_code=204,
+                headers={"content-type": "application/json"}
+            )
+
+        # Get the extension of the icon
+        icon_ext = item.icon_ext.lower() if item.icon_ext else "png"
         icon: bytes | str | None = None
 
         # Get the icon after checking if it exists
         if icon_ext == "svg":
-            hex_string = item.icon_svg.replace('\\x', '')  # Delete the start of hex (\x)
-            byte_icon = bytes.fromhex(hex_string)  # Convert hex string to bytes
-            icon = byte_icon.decode("utf-8")  # Decode the icon from bytes to valid svg
+            hex_string = item.icon_svg.replace(
+                '\\x', '')  # Delete the start of hex (\x)
+            # Convert hex string to bytes
+            byte_icon = bytes.fromhex(hex_string)
+            # Decode the icon from bytes to valid svg
+            icon = byte_icon.decode("utf-8")
         else:
             icon = item.icon  # Raster Icon
 
         # Return found icon
         return Response(
             content=icon,
-            media_type=media_types.get(icon_ext)  # Define media type using image extension
+            # Define media type using image extension
+            media_type=media_types.get(icon_ext)
         )
 
     except Exception as e:

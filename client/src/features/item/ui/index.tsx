@@ -3,6 +3,7 @@
 // Basics
 import { HTMLAttributes } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 // Shadcn / Tailwind
 import { Hourglass } from "lucide-react";
@@ -16,27 +17,34 @@ import {
 
 // Libs
 import hexToRgba from 'hex-to-rgba'
+import { useGetIcon } from "@/shared/api/item-api";
 
 // Interfaces & Types
 export interface ItemProps {
+    item_id: number;
     title: string;
     link: string;
     description?: string;
     color?: string;
-    icon?: string;
     itemAttrs?: HTMLAttributes<HTMLDivElement>;
     cardAttrs?: HTMLAttributes<HTMLDivElement>;
 }
 
 export default function Item({
+    item_id,
     title = "Item Name",
     description,
-    icon,
     link,
     color,
     itemAttrs,
     cardAttrs
 }: ItemProps) {
+
+    const { data: icon } = useGetIcon({
+        query: {
+            item_id: item_id
+        }
+    })
 
     return (
         <HoverCard>
@@ -62,7 +70,11 @@ export default function Item({
                                 flex items-center justify-center
                             "
                         >
-                            {icon ? <>{icon}</> : <Hourglass size="32" style={{ color: color }} />}
+                            {
+                                icon && typeof icon === 'string' && icon.length > 0 ?
+                                    <Image width={45} height={45} src={icon} alt="Icon" /> :
+                                    <Hourglass size="32" style={{ color: color }} />
+                            }
                         </div>
 
                         <div style={{ color: color }} className="text-sm opacity-50">

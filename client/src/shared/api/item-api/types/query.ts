@@ -8,8 +8,3 @@ export type getItemQuery = {
 export type getIconQuery = {
     item_id: number;
 }
-
-// [POST] "/item/icon"
-export type updateIconQuery = {
-    item_id: number;
-}

@@ -1,8 +1,7 @@
 // Types
 export type {
     getItemQuery,
-    getIconQuery,
-    updateIconQuery
+    getIconQuery
 } from './types/query';
 export type {
     createItemBody,

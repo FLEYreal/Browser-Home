@@ -20,3 +20,9 @@ export type deleteItemBody = {
     shelf_fk?: number;
     item_ids?: number[];
 }
+
+// [POST] "/item/icon"
+export type updateIconBody = {
+    icon: File;
+    item_id: number;
+}

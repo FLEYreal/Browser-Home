@@ -1,6 +1,7 @@
 'use client'
 
 // Basics
+import { AxiosError } from "axios";
 import { ReactNode, useEffect, useState } from "react";
 
 // Shadcn / Tailwind
@@ -8,6 +9,7 @@ import {
     Dialog,
     DialogContent,
     DialogTrigger,
+    DialogClose
 } from "@/shared/ui/dialog";
 import {
     Popover,
@@ -17,6 +19,7 @@ import {
 import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { Button } from "@/shared/ui/button";
+import { useToast } from "@/shared/ui/use-toast";
 
 // Shared
 import Picker from "@/shared/ui/picker";
@@ -26,9 +29,6 @@ import { BackendResponseType } from "@/shared/config/types";
 // Libs
 import { RgbaColor } from "react-colorful";
 import rgbHex from 'rgb-hex';
-import { useToast } from "@/shared/ui/use-toast";
-import { AxiosError } from "axios";
-import { DialogClose } from "@radix-ui/react-dialog";
 
 export default function CreateShelfDialog({ children }: { children: ReactNode }) {
 
@@ -51,7 +51,7 @@ export default function CreateShelfDialog({ children }: { children: ReactNode })
         if (isError) {
             toast({
                 title: (error as AxiosError<BackendResponseType>).response?.data.title,
-                description: (error as AxiosError<BackendResponseType>).response?.data.description,
+                description: `[${(createShelvesKey[0] as string).toUpperCase()}] ${(error as AxiosError<BackendResponseType>).response?.data.description}`,
                 variant: 'destructive'
             })
         }
@@ -102,16 +102,17 @@ export default function CreateShelfDialog({ children }: { children: ReactNode })
                         <Picker color={color} setColor={setColor} />
                     </PopoverContent>
                 </Popover>
-                {/* <DialogClose>
+                <DialogClose asChild>
 
-                </DialogClose> */}
-                <Button onClick={() => mutate([{
-                    title: title,
-                    description: description,
-                    color: `#${rgbHex(color.r, color.g, color.b)}`
-                }])}>
-                    Create
-                </Button>
+                    <Button onClick={() => mutate([{
+                        title: title,
+                        description: description,
+                        color: `#${rgbHex(color.r, color.g, color.b)}`
+                    }])}>
+                        Create
+                    </Button>
+
+                </DialogClose>
             </DialogContent>
 
         </Dialog>
