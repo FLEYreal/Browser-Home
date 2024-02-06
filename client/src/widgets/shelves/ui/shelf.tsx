@@ -9,6 +9,13 @@ import { Button } from "@/shared/ui/button";
 
 // Features
 import { Item, ItemProps } from "@/features/item";
+import {
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuTrigger,
+    ContextMenuSeparator
+} from "@/shared/ui/context-menu"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/shared/ui/hover-card";
 import { CreateItemDialog } from "@/features/new-item";
 
@@ -35,19 +42,20 @@ export default function ({ data, ...props }: ShelvesProps) {
     const { shelf_id, title, description, color, created_at, items } = data;
 
     return (
-        <div
-            {...props}
-            className={`
-                ${props?.className}
-                mb-10
-            `}
-        >
-            {/* Shelf's header */}
-            <header>
+        <ContextMenu>
+            <ContextMenuTrigger asChild>
 
-                {/* Title & Divider Section */}
-                <HoverCard>
-                    <HoverCardTrigger asChild>
+                <div
+                    {...props}
+                    className={`
+                        ${props?.className}
+                        mb-10
+                    `}
+                >
+                    {/* Shelf's header */}
+                    <header>
+
+                        {/* Title & Divider Section */}
                         <section className="flex flex-row justify-start items-center gap-2">
 
                             {/* Title */}
@@ -60,13 +68,8 @@ export default function ({ data, ...props }: ShelvesProps) {
 
                             {/* Options */}
                             <div className="
-                                flex flex-row justify-start items-center gap-1
-                            ">
-                                {/* Settings */}
-                                <Button className="w-8 h-8" size="icon" variant="ghost">
-                                    <SettingsIcon size="23" style={{ color: color }} />
-                                </Button>
-
+                                        flex flex-row justify-start items-center gap-1
+                                    ">
                                 {/* Create Item for the Shelf */}
                                 <CreateItemDialog defaultShelf={shelf_id}>
                                     <Button className="w-8 h-8" size="icon" variant="ghost">
@@ -76,54 +79,71 @@ export default function ({ data, ...props }: ShelvesProps) {
                             </div>
 
                         </section>
-                    </HoverCardTrigger>
-                    {/* <HoverCardContent className="w-auto px-8 flex flex-col gap-3">
-                        <div>
-                            <div className="text-xs">
-                                Unique ID
-                            </div>
-                            <div className="text-sm">
-                                {shelf_id}
-                            </div>
-                        </div>
-                        <div>
-                            <div className="text-xs">
-                                Shelf Creation TIme
-                            </div>
-                            <div className="text-sm">
-                                {created_at.split("T")[0]}
-                            </div>
-                        </div>
-                    </HoverCardContent> */}
-                </HoverCard>
 
-                {/* Description Section */}
-                <section style={{ color: color }} className="text-sm opacity-60">
-                    {description}
-                </section>
+                        {/* <HoverCard>
+                            <HoverCardTrigger asChild>
+                            </HoverCardTrigger>
+                            <HoverCardContent className="w-auto px-8 flex flex-col gap-3">
+                                <div>
+                                    <div className="text-xs">
+                                        Unique ID
+                                    </div>
+                                    <div className="text-sm">
+                                        {shelf_id}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-xs">
+                                        Shelf Creation TIme
+                                    </div>
+                                    <div className="text-sm">
+                                        {created_at.split("T")[0]}
+                                    </div>
+                                </div>
+                            </HoverCardContent>
+                        </HoverCard> */}
 
-            </header>
+                        {/* Description Section */}
+                        <section style={{ color: color }} className="text-sm opacity-60">
+                            {description}
+                        </section>
 
-            {/* Shelf's content (Contains all items) */}
-            <section
-                className="mt-5 flex flex-row flex-wrap gap-[19px]"
-            >
-                {
-                    items.map((item, key) => {
+                    </header>
 
-                        return (
-                            <Item
-                                key={key}
-                                color={color}
-                                item_id={item.item_id}
-                                title={item.title}
-                                link={item.link}
-                                description={item.description || undefined}
-                            />
-                        )
-                    })
-                }
-            </section>
-        </div>
+                    {/* Shelf's content (Contains all items) */}
+                    <section
+                        className="mt-5 flex flex-row flex-wrap gap-[19px]"
+                    >
+                        {
+                            items.map((item, key) => {
+
+                                return (
+                                    <Item
+                                        key={key}
+                                        color={color}
+                                        item_id={item.item_id}
+                                        title={item.title}
+                                        link={item.link}
+                                        description={item.description || undefined}
+                                    />
+                                )
+                            })
+                        }
+                    </section>
+                </div>
+
+            </ContextMenuTrigger>
+            <ContextMenuContent>
+
+                <h2 className="text-white text-[14px] ml-2 my-4">Shelf Settings</h2>
+                <ContextMenuSeparator />
+                <ContextMenuItem>Edit Shelf</ContextMenuItem>
+                <ContextMenuItem>Delete Shelf</ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem>Create Item</ContextMenuItem>
+                <ContextMenuItem>Details</ContextMenuItem>
+
+            </ContextMenuContent>
+        </ContextMenu>
     )
 }
