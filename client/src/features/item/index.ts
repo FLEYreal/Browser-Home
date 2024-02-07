@@ -4,3 +4,5 @@ export {
     type ItemSize,
     type ItemProps
 } from './ui';
+
+export { sizes } from './ui/sizes';

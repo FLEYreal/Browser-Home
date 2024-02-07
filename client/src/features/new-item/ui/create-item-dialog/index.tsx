@@ -8,6 +8,7 @@ import {
 } from "@/shared/ui/dialog";
 
 import CreateItemDialogContent from "./content";
+import { DialogContent } from "@radix-ui/react-dialog";
 
 export default function CreateItemDialog({
     children,
@@ -26,7 +27,7 @@ export default function CreateItemDialog({
             </DialogTrigger>
 
             {/* Content of the dialog */}
-            <CreateItemDialogContent defaultShelf={defaultShelf}/>
+            <CreateItemDialogContent defaultShelf={defaultShelf} />
 
         </Dialog>
     )

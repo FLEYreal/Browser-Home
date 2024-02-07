@@ -1,5 +1,5 @@
 // Shadcn / Tailwind
-import { ContextMenuSub, ContextMenuSubTrigger, ContextMenuSubContent, ContextMenuItem } from "@/shared/ui/context-menu";
+import { ContextMenuSub, ContextMenuSubTrigger, ContextMenuSubContent } from "@/shared/ui/context-menu";
 import { Info } from "lucide-react";
 
 

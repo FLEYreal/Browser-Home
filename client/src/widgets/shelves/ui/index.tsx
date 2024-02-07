@@ -16,6 +16,7 @@ import { useGetItems } from "@/shared/api/item-api";
 
 // Insides
 import Shelf from './shelf';
+import ShelfProvider from "./provider";
 
 // Interfaces
 export interface ShelvesProps extends HTMLAttributes<HTMLDivElement> { }
@@ -73,10 +74,12 @@ export default function Shelves({ ...props }: ShelvesProps) {
 
                                         // Display Shelf
                                         return (
-                                            <Shelf key={key} data={{
+                                            <ShelfProvider key={key} data={{
                                                 ...shelf,
                                                 items: shelf_items
-                                            }} />
+                                            }}>
+                                                <Shelf/>
+                                            </ShelfProvider>
                                         )
 
                                     })

@@ -79,7 +79,7 @@ export default function ConverterContent() {
                         String((
                             (Number(value) /
                                 (rates as { [key in currencyType['id']]: number })[selected.from as currencyType['id']]) *
-                                (rates as { [key in currencyType['id']]: number })[selected.to as currencyType['id']]
+                            (rates as { [key in currencyType['id']]: number })[selected.to as currencyType['id']]
                         ).toFixed(2))
 
                 return {
@@ -98,8 +98,8 @@ export default function ConverterContent() {
                         (value === '' || Number(value) < 0.01) ? '' :
                         String((
                             (Number(value) /
-                                (rates as { [key in currencyType['id']]: number })[selected.from as currencyType['id']]) *
-                                (rates as { [key in currencyType['id']]: number })[selected.to as currencyType['id']]
+                                (rates as { [key in currencyType['id']]: number })[selected.from as currencyType['id']]) /
+                            (rates as { [key in currencyType['id']]: number })[selected.to as currencyType['id']]
                         ).toFixed(2))
                 const newTo = String(value)
 
