@@ -15,9 +15,11 @@ export type ItemProps = { // Global context properties of the item
     icon?: string | null;
     size: ItemSize;
     item_id: number;
+    shelf_fk: number;
     title: string;
     link: string;
     description?: string;
+    created_at: string;
     color?: string;
 }
 
@@ -34,9 +36,11 @@ export interface ItemProviderProps extends ItemWrapperProps { // Attributes to i
 export const ItemContext = createContext<ItemProps>({
     size: 'default',
     item_id: -1,
+    shelf_fk: -1,
     title: '',
     link: '',
     description: '',
+    created_at: '',
     color: '#ffffff'
 });
 

@@ -27,9 +27,11 @@ export default function ShelfItems() {
                             data={{
                                 size: size,
                                 item_id: item.item_id,
+                                shelf_fk: item.shelf_fk,
                                 title: item.title,
                                 link: item.link,
                                 description: item.description || undefined,
+                                created_at: item.created_at,
                                 color: color
                             }}
                         />

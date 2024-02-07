@@ -119,9 +119,9 @@ export default function ShelfSettings({ children }: { children: ReactNode }) {
                         onClick={() => setCurrentDialog('delete-shelf')}
                     >
 
-                        <ContextMenuItem className="text-red-500 flex flex-row gap-2 items-center">
-                            <Trash size={16} />
-                            Delete Shelf
+                        <ContextMenuItem className="flex flex-row gap-2 items-center">
+                            <Trash size={16} className="text-red-500" />
+                            <span className="text-red-500">Delete Shelf</span>
                         </ContextMenuItem>
 
                     </DialogTrigger>
