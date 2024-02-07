@@ -1,4 +1,10 @@
 export const sizes = {
+    'default': {
+        size: '95px',
+        gap: '19px',
+        image: 45,
+        font: '14px'
+    },
     'medium': {
         size: '95px',
         gap: '19px',

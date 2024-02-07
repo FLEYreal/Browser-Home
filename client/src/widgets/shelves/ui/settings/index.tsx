@@ -61,17 +61,29 @@ export default function ShelfSettings({ children }: { children: ReactNode }) {
                     <ContextMenuSeparator />
 
                     {/* Edit shelf option */}
-                    <ContextMenuItem className="flex flex-row gap-2 items-center">
-                        <Pencil size={16} />
-                        Edit Shelf
-                    </ContextMenuItem>
+                    <DialogTrigger
+                        asChild
+                        onClick={() => setCurrentDialog('edit-shelf')}
+                    >
+
+                        <ContextMenuItem className="flex flex-row gap-2 items-center">
+                            <Pencil size={16} />
+                            Edit Shelf
+                        </ContextMenuItem>
+
+                    </DialogTrigger>
 
                     {/* Create new item inside shelf option */}
-                    <DialogTrigger asChild>
-                        <ContextMenuItem onClick={() => setCurrentDialog('create-item')} className="flex flex-row gap-2 items-center">
+                    <DialogTrigger
+                        asChild
+                        onClick={() => setCurrentDialog('create-item')}
+                    >
+
+                        <ContextMenuItem className="flex flex-row gap-2 items-center">
                             <PlusCircle size={16} />
                             Create Item
                         </ContextMenuItem>
+
                     </DialogTrigger>
 
                     {/* Option to see additional information about shelf */}
@@ -102,10 +114,17 @@ export default function ShelfSettings({ children }: { children: ReactNode }) {
                     <ContextMenuSeparator />
 
                     {/* Dangerous zone, shelf's deletion */}
-                    <ContextMenuItem className="text-red-500 flex flex-row gap-2 items-center">
-                        <Trash size={16} />
-                        Delete Shelf
-                    </ContextMenuItem>
+                    <DialogTrigger
+                        asChild
+                        onClick={() => setCurrentDialog('delete-shelf')}
+                    >
+
+                        <ContextMenuItem className="text-red-500 flex flex-row gap-2 items-center">
+                            <Trash size={16} />
+                            Delete Shelf
+                        </ContextMenuItem>
+
+                    </DialogTrigger>
 
                 </ContextMenuContent>
 

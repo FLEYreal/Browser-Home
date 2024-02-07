@@ -1,7 +1,7 @@
 'use client'
 
 // Basics
-import { createContext, useContext, useState, Dispatch, SetStateAction, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, Dispatch, SetStateAction, ReactNode } from "react";
 
 // Features
 import { ItemSize, ItemProps } from "@/features/item";
@@ -14,7 +14,7 @@ export interface ShelfDataProps {
     description: string;
     color: string;
     created_at: string;
-    
+
     // Provide list of items of the Shelf
     items: ItemProps[];
 }
@@ -28,7 +28,7 @@ export interface ShelfContextProps {
 
 // Context
 export const ShelfContext = createContext<ShelfContextProps>({
-    size: 'medium',
+    size: 'default',
     setSize: () => { },
     data: {
         shelf_id: -1,
@@ -48,7 +48,7 @@ export const useShelfContext = () => useContext<ShelfContextProps>(ShelfContext)
 export default function ShelfProvider({ children, data: shelfData }: { children: ReactNode, data?: ShelfDataProps }) {
 
     // Context States
-    const [size, setSize] = useState<ItemSize>('medium');
+    const [size, setSize] = useState<ItemSize>('default');
     const [data, setData] = useState<ShelfDataProps>(shelfData || {
         shelf_id: -1,
         title: '',
@@ -57,6 +57,24 @@ export default function ShelfProvider({ children, data: shelfData }: { children:
         created_at: '',
         items: []
     })
+
+    // Effects
+    useEffect(() => { // Setup new size for the shelf
+        if (
+            // As it's default state value, it can't be saved to localstorage on each mount overlapping previous values
+            size !== 'default' &&
+            localStorage.getItem(`size-${data.shelf_id}`) !== size && // Don't save same value
+            data.shelf_id > 0 // Checks if shelf is loaded already
+        ) {
+            localStorage.setItem(`size-${data.shelf_id}`, size);
+        }
+    }, [size, data.shelf_id])
+
+    useEffect(() => { // On mount, Get shelf's size from storage if there is 
+        const storedSize = localStorage.getItem(`size-${data.shelf_id}`) as ItemSize;
+        if (storedSize) setSize(storedSize)
+    }, [])
+
 
     return (
         <ShelfContext.Provider value={{ size, setSize, data, setData }}>

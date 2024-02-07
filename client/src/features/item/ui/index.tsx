@@ -23,7 +23,7 @@ import { useGetIcon } from "@/shared/api/item-api";
 import { sizes } from "./sizes";
 
 // Interfaces & Types
-export type ItemSize = 'medium' | 'small' | 'smaller'
+export type ItemSize = 'medium' | 'small' | 'smaller' | 'default';
 
 export interface ItemProps {
     size?: ItemSize;
