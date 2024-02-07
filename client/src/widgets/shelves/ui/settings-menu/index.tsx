@@ -21,7 +21,7 @@ import Details from "./details";
 import { useShelfContext } from "../provider";
 
 // Features
-import { CreateItemDialogContent } from "@/features/new-item";
+import { CreateItemDialogContent } from "@/features/item";
 
 // Types
 export type dialogsTypes = 'create-item' | 'edit-shelf' | 'delete-shelf';

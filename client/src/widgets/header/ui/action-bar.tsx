@@ -1,6 +1,6 @@
 // Features
 import { DesignSwitch } from '@/features/design-switch'
-import { CreateShelfBtn } from '@/features/new-shelf'
+import { CreateShelfBtn } from '@/features/shelf'
 
 export default function ActionBar() {
 

@@ -14,7 +14,7 @@ import hexToRgba from 'hex-to-rgba'
 import { sizes } from "../sizes";
 import { ItemWrapperProps, useItemContext } from "..";
 import ItemHoverCard from "./hover-card";
-import ItemSettings from "../settings";
+import ItemSettings from "../settings-menu";
 
 export default function ItemWrapper({
     itemAttrs,

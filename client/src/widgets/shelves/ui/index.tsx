@@ -5,7 +5,7 @@ import { HTMLAttributes } from "react";
 import { AxiosError } from "axios";
 
 // Features
-import { CreateShelfBtn, CreateShelfWidget } from "@/features/new-shelf";
+import { CreateShelfBtn, CreateShelfWidget } from "@/features/shelf";
 
 // Shared
 import { BackendResponseType } from "@/shared/config/types";

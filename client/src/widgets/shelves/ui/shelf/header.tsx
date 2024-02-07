@@ -5,7 +5,7 @@ import { PlusIcon } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 
 // Features
-import { CreateItemDialog } from "@/features/new-item";
+import { CreateItemDialog } from "@/features/item";
 
 // Insides
 import { useShelfContext } from "../provider";

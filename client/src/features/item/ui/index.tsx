@@ -7,7 +7,7 @@ import { createContext, useContext, HTMLAttributes } from "react";
 import { useGetIcon } from '@/shared/api/item-api';
 
 // Insides
-import ItemWrapper from "./item";
+import ItemWrapper from "./item-wrapper";
 
 // Interfaces & Types
 export type ItemSize = 'medium' | 'small' | 'smaller' | 'default'; // Size of the item

@@ -8,7 +8,6 @@ import {
 } from "@/shared/ui/dialog";
 
 import CreateItemDialogContent from "./content";
-import { DialogContent } from "@radix-ui/react-dialog";
 
 export default function CreateItemDialog({
     children,

@@ -2,7 +2,7 @@
 import { HTMLAttributes } from "react";
 
 // Insides
-import ShelfSettings from "../settings";
+import ShelfSettings from "../settings-menu";
 import ShelfHeader from "./header";
 import ShelfItems from "./items";
 
