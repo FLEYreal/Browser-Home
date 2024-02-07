@@ -23,13 +23,15 @@ export default function ShelfItems() {
 
                     return (
                         <Item
-                            size={size}
                             key={key}
-                            color={color}
-                            item_id={item.item_id}
-                            title={item.title}
-                            link={item.link}
-                            description={item.description || undefined}
+                            data={{
+                                size: size,
+                                item_id: item.item_id,
+                                title: item.title,
+                                link: item.link,
+                                description: item.description || undefined,
+                                color: color
+                            }}
                         />
                     )
                 })
