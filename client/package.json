@@ -26,6 +26,7 @@
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "compose-function": "^3.0.3",
     "hex-rgb": "^5.0.0",
     "hex-to-rgba": "^2.0.1",
     "lucide-react": "^0.314.0",
@@ -40,6 +41,7 @@
     "vaul": "^0.8.9"
   },
   "devDependencies": {
+    "@types/compose-function": "^0.0.33",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

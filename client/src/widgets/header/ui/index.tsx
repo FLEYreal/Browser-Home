@@ -6,10 +6,10 @@ import Hints from './hints'
 export default function Header() {
 
     return (
-        <header className='flex my-11 items-center justify-between h-16'>
+        <header className='flex my-7 items-center justify-between h-12'>
 
             <TitleContainer />
-            <Hints/>
+            <Hints />
             <ActionBar />
 
         </header>

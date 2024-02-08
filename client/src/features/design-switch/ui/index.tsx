@@ -20,7 +20,7 @@ import {
 } from "@/shared/ui/hover-card"
 
 // Shared
-import { useDesignContext, designType, designs } from "@/shared/libs/shadcn/design-provider";
+import { useDesignContext, designType, designs } from "@/shared/utils/design-context";
 
 // Styles
 import s from './style.module.scss'

@@ -13,7 +13,7 @@ import { BackendResponseType } from "@/shared/config/types";
 import { QUERY_KEYS } from "@/shared/config/vars";
 
 // Provider
-export default function Provider({ children }: { children: ReactNode }) {
+export default function QueryProvider({ children }: { children: ReactNode }) {
 
     // Hooks
     const { toast } = useToast();
