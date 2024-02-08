@@ -17,7 +17,7 @@ export interface ColorPickerInterface {
     color?: RgbaColor;
     setColor?: Dispatch<SetStateAction<RgbaColor>>;
 }
-export default function ColorPicker({ color: customColor, setColor: setCustomColor }: ColorPickerInterface) {
+export default function Picker({ color: customColor, setColor: setCustomColor }: ColorPickerInterface) {
 
     // Hooks
     const { toast } = useToast()

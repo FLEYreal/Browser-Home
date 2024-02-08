@@ -1,50 +1,36 @@
 // Shadcn / Tailwind
 import { Button } from '@/shared/ui/button';
 import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger
-} from "@/shared/ui/tabs";
-import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/shared/ui/popover";
 
 // Insides
-import Picker from '@/shared/ui/picker';
-import Definer from '@/shared/ui/definer';
+import ColorPicker from './color-picker';
 
-export default function ColorPicker() {
+// Color picker & Color Definer integration
+const ColorPickerPopover = () => (
+    <>
 
-    return (
-        <>
+        {/* Modal of the widget */}
+        <Popover>
 
-            {/* Modal of the widget */}
-            <Popover>
+            {/* Button to open Modal */}
+            <PopoverTrigger asChild>
+                <Button variant="secondary">Color Picker</Button>
+            </PopoverTrigger>
 
-                {/* Button to open Modal */}
-                <PopoverTrigger asChild>
-                    <Button variant="secondary">Color Picker</Button>
-                </PopoverTrigger>
+            {/* Content of the Modal */}
+            <PopoverContent className='w-[280px] flex flex-col items-center'>
 
-                {/* Content of the Modal */}
-                <PopoverContent className='w-[280px] flex flex-col items-center'>
+                {/* Color Picker & Color Definer component */}
+                <ColorPicker />
 
-                    <Tabs>
-                        <TabsList className='w-[240px] h-[50px] gap-2 mb-2'>
-                            <TabsTrigger className='px-4 py-2' value='picker'>Color Picker</TabsTrigger>
-                            <TabsTrigger className='px-4 py-2' value='definer'>Color Definer</TabsTrigger>
-                        </TabsList>
+            </PopoverContent>
+        </Popover>
 
-                        {/* Content of the modal relatively chosen tab */}
-                        <TabsContent value='picker'> <Picker /> </TabsContent>
-                        <TabsContent value='definer'> <Definer /> </TabsContent>
-                    </Tabs>
+    </>
+);
 
-                </PopoverContent>
-            </Popover>
-        </>
-    );
-}
+export default ColorPickerPopover;

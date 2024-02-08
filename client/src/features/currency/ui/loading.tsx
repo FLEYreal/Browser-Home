@@ -1,7 +1,7 @@
 // Basics
 import { HTMLAttributes } from "react";
 
-// Component
+// Component to show while currencies loading
 export default function CurrencyLoading({ ...props }: HTMLAttributes<HTMLDivElement>) {
     return (
         <div className='flex gap-5' {...props}>

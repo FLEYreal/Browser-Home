@@ -1,5 +1,5 @@
 // Insides
-import { currencyType } from "../config/supported-currencies"
+import { supportedCurrencyType } from './supported-currencies';
 
 /**
  * Calculates the conversion rate between two currencies based on the current exchange rates.
@@ -10,11 +10,12 @@ import { currencyType } from "../config/supported-currencies"
  * @returns the converted amount
  */
 export function useConvert(
-    rates: { [key in currencyType['id']]: number },
-    from: currencyType['id'],
-    to: currencyType['id'],
+    rates: { [key in supportedCurrencyType['id']]: number },
+    from: supportedCurrencyType['id'],
+    to: supportedCurrencyType['id'],
     amount: number
 ): number {
+
 
     // Formula to get rates & Return results
     amount = amount / rates[from];

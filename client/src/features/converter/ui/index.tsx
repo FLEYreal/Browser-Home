@@ -9,25 +9,24 @@ import {
 } from "@/shared/ui/popover";
 
 // Shared
-import ConverterContent from './converter-content';
+import ConverterContent from './converter';
 
-export default function Converter() {
+// Conventer Integration
+const ConverterPopover = () => (
+    <Popover>
+        <PopoverTrigger asChild>
 
+            <Button variant="secondary">
+                Conventer
+            </Button>
 
-    return (
-        <Popover>
-            <PopoverTrigger asChild>
+        </PopoverTrigger>
 
-                <Button variant="secondary">
-                    Conventer
-                </Button>
+        <PopoverContent className='flex flex-col gap-2 w-[340px]'>
+            <ConverterContent />
+        </PopoverContent>
 
-            </PopoverTrigger>
+    </Popover>
+)
 
-            <PopoverContent className='flex flex-col gap-2 w-[340px]'>
-                <ConverterContent />
-            </PopoverContent>
-
-        </Popover>
-    )
-}
+export default ConverterPopover;

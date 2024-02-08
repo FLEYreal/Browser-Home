@@ -3,8 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+
+    .default {}
+
     :root {
-        --background: 240 10% 3.9%;
+        --background: 240 10% 1.9%;
         --foreground: 0 0% 98%;
         --card: 240 10% 3.9%;
         --card-foreground: 0 0% 98%;
@@ -38,16 +41,14 @@
         --text-btn-xs: theme('fontSize.xs');
     }
 
-    .default {}
-
     .future {
-        --background: 224 71.4% 4.1%;
+        --background: 224 71.4% 1.1%;
         --foreground: 210 20% 98%;
         --card: 224 71.4% 4.1%;
         --card-foreground: 210 20% 98%;
         --popover: 224 71.4% 4.1%;
         --popover-foreground: 210 20% 98%;
-        --primary: 263.4 70% 50.4%;
+        --primary: 271.4 90% 62%;
         --primary-foreground: 210 20% 98%;
         --secondary: 215 27.9% 16.9%;
         --secondary-foreground: 210 20% 98%;
@@ -72,7 +73,7 @@
     }
 
     .nature {
-        --background: 20 14.3% 4.1%;
+        --background: 20 14.3% 2.4%;
         --foreground: 0 0% 95%;
         --card: 24 9.8% 10%;
         --card-foreground: 0 0% 95%;
@@ -103,7 +104,7 @@
     }
 
     .cold {
-        --background: 222.2 84% 4.9%;
+        --background: 222.2 84% 1.9%;
         --foreground: 210 40% 98%;
         --card: 222.2 84% 4.9%;
         --card-foreground: 210 40% 98%;
@@ -134,7 +135,7 @@
     }
 
     .strawberry {
-        --background: 20 14.3% 4.1%;
+        --background: 20 14.3% 1.9%;
         --foreground: 0 0% 95%;
         --card: 24 9.8% 10%;
         --card-foreground: 0 0% 95%;
@@ -162,5 +163,67 @@
         --text-color-btn: theme('colors.white');
         --text-color-btn-outline: theme('colors.stone.300');
         --text-color-btn-secondary: theme('colors.slate.400');
+    }
+
+    .orange {
+        --background: 20 14.3% 1.9%;
+        --foreground: 60 9.1% 97.8%;
+        --card: 20 14.3% 4.1%;
+        --card-foreground: 60 9.1% 97.8%;
+        --popover: 20 14.3% 4.1%;
+        --popover-foreground: 60 9.1% 97.8%;
+        --primary: 20.5 90.2% 48.2%;
+        --primary-foreground: 60 9.1% 97.8%;
+        --secondary: 12 6.5% 15.1%;
+        --secondary-foreground: 60 9.1% 97.8%;
+        --muted: 12 6.5% 15.1%;
+        --muted-foreground: 24 5.4% 63.9%;
+        --accent: 12 6.5% 15.1%;
+        --accent-foreground: 60 9.1% 97.8%;
+        --destructive: 0 72.2% 50.6%;
+        --destructive-foreground: 60 9.1% 97.8%;
+        --border: 12 6.5% 15.1%;
+        --input: 12 6.5% 15.1%;
+        --ring: 20.5 90.2% 48.2%;
+
+        --text-color-xl: theme('colors.stone.100');
+        --text-color-lg: theme('colors.stone.200');
+        --text-color-md: theme('colors.stone.400');
+        --text-color-sm: theme('colors.stone.500');
+        --text-color-xs: theme('colors.stone.600');
+        --text-color-btn: theme('colors.white');
+        --text-color-btn-outline: theme('colors.stone.300');
+        --text-color-btn-secondary: theme('colors.slate.400');
+    }
+
+    .binance-like {
+        --background: 20 14.3% 1.9%;
+        --foreground: 60 9.1% 97.8%;
+        --card: 20 14.3% 4.1%;
+        --card-foreground: 60 9.1% 97.8%;
+        --popover: 20 14.3% 4.1%;
+        --popover-foreground: 60 9.1% 97.8%;
+        --primary: 47.9 95.8% 53.1%;
+        --primary-foreground: 26 83.3% 14.1%;
+        --secondary: 12 6.5% 15.1%;
+        --secondary-foreground: 60 9.1% 97.8%;
+        --muted: 12 6.5% 15.1%;
+        --muted-foreground: 24 5.4% 63.9%;
+        --accent: 12 6.5% 15.1%;
+        --accent-foreground: 60 9.1% 97.8%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 60 9.1% 97.8%;
+        --border: 12 6.5% 15.1%;
+        --input: 12 6.5% 15.1%;
+        --ring: 35.5 91.7% 32.9%;
+
+        --text-color-xl: theme('colors.neutral.100');
+        --text-color-lg: theme('colors.neutral.200');
+        --text-color-md: theme('colors.neutral.400');
+        --text-color-sm: theme('colors.neutral.500');
+        --text-color-xs: theme('colors.neutral.600');
+        --text-color-btn: theme('colors.black');
+        --text-color-btn-outline: theme('colors.neutral.300');
+        --text-color-btn-secondary: theme('colors.neutral.400');
     }
 }

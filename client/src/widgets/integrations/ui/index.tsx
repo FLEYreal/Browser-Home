@@ -4,8 +4,8 @@
 import { useState } from "react";
 
 // Features
-import { ColorPicker } from "@/features/color-picker";
-import { Converter } from "@/features/converter";
+import { ColorPickerPopover } from "@/features/color-picker";
+import { ConverterPopover } from "@/features/converter";
 
 // Shadcn / Tailwind
 import { ChevronUp } from 'lucide-react';
@@ -43,8 +43,8 @@ export default function Intefrations() {
                     })
                 }}>Social AI</Button>
 
-                <ColorPicker />
-                <Converter />
+                <ColorPickerPopover />
+                <ConverterPopover />
 
             </CollapsibleContent>
         </Collapsible>

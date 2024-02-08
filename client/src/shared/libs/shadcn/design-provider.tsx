@@ -10,7 +10,7 @@ import { Button } from '@/shared/ui/button';
 import { LoadIndicator } from '@/shared/ui/load-indicator';
 
 // Types & Interfaces
-export type designType = 'future' | 'nature' | 'cold' | 'strawberry' | 'default'
+export type designType = 'future' | 'nature' | 'cold' | 'strawberry' | 'orange' | 'binance-like' | 'default'
 export interface DesignsListProps {
     name: designType;
     color: string;
@@ -27,6 +27,8 @@ export const designs: DesignsListProps[] = [
     { name: 'nature', color: 'lime', emoji: '🍀' },
     { name: 'cold', color: 'blue', emoji: '❄️' },
     { name: 'strawberry', color: 'red', emoji: '🍓' },
+    { name: 'orange', color: 'orange', emoji: '🍊' },
+    { name: 'binance-like', color: 'orange', emoji: '🪙' },
     { name: 'default', color: 'gray' }
 ]
 

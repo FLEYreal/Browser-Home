@@ -25,6 +25,7 @@ import { useDesignContext, designType, designs } from "@/shared/libs/shadcn/desi
 // Styles
 import s from './style.module.scss'
 
+// Drawer with options to change theme
 function DesignSwitch() {
 
     // Context Values

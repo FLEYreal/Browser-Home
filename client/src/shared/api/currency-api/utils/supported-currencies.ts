@@ -1,5 +1,5 @@
-// Supported Currencies
-export const currencies = [
+// List of Supported Currencies in the converter
+export const supportedCurrencies = [
     {
         id: "usd",
         type: 'fiat',
@@ -86,9 +86,10 @@ export const currencies = [
     },
 ] as const;
 
-export type currencyType = {
-    id: typeof currencies[number]['id'],
-    type: typeof currencies[number]['type'],
-    label: typeof currencies[number]['label'],
-    className: typeof currencies[number]['className']
+// Type of items inside supported currencies list
+export type supportedCurrencyType = {
+    id: typeof supportedCurrencies[number]['id'],
+    type: typeof supportedCurrencies[number]['type'],
+    label: typeof supportedCurrencies[number]['label'],
+    className: typeof supportedCurrencies[number]['className']
 }
