@@ -21,6 +21,7 @@ import { LoadIndicator } from '@/shared/ui/load-indicator';
 
 // Insides
 import { currencyType, currencies } from '../config/supported-currencies';
+import { useConvert } from '../utils/use-convert';
 
 export type selectedState = {
     from: currencyType['id'];
@@ -33,7 +34,7 @@ export default function ConverterContent() {
     const { data: rates, isLoading } = useRates({ key: ['currency-rates'] });
 
     // Currently selected currencies to convert
-    const [selected, setSelected] = useState({ from: "usd", to: "rub" });
+    const [selected, setSelected] = useState<selectedState>({ from: "usd", to: "rub" });
 
     // Values of the converted currnecies
     const [inputs, setInputs] = useState({
@@ -65,50 +66,40 @@ export default function ConverterContent() {
         // New value
         const value = event.target.value;
 
-        if (isNaN(Number(value)) || !rates) return;
+        // Don't convert rates until it's valid number
+        // (Though it's allowed to type anything intentionally)
+        if (isNaN(Number(value)) || !rates) {
+            setInputs(prev => ({
+                ...prev,
+                [direction]: value
+            }))
+        }
 
-        // Update the currencies' ratios
-        if (direction === 'from') {
-            setInputs(prev => {
+        // If value is less than zero, empty both inputs
+        else if (Number(value) <= 0) setInputs({ from: '', to: '' })
 
-                // Define new values, calculate new ratios for "newTo"
-                const newFrom = String(value)
-                const newTo =
-                    (value === '' || Number(value) < 0.01) &&
-                        (prev.from === '' || Number(prev.from) < 0.01) ? '' :
-                        String((
-                            (Number(value) /
-                                (rates as { [key in currencyType['id']]: number })[selected.from as currencyType['id']]) *
-                            (rates as { [key in currencyType['id']]: number })[selected.to as currencyType['id']]
-                        ).toFixed(2))
+        else if (direction === 'from') {
+            // Get result of convertion
+            const result = useConvert(rates as { [key in currencyType['id']]: number }, selected.from, selected.to, Number(value))
 
-                return {
-                    from: newFrom,
-                    to: newTo,
-                }
-            });
+            // Set result to inputs
+            setInputs({
+                from: value,
+                to: String(result)
+            })
         }
 
         else if (direction === 'to') {
-            setInputs(prev => {
+            // Get result of convertion
+            const result = useConvert(rates as { [key in currencyType['id']]: number }, selected.to, selected.from, Number(value))
 
-                // Define new values, calculate new ratios for "newFrom"
-                const newFrom =
-                    (prev.to === '' || Number(prev.to) < 0.01) &&
-                        (value === '' || Number(value) < 0.01) ? '' :
-                        String((
-                            (Number(value) /
-                                (rates as { [key in currencyType['id']]: number })[selected.from as currencyType['id']]) /
-                            (rates as { [key in currencyType['id']]: number })[selected.to as currencyType['id']]
-                        ).toFixed(2))
-                const newTo = String(value)
-
-                return {
-                    from: newFrom,
-                    to: newTo
-                }
-            });
+            // Set result to inputs
+            setInputs({
+                from: String(result),
+                to: value
+            })
         }
+
 
     };
 
@@ -119,8 +110,6 @@ export default function ConverterContent() {
         setInputs({ from: '', to: '' });
 
     }, [selected]);
-
-
 
     return (
         <>
@@ -134,7 +123,14 @@ export default function ConverterContent() {
                             <LoadIndicator />
                             Loading...
                         </> :
-                        <>Currency Converter</>
+                        <div className='flex flex-col'>
+                            Currency Converter
+
+                            {/* Display rates */}
+                            <span className='text-sm'>
+                                1 {selected.from.toUpperCase()} equals {useConvert(rates as { [key in currencyType['id']]: number }, selected.from, selected.to, 1)} {selected.to.toUpperCase()}
+                            </span>
+                        </div>
                 }
             </h2>
 
@@ -192,7 +188,7 @@ export default function ConverterContent() {
 
             </div>
             <Button variant="link" className='text-sm p-0 w-24'>
-                <Link href="https://www.google.com/search?q=currency+converter">
+                <Link href={`https://www.google.com/search?q=${selected.from}+to+${selected.to}+exchange+rates`}>
                     Just Google It
                 </Link>
             </Button>
