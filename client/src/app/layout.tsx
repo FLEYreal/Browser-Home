@@ -16,17 +16,18 @@ export const metadata = {
 function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang='en' className='dark' suppressHydrationWarning>
+			<body>
 
-			<Providers>
+				<Providers>
 
-				{children}
+					{children}
 
-				{/* Display Notifications */}
-				<Toaster />
+					{/* Display Notifications */}
+					<Toaster />
 
-			</Providers>
+				</Providers>
 
-
+			</body>
 		</html>
 	)
 }
