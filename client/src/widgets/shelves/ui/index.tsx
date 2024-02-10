@@ -33,24 +33,27 @@ export default function Shelves({ ...props }: ShelvesProps) {
     if (shelves.isLoading || items.isLoading) return <LoadingFallback className="mt-8" />
 
     // When error occured
-    else if (shelves.isError || items.isError) return (
-        <BtnFallback
+    else if (shelves.isError || items.isError) {
 
-            // Data for toast notification
-            response={
-                (shelves.error as AxiosError<BackendResponseType, any>).response?.data ||
-                (items.error as AxiosError<BackendResponseType, any>).response?.data
-            }
+        return (
+            <BtnFallback
 
-            // To add refetch button to UI
-            refetch={() => {
-                items.refetch();
-                shelves.refetch();
-            }}
+                // Data for toast notification
+                response={
+                    shelves.error ? (shelves.error as AxiosError<BackendResponseType, any>).response?.data :
+                        (items.error as AxiosError<BackendResponseType, any>).response?.data
+                }
 
-            className="mt-8"
-        />
-    )
+                // To add refetch button to UI
+                refetch={() => {
+                    items.refetch();
+                    shelves.refetch();
+                }}
+
+                className="mt-8"
+            />
+        )
+    }
 
     // If everything succeed
     else if (
@@ -78,7 +81,7 @@ export default function Shelves({ ...props }: ShelvesProps) {
                                                 ...shelf,
                                                 items: shelf_items
                                             }}>
-                                                <Shelf/>
+                                                <Shelf />
                                             </ShelfProvider>
                                         )
 

@@ -26,7 +26,7 @@ export default function QueryProvider({ children }: { children: ReactNode }) {
             onError: (error, query) => {
 
                 // Error handling for own backend enpdoints
-                if (query.queryKey.find(i => i === QUERY_KEYS[0])) {
+                if (query.queryKey.find(i => i === QUERY_KEYS[0]) && error) {
 
                     // Get JSON error body from backend
                     const data = (error as AxiosError<BackendResponseType>).response!.data

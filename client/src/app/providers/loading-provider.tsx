@@ -1,7 +1,7 @@
 'use client'
 
 // Basics
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 // Shared
 import { LoadingComponent } from '@/shared/ui/loading-fallback';
@@ -12,16 +12,12 @@ export default function LoadingProvider({ children }: { children: ReactNode }) {
 
     // List of items to load
     const [queue, setQueue] = useState<queueItem[]>([])
-    const [loaded, setLoaded] = useState(false)
-
-    useEffect(() => {
-        setLoaded(true)
-    }, [])
 
     // Until no items in queue left, load
     return (
         <LoadingContext.Provider value={{ queue, setQueue }}>
-            {children}
+            <LoadingComponent />
+            <section className='z-0'>{children}</section>
         </LoadingContext.Provider>
     )
 }

@@ -31,11 +31,11 @@ export const LoadingFallback = ({ message, ...props }: BtnFallbackProps) => {
 // Component to show while loading entire page
 export const LoadingComponent = (
     { message = 'Preparing Browser-Home just for you...' }:
-    { message?: string }
+        { message?: string }
 ) => (
 
     // Show stuff until theme's loaded
-    <main className={`bg-black w-screen h-screen flex justify-center items-center flex-col`}>
+    <section className={`z-50 absolute top-0 left-0 bg-black w-screen h-screen flex justify-center items-center flex-col`}>
 
         <h1 className='text-white text-3xl mb-3 flex flex-row gap-4 items-center justify-center'>
             <LoadIndicator />Loading Browser-Home...
@@ -47,6 +47,6 @@ export const LoadingComponent = (
             </Button>
         </Link>
 
-    </main>
+    </section>
 
 )

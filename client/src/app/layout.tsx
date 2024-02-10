@@ -1,5 +1,5 @@
 // Basics
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react';
 
 // Shared
 import { Toaster } from '@/shared/ui/toaster'
@@ -10,7 +10,7 @@ import Providers from './providers'
 
 export const metadata = {
 	title: 'Browser-Home',
-	description: 'Convenient Home Page for Browsers by FLEY and AvariceJS',
+	description: 'Convenient Home Page for Browsers by FLEYreal',
 }
 
 function RootLayout({ children }: { children: ReactNode }) {

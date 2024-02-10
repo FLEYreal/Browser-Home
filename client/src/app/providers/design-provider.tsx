@@ -1,16 +1,12 @@
 'use client'
 
-// Basics
-import {
+import React, {
     ReactNode,
     Dispatch,
     SetStateAction,
     useState,
-    useLayoutEffect,
-    cloneElement as e,
-    Children,
-    ReactElement
-} from 'react'
+    useLayoutEffect
+} from 'react';
 
 // Shared
 import { DesignContext, designType } from '@/shared/utils/design-context';
@@ -42,25 +38,14 @@ export default function DesignProvider({ children }: { children: ReactNode }) {
         }
     }, [])
 
-    const cloned = Children.map(
-        children as ReactElement,
-        (child: ReactElement) => {
-
-
-            return e(child, {
-                className: `${child.props.className || ""} ${design} bg-background`
-            })
-        }
-    ) as ReactNode;
-
-    console.log(cloned)
-
     return (
         <DesignContext.Provider value={{
             design: design as designType,
             setDesign: setDesign as Dispatch<SetStateAction<designType>>
         }}>
-            {design && cloned}
+            <main className={`${design} bg-background w-screen min-h-screen absolute top-0 left-0`}>
+                {children}
+            </main>
         </DesignContext.Provider>
     )
 }

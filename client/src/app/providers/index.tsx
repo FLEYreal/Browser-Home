@@ -10,23 +10,15 @@ import QueryProvider from './query-provider';
 
 // List of all providers
 const components = [
-    LoadingProvider, // It's important for it to be in the top as other providers use its context
+    QueryProvider,
     DesignProvider,
-    QueryProvider
+    LoadingProvider, // It's important for it to be in the bottom as other providers use its context
 ]
 
 // Combine all providers
-export default function Providers({ children }: { children: ReactNode }) {
+const Providers = ({ children }: { children: ReactNode }) => components.reduceRight((accum, Current) => (
+    <Current>{accum}</Current>
+), children)
 
-    return (
-        <>
-            {
-                // Wrap all providers 
-                components.reduceRight((accum, Current) => (
-                    <Current>{accum}</Current>
-                ), children)
-            }
-        </>
-    )
 
-}
+export default Providers;
