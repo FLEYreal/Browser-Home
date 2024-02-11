@@ -1,13 +1,14 @@
 'use client'
 
 // Basics
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useEffect } from "react";
 import { AxiosError } from "axios";
 
 // Features
 import { CreateShelfBtn, CreateShelfWidget } from "@/features/shelf";
 
 // Shared
+import { useLoadingContext } from '@/shared/utils/loading-context';
 import { BackendResponseType } from "@/shared/config/types";
 import { useGetShelves } from "@/shared/api/shelf-api";
 import { BtnFallback } from "@/shared/ui/error-fallback";
@@ -23,11 +24,23 @@ export interface ShelvesProps extends HTMLAttributes<HTMLDivElement> { }
 
 export default function Shelves({ ...props }: ShelvesProps) {
 
+    // Get Loading Context data
+    const { setQueue } = useLoadingContext()
+
     // Get all items
     const items = useGetItems()
 
     // When all items are loaded, request to get all shelves
     const shelves = useGetShelves({ enabled: !!items.data });
+
+    useEffect(() => {
+        if (shelves.isSuccess && items.isSuccess) {
+
+            // Delete query item from loading queue
+            setQueue(prev => prev.filter(i => i.id !== 2))
+
+        }
+    }, [items.isSuccess, shelves.isSuccess])
 
     // When shelves are loading
     if (shelves.isLoading || items.isLoading) return <LoadingFallback className="mt-8" />
