@@ -1,7 +1,7 @@
 'use client'
 
 // Basics
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 // Shared
 import { LoadingComponent } from '@/shared/ui/loading-fallback';
@@ -9,6 +9,9 @@ import { LoadingContext, queueItem } from '@/shared/utils/loading-context';
 
 /** Global loading provider, it's shown until everything is fully loaded */
 export default function LoadingProvider({ children }: { children: ReactNode }) {
+
+    // Loading Component reference
+    const loaderRef = useRef<HTMLElement | null>(null);
 
     // List of items to load
     const [queue, setQueue] = useState<queueItem[]>([
@@ -36,14 +39,22 @@ export default function LoadingProvider({ children }: { children: ReactNode }) {
         if (queue.length <= 0) {
             // Allow scrolling when everything's loaded
             document.body.style.overflowY = 'auto';
+
+            // Slow dissappearance of loader
+            if (loaderRef.current) {
+                loaderRef.current.style.opacity = '0'
+                setTimeout(() => {
+                    loaderRef.current!.style.display = 'none'
+                }, 300)
+            }
         }
 
-    }, [queue])
+    }, [queue, loaderRef.current])
 
     // Until no items in queue left, load
     return (
         <LoadingContext.Provider value={{ queue, setQueue }}>
-            {queue.length > 0 && <LoadingComponent message={queue[0].message}/>}
+            <LoadingComponent ref={loaderRef} />
             {display && <section className='z-0'>{children}</section>}
         </LoadingContext.Provider>
     )

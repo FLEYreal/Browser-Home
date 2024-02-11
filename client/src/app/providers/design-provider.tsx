@@ -53,9 +53,7 @@ export default function DesignProvider({ children }: { children: ReactNode }) {
             design: design as designType,
             setDesign: setDesign as Dispatch<SetStateAction<designType>>
         }}>
-            {
-                queue.find(i => i.id === 1) ? null : children
-            }
+            { queue.find(i => i.id === 1) ? null : children }
         </DesignContext.Provider>
     )
 }
