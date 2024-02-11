@@ -1,3 +1,4 @@
+// Shadcn / Tailwind
 import { DrawerContent, DrawerTrigger, Drawer, DrawerTitle, DrawerDescription } from "@/shared/ui/drawer";
 
 export default function Hints() {
@@ -8,7 +9,9 @@ export default function Hints() {
         "View shelf creation date in shelf details.",
         "Upcoming features: Built-in translator, reminders, AI integration!",
         "Browser-Home is designed for PC only, no responsive design.",
-        "You can right click me to see all hints!"
+        "You can right click me to see all hints!",
+        "In-Search mode allows you to search right inside the page",
+        "Arrow in the left of the search is fast-access with some options you need fast!"
     ];
 
     return (
