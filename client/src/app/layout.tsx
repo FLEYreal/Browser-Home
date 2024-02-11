@@ -16,7 +16,7 @@ export const metadata = {
 function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang='en' className='dark' suppressHydrationWarning>
-			<body>
+			<body className='bg-background w-screen'>
 
 				<Providers>
 

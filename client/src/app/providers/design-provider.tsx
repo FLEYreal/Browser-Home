@@ -10,15 +10,13 @@ import React, {
 
 // Shared
 import { DesignContext, designType } from '@/shared/utils/design-context';
-
-export const designQueueItem = {
-    id: 1,
-    name: 'design',
-    message: 'Wait a second, we\'re implementing nice styles for you...'
-}
+import { useLoadingContext } from '@/shared/utils/loading-context';
 
 // Provider for the current theme & design of the browser-home
 export default function DesignProvider({ children }: { children: ReactNode }) {
+
+    // Context data
+    const { queue, setQueue } = useLoadingContext();
 
     // Setup default design
     const [design, setDesign] = useState<designType | null>(null);
@@ -26,16 +24,28 @@ export default function DesignProvider({ children }: { children: ReactNode }) {
     // Save / Update design state in localStorage
     useLayoutEffect(() => {
         if (design && localStorage.getItem('design') !== design) {
+
+            // Removes old theme from body
+            document.body.classList.remove(localStorage.getItem('design') as string)
+
+            // Add newest theme & Save to storage
+            document.body.classList.add(design)
             localStorage.setItem('design', design)
         }
+
     }, [design])
 
     // Load design from localStorage on initial render
     useLayoutEffect(() => {
         const storedDesign = localStorage.getItem('design') as designType;
         if (storedDesign) {
-            setDesign(storedDesign);
+            setDesign(storedDesign); // If theme is stored, set it
+            document.body.classList.add(storedDesign) // Add theme to body
         }
+
+        // Delete design item from loading queue
+        setQueue(prev => prev.filter(i => i.id !== 1))
+
     }, [])
 
     return (
@@ -43,9 +53,9 @@ export default function DesignProvider({ children }: { children: ReactNode }) {
             design: design as designType,
             setDesign: setDesign as Dispatch<SetStateAction<designType>>
         }}>
-            <main className={`${design} bg-background w-screen min-h-screen absolute top-0 left-0`}>
-                {children}
-            </main>
+            {
+                queue.find(i => i.id === 1) ? null : children
+            }
         </DesignContext.Provider>
     )
 }

@@ -10,9 +10,9 @@ import QueryProvider from './query-provider';
 
 // List of all providers
 const components = [
+    LoadingProvider, // It's important for it to be in the bottom as other providers use its context
     QueryProvider,
     DesignProvider,
-    LoadingProvider, // It's important for it to be in the bottom as other providers use its context
 ]
 
 // Combine all providers

@@ -56,8 +56,9 @@ export default function ItemWrapper({
                             {
                                 icon && typeof icon === 'string' && icon.length > 0 ?
                                     <Image
-                                        width={sizes[size].image}
-                                        height={sizes[size].image}
+                                        width={0}
+                                        height={0}
+                                        style={{ width: '45%', height: 'auto' }}
                                         src={icon}
                                         alt="Icon"
                                     /> :

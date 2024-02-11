@@ -41,11 +41,20 @@ export const LoadingComponent = (
             <LoadIndicator />Loading Browser-Home...
         </h1>
         <h2 className='text-slate-400 text-lg text-center'>{message}</h2>
-        <Link href='https://google.com' className='mt-4'>
-            <Button variant="link">
-                <LinkIcon size="16" className='mr-2' /> Go to Google
-            </Button>
-        </Link>
+        <div className="
+            mt-4 text-slate-600 flex flex-row gap-[1px] items-center box-content
+        ">
+            <LinkIcon size="16" className='mr-2' />
+            <Link
+                href='https://google.com'
+                className='
+                    border border-b-1 border-l-0 border-r-0 border-t-0 border-slate-600
+                    h-6 hover:border-none
+                '
+            >
+                Go to Google
+            </Link>
+        </div>
 
     </section>
 
