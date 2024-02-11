@@ -46,7 +46,7 @@ export default function UsedEngines() {
 
     return (
         <div className='text-sm text-color-sm flex flex-row items-center justify-start gap-2'>
-            <h1 className='-mt-[2px]'>Search Engines:</h1>
+            <h5 className='-mt-[2px]'>Search Engines:</h5>
             {
                 engines && engines.length > 0 ? engines.map((item: EngineState, key) => {
 

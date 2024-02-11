@@ -17,6 +17,7 @@ import {
 // Insides
 import { bingFormat, googleFormat, yandexFormat, duckduckgoFormat } from '../utils/formtatter';
 import { useSearchContext } from './provider'
+import FastAccessPopover from './fast-access'
 
 export default function SearchBar() {
 
@@ -115,7 +116,7 @@ export default function SearchBar() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder='Search'
-                className='p-6 text-xl font-medium leading-normal h-16 rounded-lg'
+                className='p-6 pl-[58px] text-xl font-medium leading-normal h-16 rounded-lg'
             />
             {
                 query.length >= 1 ? <>
@@ -161,6 +162,10 @@ export default function SearchBar() {
                     </HoverCard>
                 </> : ''
             }
+
+            {/* Fast-Access Options Button */}
+            <FastAccessPopover/>
+
         </div>
     )
 }

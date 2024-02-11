@@ -11,10 +11,10 @@ import { InSearchContext } from "@/shared/utils/in-search-context";
 export default function InSearchProvider({ children }: { children: ReactNode }) {
 
     // State to define search mode
-    const [inSearchMode, setInSearchMode] = useState(false);
+    const [inSearchStatus, setInSearchStatus] = useState(false);
 
     return (
-        <InSearchContext.Provider value={{inSearchMode, setInSearchMode}}>
+        <InSearchContext.Provider value={{ inSearchStatus, setInSearchStatus }}>
             {children}
         </InSearchContext.Provider>
     )
