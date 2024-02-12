@@ -65,10 +65,10 @@ export default function CreateItemDialogContent({ id = -1 }: { id?: number }) {
             <section className="flex flex-row gap-2 justify-end">
                 <AlertDialogCancel className="w-28">Cancel</AlertDialogCancel>
                 <AlertDialogCancel
-                    className="w-28 bg-red-700 hover:bg-red-600"
+                    className="w-32 bg-red-700 hover:bg-red-600"
                     onClick={onItemDelete}
                 >
-                    Delete
+                    Delete Item
                 </AlertDialogCancel>
             </section>
 
