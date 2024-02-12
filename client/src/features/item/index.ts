@@ -13,8 +13,6 @@ export {
 
 } from './ui';
 
-export { sizes } from './ui/sizes';
-
 // UI -> Item
 export { default as ItemWrapper } from './ui/item-wrapper';
 export { default as HoverCard } from './ui/item-wrapper/hover-card';
@@ -36,3 +34,6 @@ export { default as CreateItemDialogContent } from './ui/create-item-dialog/cont
 // UI -> Delete Item Dialog
 export { default as DeleteItemDialog } from './ui/delete-item-dialog';
 export { default as DeleteItemDialogContent } from './ui/delete-item-dialog/content';
+
+// Config
+export { sizes } from './config/sizes';

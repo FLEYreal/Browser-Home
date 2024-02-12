@@ -11,7 +11,7 @@ import { Hourglass } from "lucide-react";
 import hexToRgba from 'hex-to-rgba'
 
 // Insides
-import { sizes } from "../sizes";
+import { sizes } from "../../config/sizes";
 import { ItemWrapperProps, useItemContext } from "..";
 import ItemHoverCard from "./hover-card";
 import ItemSettings from "../settings-menu";

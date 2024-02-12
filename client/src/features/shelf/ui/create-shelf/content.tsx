@@ -2,20 +2,11 @@
 
 // Basics
 import { AxiosError } from "axios";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Shadcn / Tailwind
-import {
-    Dialog,
-    DialogContent,
-    DialogTrigger,
-    DialogClose
-} from "@/shared/ui/dialog";
-import {
-    Popover,
-    PopoverTrigger,
-    PopoverContent
-} from "@/shared/ui/popover";
+import { DialogContent, DialogClose } from "@/shared/ui/dialog";
+import { Popover, PopoverTrigger, PopoverContent } from "@/shared/ui/popover";
 import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { Button } from "@/shared/ui/button";
@@ -30,7 +21,8 @@ import { BackendResponseType } from "@/shared/config/types";
 import { RgbaColor } from "react-colorful";
 import rgbHex from 'rgb-hex';
 
-export default function CreateShelfDialog({ children }: { children: ReactNode }) {
+// Content for common modal window for shelf creation
+export default function CreateShelfDialogContent() {
 
     // Create Shelf Query
     const { mutate, isError, isSuccess, error } = useCreateShelves();
@@ -65,11 +57,6 @@ export default function CreateShelfDialog({ children }: { children: ReactNode })
     }, [isError, isSuccess])
 
     return (
-        <Dialog>
-
-            <DialogTrigger asChild>
-                {children}
-            </DialogTrigger>
 
             <DialogContent className="text-sm w-[400px]">
                 <h2 className="text-center text-lg py-3">Create Shelf</h2>
@@ -114,8 +101,6 @@ export default function CreateShelfDialog({ children }: { children: ReactNode })
 
                 </DialogClose>
             </DialogContent>
-
-        </Dialog>
     )
 
 }
