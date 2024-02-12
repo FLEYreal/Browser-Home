@@ -12,7 +12,7 @@ import {
 } from 'react';
 
 // Interfaces & Types
-export type EngineState = 'google' | 'yandex' | 'bing' | 'duckduckgo';
+export type EngineState = 'google' | 'yandex' | 'bing' | 'duckduckgo' | 'youtube';
 export type EngineStates = EngineState[] | null;
 export interface SearchContextProps {
     engines: EngineStates

@@ -13,6 +13,7 @@ import Google from '@/public/icons/Google.svg'
 import DuckDuckGo from '@/public/icons/DuckDuckGo.svg'
 import Yandex from '@/public/icons/Yandex.svg'
 import Bing from '@/public/icons/Bing.svg'
+import YouTube from '@/public/icons/YouTube.svg'
 
 export default function UsedEngines() {
 
@@ -37,9 +38,14 @@ export default function UsedEngines() {
             icon: Yandex
         },
         'duckduckgo': {
-            name: 'DuckDuckGO',
+            name: 'DuckDuckGo',
             url: 'https://duckduckgo.com',
             icon: DuckDuckGo
+        },
+        'youtube': {
+            name: 'YouTube',
+            url: 'https://youtube.com',
+            icon: YouTube
         }
     }), [])
 
