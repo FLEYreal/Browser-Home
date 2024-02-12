@@ -30,7 +30,7 @@ export default function ShelfSettings({ children }: { children: ReactNode }) {
 
     // Context Data
     const { size, setSize, data } = useShelfContext()
-    const { items, shelf_id, created_at } = data;
+    const { shelf_id, created_at } = data;
 
     // States
     const [currentDialog, setCurrentDialog] = useState<dialogsTypes>('create-item');
@@ -89,8 +89,7 @@ export default function ShelfSettings({ children }: { children: ReactNode }) {
                     {/* Option to see additional information about shelf */}
                     <Details details={{
                         shelf_id: shelf_id,
-                        created_at: created_at,
-                        item_amount: items.length
+                        created_at: created_at
                     }} />
 
                     <ContextMenuSeparator />

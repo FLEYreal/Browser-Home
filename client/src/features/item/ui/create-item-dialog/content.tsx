@@ -39,7 +39,6 @@ export default function CreateItemDialogContent({
     // RQ Context
     const queryClient = useQueryClient();
 
-
     // Get Shelves List from Cache
     const shelvesList:
         AxiosResponse<BackendResponseType, any> | null =
@@ -57,6 +56,7 @@ export default function CreateItemDialogContent({
     const { mutate: createItem, ...itemProps } = useCreateItems({
         onSuccess: (data) => {
 
+            queryClient.invalidateQueries({ queryKey: getShelvesKey })
             queryClient.invalidateQueries({ queryKey: getItemsKey })
             setIds((data as AxiosResponse<BackendResponseType, any>).data.payload as number[])
 
@@ -92,13 +92,11 @@ export default function CreateItemDialogContent({
 
     useEffect(() => {
 
-        // Define whether is there and erro and if there is, get data of it
+        // Define whether is there and error and if there is, get data of it
         const error = ((itemProps.error || iconProps.error) as AxiosError<BackendResponseType, any>) || null;
 
         // Display notification of an error if there is
         if (error) {
-
-            console.log(error)
 
             toast({
                 title: error.response!.data.title,

@@ -32,3 +32,7 @@ export {
 // UI -> Create Item Dialog
 export { default as CreateItemDialog } from './ui/create-item-dialog';
 export { default as CreateItemDialogContent } from './ui/create-item-dialog/content';
+
+// UI -> Delete Item Dialog
+export { default as DeleteItemDialog } from './ui/delete-item-dialog';
+export { default as DeleteItemDialogContent } from './ui/delete-item-dialog/content';
