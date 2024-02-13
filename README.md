@@ -46,28 +46,3 @@ NextJS, Typescript, Tailwind, Shadcn/UI
     payload: null;
 }
 ```
-
-Database Method Response Template
-```js
-
-// Raised Exception / Error
-{
-    // Details of the operation, code is using HTTP format
-    details: {
-        code: 500;
-        exceptions: "Text Error"; // Text of an exception
-    };
-    // Database response (in the case of "SELECT" it's a list of found rows)
-    payload: null;
-}
-
-// Successful Operation
-{
-    // Details of the operation, code is using HTTP format
-    details: {
-        code: 200;
-    };
-    // Database response (in the case of "SELECT" it's a list of found rows)
-    payload: null;
-}
-```
