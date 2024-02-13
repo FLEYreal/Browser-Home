@@ -2,7 +2,7 @@
 
 // Basics
 import { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 // Shadcn / Tailwind
 import { DialogContent, DialogClose } from "@/shared/ui/dialog";
@@ -22,11 +22,20 @@ import { RgbaColor } from "react-colorful";
 import rgbHex from 'rgb-hex';
 import hexRgb from "hex-rgb";
 
+// Insides
+import { ShelfDataProps } from "../../config/types";
+
 // Content for common modal window for shelf creation
-export default function EditShelfDialogContent({ data = { shelf_id: -1 } }: { data: updateShelvesBody[number] }) {
+export default function EditShelfDialogContent({
+    data = { shelf_id: -1 },
+    setData = () => { }
+}: {
+    data: updateShelvesBody[number],
+    setData: Dispatch<SetStateAction<ShelfDataProps>>
+}) {
 
     // Create Shelf Query
-    const { mutate, isError, isSuccess, error } = useUpdateShelves();
+    const { mutate: updateShelf, isError, isSuccess, error } = useUpdateShelves();
 
     // Hooks
     const { toast } = useToast();
@@ -42,6 +51,26 @@ export default function EditShelfDialogContent({ data = { shelf_id: -1 } }: { da
     // New Title & Description of the shelf
     const [title, setTitle] = useState(data.title || '');
     const [description, setDescription] = useState(data.description || '');
+
+    // Handlers
+    const onShelfUpdate = () => {
+
+        if (title.length > 32) toast({ title: 'Title length exceeds 32 symbols!', variant: 'destructive' })
+        else if (description.length > 256) toast({ title: 'Title length exceeds 256 symbols!', variant: 'destructive' })
+        else {
+            const updatedData = {
+                shelf_id: data.shelf_id,
+                title: title && title.length >= 1 ? title : data.title!,
+                description: description && description.length >= 1 ? description : data.description!,
+                color: data.color
+                    ? '#' + rgbHex(`rgb(${color!.r} ${color!.g} ${color!.b})`)
+                    : data.color!,
+            };
+
+            setData((prev) => ({ ...prev, ...updatedData }));
+            updateShelf([updatedData])
+        }
+    }
 
     // If error on creating shelf
     useEffect(() => {
@@ -97,13 +126,8 @@ export default function EditShelfDialogContent({ data = { shelf_id: -1 } }: { da
             </Popover>
             <DialogClose asChild>
 
-                <Button onClick={() => mutate([{
-                    shelf_id: data.shelf_id,
-                    title: title.length >= 1 ? title : undefined,
-                    description: description.length >= 1 ? description : undefined,
-                    color: data.color ? '#'+rgbHex(`rgb(${color.r} ${color.g} ${color.b})`) : undefined
-                }])}>
-                    Create
+                <Button onClick={onShelfUpdate}>
+                    Update
                 </Button>
 
             </DialogClose>

@@ -11,3 +11,6 @@ export { default as DeleteShelfDialogContent } from './ui/delete-shelf/content';
 // UI -> Update Shelf
 export { default as UpdateShelfDialog } from './ui/update-shelf';
 export { default as UpdateShelfDialogContent } from './ui/update-shelf/content';
+
+// Config
+export type { ShelfDataProps } from './config/types';

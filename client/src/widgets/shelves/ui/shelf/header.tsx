@@ -17,9 +17,6 @@ export default function ShelfHeader() {
     const { data } = useShelfContext()
     const { color, title, shelf_id, description } = data
 
-    console.log('Updated Title: ', title)
-    console.log('Updated Descr: ', description)
-
     return (
         <header>
 

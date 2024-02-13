@@ -57,7 +57,6 @@ export default function SearchProvider({ children }: { children: ReactNode }) {
             sameTab !== null && sameTab !== undefined && // Made to escape saving "null" to localstorage each mount (which kills any meaning of localstorage)
             JSON.parse(localStorage.getItem('sameTab')!) !== sameTab // Why saving same value?
         ) {
-            console.log(localStorage.getItem('sameTab'))
             localStorage.setItem('sameTab', JSON.stringify(sameTab))
         }
     }, [sameTab])

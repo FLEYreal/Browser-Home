@@ -5,17 +5,9 @@ import { createContext, useContext, useState, useEffect, Dispatch, SetStateActio
 
 // Features
 import { ItemSize } from "@/features/item";
+import { ShelfDataProps } from "@/features/shelf";
 
 // Interfaces
-export interface ShelfDataProps {
-    // Properties of the Shelf
-    shelf_id: number;
-    title: string;
-    description: string;
-    color: string;
-    created_at: string;
-}
-
 export interface ShelfContextProps {
     size: ItemSize;
     setSize: Dispatch<SetStateAction<ItemSize>>;

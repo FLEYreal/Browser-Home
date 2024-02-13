@@ -31,7 +31,7 @@ export type dialogsTypes = 'create-item' | 'edit-shelf' | 'delete-shelf';
 export default function ShelfSettings({ children }: { children: ReactNode }) {
 
     // Context Data
-    const { size, setSize, data } = useShelfContext()
+    const { size, setSize, data, setData } = useShelfContext()
     const { shelf_id, created_at, description, color, title } = data;
 
     // States
@@ -100,12 +100,13 @@ export default function ShelfSettings({ children }: { children: ReactNode }) {
                         {/* 
                             Define item's size inside shelf 
 
+                            Default: The invisible default value, equals Medium
                             Medium: Fits 8 Items
                             Small: Fits 10 Items
                             Smaller: FIts 12 Items
 
                         */}
-                        <ContextMenuRadioGroup value={size}>
+                        <ContextMenuRadioGroup value={size === 'default' ? 'medium' : size}>
 
                             <ContextMenuRadioItem value="medium" onClick={() => setSize('medium')}>Medium Size</ContextMenuRadioItem>
                             <ContextMenuRadioItem value="small" onClick={() => setSize('small')}>Small Size</ContextMenuRadioItem>
@@ -138,15 +139,18 @@ export default function ShelfSettings({ children }: { children: ReactNode }) {
                         <CreateItemDialogContent defaultShelf={shelf_id} /> :
 
                         currentDialog === 'delete-shelf' ?
-                            <DeleteShelfDialogContent id={shelf_id}/> :
+                            <DeleteShelfDialogContent id={shelf_id} /> :
 
                             currentDialog === 'edit-shelf' ?
-                                <UpdateShelfDialogContent data={{
-                                    shelf_id: shelf_id,
-                                    title: title,
-                                    description: description,
-                                    color: color
-                                }}/> : null
+                                <UpdateShelfDialogContent
+                                    setData={setData}
+                                    data={{
+                                        shelf_id: shelf_id,
+                                        title: title,
+                                        description: description,
+                                        color: color
+                                    }}
+                                /> : null
                 }
 
             </Dialog>

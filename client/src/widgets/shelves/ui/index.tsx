@@ -13,7 +13,6 @@ import { BackendResponseType } from "@/shared/config/types";
 import { useGetShelves } from "@/shared/api/shelf-api";
 import { BtnFallback } from "@/shared/ui/error-fallback";
 import { LoadingFallback } from "@/shared/ui/loading-fallback";
-import { useGetItems } from "@/shared/api/item-api";
 
 // Insides
 import Shelf from './shelf';
