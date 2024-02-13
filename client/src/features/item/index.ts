@@ -27,13 +27,17 @@ export {
     default as Details
 } from './ui/settings-menu/details';
 
-// UI -> Create Item Dialog
-export { default as CreateItemDialog } from './ui/create-item-dialog';
-export { default as CreateItemDialogContent } from './ui/create-item-dialog/content';
+// UI -> Create Item
+export { default as CreateItemDialog } from './ui/create-item';
+export { default as CreateItemDialogContent } from './ui/create-item/content';
 
-// UI -> Delete Item Dialog
-export { default as DeleteItemDialog } from './ui/delete-item-dialog';
-export { default as DeleteItemDialogContent } from './ui/delete-item-dialog/content';
+// UI -> Delete Item
+export { default as DeleteItemDialog } from './ui/delete-item';
+export { default as DeleteItemDialogContent } from './ui/delete-item/content';
+
+// UI -> Update Item
+export { default as UpdateItemDialog } from './ui/update-item';
+export { default as UpdateItemDialogContent } from './ui/update-item/content';
 
 // Config
 export { sizes } from './config/sizes';

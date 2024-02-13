@@ -33,7 +33,7 @@ export default function Intefrations() {
                 }} />
                 <p>Integrations</p>
             </CollapsibleTrigger>
-            <CollapsibleContent className="text-lg flex flex-row gap-3">
+            <CollapsibleContent className="flex flex-row gap-3">
 
                 <Button onClick={() => {
                     toast({

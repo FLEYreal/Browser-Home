@@ -7,14 +7,18 @@ import {
     DialogTrigger,
 } from "@/shared/ui/dialog";
 
-import CreateItemDialogContent from "./content";
+// Shared
+import { updateItemBody } from "@/shared/api/item-api";
 
-export default function CreateItemDialog({
+// Insides
+import UpdateItemDialogContent from "./content";
+
+export default function UpdateItemDialog({
     children,
-    defaultShelf = -1
+    data = { item_id: -1 }
 }: {
     children: ReactNode,
-    defaultShelf?: number
+    data: updateItemBody[number]
 }) {
 
     return (
@@ -26,7 +30,7 @@ export default function CreateItemDialog({
             </DialogTrigger>
 
             {/* Content of the dialog */}
-            <CreateItemDialogContent defaultShelf={defaultShelf} />
+            <UpdateItemDialogContent data={data} />
 
         </Dialog>
     )

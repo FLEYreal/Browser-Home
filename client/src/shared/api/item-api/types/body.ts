@@ -10,7 +10,7 @@ export type createItemBody = {
 export type updateItemBody = {
     item_id: number;
     shelf_fk?: number;
-    link?: number;
+    link?: string;
     title?: string;
     description?: string;
 }[]

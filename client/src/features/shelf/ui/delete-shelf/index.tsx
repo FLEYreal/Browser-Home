@@ -8,7 +8,7 @@ import { AlertDialog, AlertDialogTrigger } from "@/shared/ui/alert-dialog";
 import DeleteShelfDialogContent from './content';
 
 // Common modal window for shelf deletion
-const DeleteShelfDialog = ({ children, id }: { children: ReactNode, id?: number }) => (
+const DeleteShelfDialog = ({ children, id = -1 }: { children: ReactNode, id?: number }) => (
     <AlertDialog>
 
         <AlertDialogTrigger asChild>

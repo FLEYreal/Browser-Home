@@ -14,7 +14,6 @@ import {
 } from "@/shared/ui/context-menu";
 import {
     Dialog,
-    DialogContent,
     DialogTrigger
 } from "@/shared/ui/dialog";
 import {
@@ -25,7 +24,8 @@ import {
 // Insides
 import { useItemContext } from "..";
 import Details from "./details";
-import DeleteItemDialogContent from "../delete-item-dialog/content";
+import DeleteItemDialogContent from "../delete-item/content";
+import UpdateItemDialogContent from "../update-item/content";
 
 // Types
 export type dialogsTypes = 'edit-item' | 'delete-item';
@@ -33,7 +33,7 @@ export type dialogsTypes = 'edit-item' | 'delete-item';
 export default function ItemSettings({ children }: { children: ReactNode }) {
 
     // Get Context Data
-    const { shelf_fk, description, created_at, item_id } = useItemContext();
+    const { shelf_fk, description, created_at, item_id, title, link } = useItemContext();
 
     // States
     const [currentDialog, setCurrentDialog] = useState<dialogsTypes>('edit-item');
@@ -106,7 +106,13 @@ export default function ItemSettings({ children }: { children: ReactNode }) {
                         <DeleteItemDialogContent id={item_id} /> :
 
                         currentDialog === 'edit-item' ?
-                            <DialogContent className="text-xl">Edit-Item</DialogContent> : null
+                            <UpdateItemDialogContent data={{
+                                item_id: item_id,
+                                shelf_fk: shelf_fk,
+                                link: link,
+                                title: title,
+                                description: description
+                            }}/> : null
                 }
 
             </Dialog>

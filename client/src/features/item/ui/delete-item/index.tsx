@@ -7,6 +7,7 @@ import {
     AlertDialogTrigger,
 } from "@/shared/ui/alert-dialog";
 
+// Insides
 import DeleteItemDialogContent from "./content";
 
 export default function DeleteItemDialog({

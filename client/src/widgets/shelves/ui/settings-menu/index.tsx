@@ -23,7 +23,7 @@ import { useShelfContext } from "../provider";
 
 // Features
 import { CreateItemDialogContent } from "@/features/item";
-import { DeleteShelfDialogContent } from "@/features/shelf";
+import { DeleteShelfDialogContent, UpdateShelfDialogContent } from "@/features/shelf";
 
 // Types
 export type dialogsTypes = 'create-item' | 'edit-shelf' | 'delete-shelf';
@@ -32,7 +32,7 @@ export default function ShelfSettings({ children }: { children: ReactNode }) {
 
     // Context Data
     const { size, setSize, data } = useShelfContext()
-    const { shelf_id, created_at } = data;
+    const { shelf_id, created_at, description, color, title } = data;
 
     // States
     const [currentDialog, setCurrentDialog] = useState<dialogsTypes>('create-item');
@@ -141,7 +141,12 @@ export default function ShelfSettings({ children }: { children: ReactNode }) {
                             <DeleteShelfDialogContent id={shelf_id}/> :
 
                             currentDialog === 'edit-shelf' ?
-                                <DialogContent className="text-xl">Edit-Shelf</DialogContent> : null
+                                <UpdateShelfDialogContent data={{
+                                    shelf_id: shelf_id,
+                                    title: title,
+                                    description: description,
+                                    color: color
+                                }}/> : null
                 }
 
             </Dialog>

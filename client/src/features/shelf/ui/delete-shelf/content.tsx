@@ -48,9 +48,12 @@ export default function DeleteShelfDialogContent({ id = -1 }: { id?: number }) {
         }
 
         else if (isSuccess) {
-            toast({
-                title: 'Successfully deleted shelf!'
-            })
+
+            // Clean localstorage after shelf's removed
+            if(localStorage.getItem(`size-${id}`)) localStorage.removeItem(`size-${id}`)
+
+            // Notify of successful deletion
+            toast({ title: 'Successfully deleted shelf!' })
         }
 
     }, [isError, isSuccess])
