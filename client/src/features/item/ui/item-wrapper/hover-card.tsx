@@ -16,13 +16,15 @@ import {
     AvatarImage,
     AvatarFallback
 } from '@/shared/ui/avatar';
+
+// Insides
 import { useItemContext } from "..";
 
 // Hover card wrapper for item to show card with item's info on hover
-export default function ItemHoverCard({ 
-    children, 
+export default function ItemHoverCard({
+    children,
     cardAttrs
-}: { 
+}: {
     children: ReactNode,
     cardAttrs?: HTMLAttributes<HTMLDivElement>;
 }) {
@@ -46,11 +48,13 @@ export default function ItemHoverCard({
                         <AvatarImage src={icon as string} />
                         <AvatarFallback>{title.charAt(0).toUpperCase()}</AvatarFallback>
                     </Avatar>
-                    <div>
-                        <h2 className="font-semibold text-lg">{title}</h2>
-                        <p className="text-sm">
+                    <div className="w-[200px]">
+
+                        <h2 className="font-semibold text-lg whitespace-normal break-words">{title}</h2>
+                        <p className="text-sm whitespace-normal break-words">
                             {description || <span className="italic">{'<No Description Provided>'}</span>}
                         </p>
+
                     </div>
                 </div>
                 <hr className="bg-foreground mt-3 my-1" />

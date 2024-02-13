@@ -66,7 +66,17 @@ export default function ItemWrapper({
                             }
                         </div>
 
-                        <div style={{ color: color, fontSize: sizes[size].font }} className="opacity-50 text-center leading-5">
+                        <div
+                            style={{
+                                color: color,
+                                fontSize: sizes[size].font,
+                                width: sizes[size].size
+                            }}
+                            className="
+                                opacity-50 text-center leading-5 
+                                whitespace-normal break-words
+                            "
+                        >
                             {title}
                         </div>
 

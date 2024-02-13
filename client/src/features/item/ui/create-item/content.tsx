@@ -26,6 +26,7 @@ import { useToast } from "@/shared/ui/use-toast";
 import { getShelvesKey } from "@/shared/api/shelf-api";
 import { BackendResponseType } from "@/shared/config/types";
 import { getItemsKey, useCreateItems, useUpdateIcon } from "@/shared/api/item-api";
+import { CurrentLength } from '@/shared/ui/current-length';
 
 export default function CreateItemDialogContent({
     defaultShelf = -1
@@ -67,14 +68,19 @@ export default function CreateItemDialogContent({
     // Handlers
     const onItemCreate = () => {
 
-        // First, create item
-        createItem([{
-            shelf_fk: shelf,
-            link: link,
-            title: title,
-            description: description
-        }])
+        if (title.length > 32) toast({ title: 'Title length exceeds 32 symbols!', variant: 'destructive' })
+        else if (description.length > 128) toast({ title: 'Description length exceeds 128 symbols!', variant: 'destructive' })
+        else {
 
+            // First, create item
+            createItem([{
+                shelf_fk: shelf,
+                link: link,
+                title: title,
+                description: description
+            }])
+
+        }
     }
 
     // Effects
@@ -111,12 +117,18 @@ export default function CreateItemDialogContent({
 
             toast({ title: 'Successfully created item!' })
 
+            // Reset values on successful creation
+            setTitle('')
+            setLink('')
+            setDescription('')
+            setIcon(null)
+            setShelf(defaultShelf)
+
         }
 
     }, [
         itemProps.isError, itemProps.isSuccess,
-        iconProps.isError, iconProps.isSuccess,
-        icon
+        iconProps.isError, iconProps.isSuccess
     ])
 
     return (
@@ -125,12 +137,18 @@ export default function CreateItemDialogContent({
             <h2 className="text-center text-lg py-3">Create Item</h2>
 
             {/* Title for Item */}
-            <Input
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-                placeholder="Title"
-                className="text-sm"
-            />
+            <div className="relative">
+                <Input
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
+                    placeholder="Title"
+                    className={title.length > 32 ? "text-sm border border-red-500" : "text-sm"}
+                />
+                <CurrentLength
+                    current={title.length}
+                    limit={32}
+                />
+            </div>
 
             {/* Link of the item */}
             <Input
@@ -141,16 +159,28 @@ export default function CreateItemDialogContent({
             />
 
             {/* Description for Item */}
-            <Textarea
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-                placeholder="Description"
-                className="resize-none text-sm h-24"
-            />
+            <div className="relative">
+                <Textarea
+                    value={description}
+                    onChange={(event) => setDescription(event.target.value)}
+                    placeholder="Description"
+                    className={description.length > 128 ?
+                        "text-sm resize-none h-24 border border-red-500" :
+                        "text-sm resize-none h-24"
+                    }
+                />
+                <CurrentLength
+                    current={description.length}
+                    limit={128}
+                />
+            </div>
 
             {/* Select shelf the item will belong to */}
             {
-                shelvesList && shelvesList.data && shelvesList.data.payload ? // Shelf list has to be defined
+                shelvesList && shelvesList.data &&
+                    shelvesList.data.payload && typeof shelvesList.data.payload === 'object' &&
+                    shelvesList.data.payload.length >= 1
+                    ? // Shelf list has to be defined
                     <Select
 
                         // Define default value, it's whether first item in the list or provided from outside

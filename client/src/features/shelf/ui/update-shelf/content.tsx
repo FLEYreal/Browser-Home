@@ -16,6 +16,7 @@ import { useToast } from "@/shared/ui/use-toast";
 import Picker from "@/shared/ui/picker";
 import { createShelvesKey, updateShelvesBody, useUpdateShelves } from "@/shared/api/shelf-api";
 import { BackendResponseType } from "@/shared/config/types";
+import { CurrentLength } from "@/shared/ui/current-length";
 
 // Libs
 import { RgbaColor } from "react-colorful";
@@ -56,7 +57,7 @@ export default function EditShelfDialogContent({
     const onShelfUpdate = () => {
 
         if (title.length > 32) toast({ title: 'Title length exceeds 32 symbols!', variant: 'destructive' })
-        else if (description.length > 256) toast({ title: 'Title length exceeds 256 symbols!', variant: 'destructive' })
+        else if (description.length > 256) toast({ title: 'Description length exceeds 256 symbols!', variant: 'destructive' })
         else {
             const updatedData = {
                 shelf_id: data.shelf_id,
@@ -85,7 +86,7 @@ export default function EditShelfDialogContent({
 
         else if (isSuccess) {
             toast({
-                title: 'Successfully updated new Shelf!'
+                title: 'Successfully updated Shelf!'
             })
         }
 
@@ -94,19 +95,48 @@ export default function EditShelfDialogContent({
     return (
 
         <DialogContent className="text-sm w-[400px]">
+
+            {/* Title of the dialog */}
             <h2 className="text-center text-lg py-3">Update Shelf #{data.shelf_id}</h2>
-            <Input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Title"
-                className="text-sm"
-            />
-            <Textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description"
-                className="resize-none text-sm h-24"
-            />
+
+            {/* New title for the shelf */}
+            <div className="relative">
+
+                {/* Type new title */}
+                <Input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Title"
+                    className={title.length > 32 ? "text-sm border border-red-500" : "text-sm"}
+                />
+
+                {/* Show limit of the title's length */}
+                <CurrentLength
+                    current={title.length}
+                    limit={32}
+                />
+            </div>
+
+            {/* New description for the shelf */}
+            <div className="relative">
+                <Textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Description"
+                    className={description.length > 256 ?
+                        "text-sm resize-none h-24 border border-red-500" :
+                        "text-sm resize-none h-24"
+                    }
+                />
+
+                {/* Show limit of the description's length */}
+                <CurrentLength
+                    current={description.length}
+                    limit={256}
+                />
+            </div>
+
+            {/* Color picker to choose new shelf's color */}
             <Popover>
                 <PopoverTrigger asChild>
                     <Button
@@ -124,6 +154,8 @@ export default function EditShelfDialogContent({
                     <Picker color={color} setColor={setColor} />
                 </PopoverContent>
             </Popover>
+
+            {/* Button to update shelf */}
             <DialogClose asChild>
 
                 <Button onClick={onShelfUpdate}>

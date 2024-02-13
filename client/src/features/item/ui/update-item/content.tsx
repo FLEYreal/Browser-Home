@@ -26,6 +26,7 @@ import { useToast } from "@/shared/ui/use-toast";
 import { getShelvesKey } from "@/shared/api/shelf-api";
 import { BackendResponseType } from "@/shared/config/types";
 import { updateItemBody, useUpdateIcon, useUpdateItems } from "@/shared/api/item-api";
+import { CurrentLength } from "@/shared/ui/current-length";
 
 export default function UpdateItemDialogContent({
     data = { item_id: -1 }
@@ -52,27 +53,32 @@ export default function UpdateItemDialogContent({
     const [shelf, setShelf] = useState<number>(data.shelf_fk || -1); // Shelf's id the item belongs to
 
     // Mutation hooks
-    const { mutate: createItem, ...itemProps } = useUpdateItems();
+    const { mutate: updateItem, ...itemProps } = useUpdateItems();
     const { mutate: updateIcon, ...iconProps } = useUpdateIcon();
 
     // Handlers
     const onItemUpdate = () => {
 
-        // First, create item
-        createItem([{
-            item_id: data.item_id,
-            shelf_fk: shelf,
-            link: link.length >= 1 ? link : undefined,
-            title: title.length >= 1 ? title : undefined,
-            description: description.length >= 1 ? description : undefined
-        }])
+        if (title.length > 32) toast({ title: 'Title length exceeds 32 symbols!', variant: 'destructive' })
+        else if (description.length > 128) toast({ title: 'Description length exceeds 128 symbols!', variant: 'destructive' })
+        else {
 
-        // Then, when item is updated, upload new icon if it's provided
-        if (icon) updateIcon({
-            item_id: data.item_id,
-            icon: icon
-        });
+            // First, create item
+            updateItem([{
+                item_id: data.item_id,
+                shelf_fk: shelf,
+                link: link.length >= 1 ? link : undefined,
+                title: title.length >= 1 ? title : undefined,
+                description: description.length >= 1 ? description : undefined
+            }])
 
+            // Then, when item is updated, upload new icon if it's provided
+            if (icon) updateIcon({
+                item_id: data.item_id,
+                icon: icon
+            });
+
+        }
     }
 
     // Effects
@@ -95,8 +101,7 @@ export default function UpdateItemDialogContent({
 
     }, [
         itemProps.isError, itemProps.isSuccess,
-        iconProps.isError, iconProps.isSuccess,
-        icon
+        iconProps.isError, iconProps.isSuccess
     ])
 
     return (
@@ -105,12 +110,18 @@ export default function UpdateItemDialogContent({
             <h2 className="text-center text-lg py-3">Update Item #{data.item_id}</h2>
 
             {/* Title for Item */}
-            <Input
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-                placeholder="Title"
-                className="text-sm"
-            />
+            <div className="relative">
+                <Input
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
+                    placeholder="Title"
+                    className={title.length > 32 ? "text-sm border border-red-500" : "text-sm"}
+                />
+                <CurrentLength
+                    current={title.length}
+                    limit={32}
+                />
+            </div>
 
             {/* Link of the item */}
             <Input
@@ -121,16 +132,28 @@ export default function UpdateItemDialogContent({
             />
 
             {/* Description for Item */}
-            <Textarea
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-                placeholder="Description"
-                className="resize-none text-sm h-24"
-            />
+            <div className="relative">
+                <Textarea
+                    value={description}
+                    onChange={(event) => setDescription(event.target.value)}
+                    placeholder="Description"
+                    className={description.length > 128 ?
+                        "text-sm resize-none h-24 border border-red-500" :
+                        "text-sm resize-none h-24"
+                    }
+                />
+                <CurrentLength
+                    current={description.length}
+                    limit={128}
+                />
+            </div>
 
             {/* Select shelf the item will belong to */}
             {
-                shelvesList && shelvesList.data && shelvesList.data.payload ? // Shelf list has to be defined
+                shelvesList && shelvesList.data &&
+                    shelvesList.data.payload && typeof shelvesList.data.payload === 'object' &&
+                    shelvesList.data.payload.length >= 1
+                    ? // Shelf list has to be defined
                     <Select
 
                         // Define default value, it's whether first item in the list or provided from outside

@@ -1,5 +1,5 @@
 // Basics
-import { ReactNode } from 'react';
+import { Dispatch, SetStateAction, ReactNode } from 'react';
 
 // Shadcn / Tailwind
 import { Dialog, DialogTrigger } from "@/shared/ui/dialog";
@@ -8,15 +8,18 @@ import { Dialog, DialogTrigger } from "@/shared/ui/dialog";
 import { updateShelvesBody } from '@/shared/api/shelf-api';
 
 // Insides
-import CreateShelfDialogContent from './content';
+import UpdateShelfDialogContent from './content';
+import { ShelfDataProps } from '../../config/types';
 
 // Common modal window for shelf creation
-const EditShelfDialog = ({ 
+const UpdateShelfDialog = ({ 
     children, 
-    data = { shelf_id: -1 }
+    data = { shelf_id: -1 },
+    setData = () => { },
 }: { 
     children: ReactNode, 
-    data?: updateShelvesBody[number]
+    data?: updateShelvesBody[number],
+    setData: Dispatch<SetStateAction<ShelfDataProps>>
 }) => (
     <Dialog>
 
@@ -24,9 +27,9 @@ const EditShelfDialog = ({
             {children}
         </DialogTrigger>
 
-        <CreateShelfDialogContent data={data}/>
+        <UpdateShelfDialogContent setData={setData} data={data}/>
 
     </Dialog>
 )
 
-export default EditShelfDialog;
+export default UpdateShelfDialog;

@@ -16,6 +16,7 @@ import { useToast } from "@/shared/ui/use-toast";
 import Picker from "@/shared/ui/picker";
 import { useCreateShelves, createShelvesKey } from "@/shared/api/shelf-api";
 import { BackendResponseType } from "@/shared/config/types";
+import { CurrentLength } from "@/shared/ui/current-length";
 
 // Libs
 import { RgbaColor } from "react-colorful";
@@ -37,6 +38,17 @@ export default function CreateShelfDialogContent() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
+    // Handlers
+    const onShelfCreate = () => {
+        if (title.length > 32) toast({ title: 'Title length exceeds 32 symbols!', variant: 'destructive' })
+        else if (description.length > 256) toast({ title: 'Description length exceeds 256 symbols!', variant: 'destructive' })
+        else mutate([{
+            title: title,
+            description: description,
+            color: `#${rgbHex(color.r, color.g, color.b)}`
+        }])
+    }
+
     // If error on creating shelf
     useEffect(() => {
 
@@ -52,55 +64,90 @@ export default function CreateShelfDialogContent() {
             toast({
                 title: 'Successfully created new Shelf!'
             })
+
+            // Reset values on successful creation
+            setTitle('')
+            setDescription('')
+            setColor({ r: 160, g: 160, b: 160, a: 1 })
+
         }
 
     }, [isError, isSuccess])
 
     return (
 
-            <DialogContent className="text-sm w-[400px]">
-                <h2 className="text-center text-lg py-3">Create Shelf</h2>
+        <DialogContent className="text-sm w-[400px]">
+
+            {/* Title of the dialog */}
+            <h2 className="text-center text-lg py-3">Create Shelf</h2>
+
+            {/* Title of the new shelf */}
+            <div className="relative">
+                
+                {/* Type title for the new shelf */}
                 <Input
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Title"
-                    className="text-sm"
+                    className={title.length > 32 ? "text-sm border border-red-500" : "text-sm"}
                 />
+                
+                {/* Show limit of the title's length */}
+                <CurrentLength
+                    current={title.length}
+                    limit={32}
+                />
+            </div>
+
+            {/* Description of the new shelf */}
+            <div className="relative">
+
+                {/* Type description for the new shelf */}
                 <Textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Description"
-                    className="resize-none text-sm h-24"
+                    className={description.length > 256 ?
+                        "text-sm resize-none h-24 border border-red-500" :
+                        "text-sm resize-none h-24"
+                    }
                 />
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <Button
-                            variant="outline"
-                            style={{
-                                color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
-                                borderColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`
-                            }}
-                        >
-                            {rgbHex(`rgba(${color.r}, ${color.g}, ${color.b}, 1)`)}
-                        </Button>
 
-                    </PopoverTrigger>
-                    <PopoverContent>
-                        <Picker color={color} setColor={setColor} />
-                    </PopoverContent>
-                </Popover>
-                <DialogClose asChild>
+                {/* Show limit of the description's length */}
+                <CurrentLength
+                    current={description.length}
+                    limit={256}
+                />
+            </div>
 
-                    <Button onClick={() => mutate([{
-                        title: title,
-                        description: description,
-                        color: `#${rgbHex(color.r, color.g, color.b)}`
-                    }])}>
-                        Create
+            {/* Color picker to choose shelf's color */}
+            <Popover>
+                <PopoverTrigger asChild>
+                    <Button
+                        variant="outline"
+                        style={{
+                            color: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
+                            borderColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`
+                        }}
+                    >
+                        {rgbHex(`rgba(${color.r}, ${color.g}, ${color.b}, 1)`)}
                     </Button>
 
-                </DialogClose>
-            </DialogContent>
+                </PopoverTrigger>
+                <PopoverContent>
+                    <Picker color={color} setColor={setColor} />
+                </PopoverContent>
+            </Popover>
+
+            {/* Button to create new shelf */}
+            <DialogClose asChild>
+
+                <Button onClick={onShelfCreate}>
+                    Create
+                </Button>
+
+            </DialogClose>
+        </DialogContent>
     )
 
 }
