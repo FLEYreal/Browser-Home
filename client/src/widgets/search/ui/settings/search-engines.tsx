@@ -35,6 +35,7 @@ export default function SearchEngines() {
             { name: 'yandex', label: 'Yandex' },
             { name: 'bing', label: 'Bing' },
             { name: 'duckduckgo', label: 'DuckDuckGo' },
+            { name: 'youtube', label: 'YouTube' }
         ],
         []
     );

@@ -15,6 +15,7 @@ import {
     ContextMenuRadioItem
 } from "@/shared/ui/context-menu"
 import { Dialog, DialogTrigger, DialogContent } from "@/shared/ui/dialog";
+import { AlertDialog, AlertDialogTrigger } from "@/shared/ui/alert-dialog";
 
 // Insides
 import Details from "./details";
@@ -22,6 +23,7 @@ import { useShelfContext } from "../provider";
 
 // Features
 import { CreateItemDialogContent } from "@/features/item";
+import { DeleteShelfDialogContent, UpdateShelfDialogContent } from "@/features/shelf";
 
 // Types
 export type dialogsTypes = 'create-item' | 'edit-shelf' | 'delete-shelf';
@@ -29,120 +31,130 @@ export type dialogsTypes = 'create-item' | 'edit-shelf' | 'delete-shelf';
 export default function ShelfSettings({ children }: { children: ReactNode }) {
 
     // Context Data
-    const { size, setSize, data } = useShelfContext()
-    const { items, shelf_id, created_at } = data;
+    const { size, setSize, data, setData } = useShelfContext()
+    const { shelf_id, created_at, description, color, title } = data;
 
     // States
     const [currentDialog, setCurrentDialog] = useState<dialogsTypes>('create-item');
 
     return (
-        <Dialog>
+        <AlertDialog>
+            <Dialog>
 
-            {/* Context menu wrapper */}
-            <ContextMenu>
+                {/* Context menu wrapper */}
+                <ContextMenu>
 
-                {/* Right click on shelf to open settings */}
-                <ContextMenuTrigger asChild>
-                    {children}
-                </ContextMenuTrigger>
+                    {/* Right click on shelf to open settings */}
+                    <ContextMenuTrigger asChild>
+                        {children}
+                    </ContextMenuTrigger>
 
-                {/* Context menu (settings) itself */}
-                <ContextMenuContent className="w-[180px]">
+                    {/* Context menu (settings) itself */}
+                    <ContextMenuContent className="w-[180px]">
 
-                    {/* Setings's header */}
-                    <h2 className="
-                        text-white text-[15px] ml-2 my-4
-                        flex flex-row items-center gap-3
-                    ">
-                        <SettingsIcon size={18} />
-                        Shelf Settings
-                    </h2>
+                        {/* Setings's header */}
+                        <h2 className="
+                            text-white text-[15px] ml-2 my-4
+                            flex flex-row items-center gap-3
+                        ">
+                            <SettingsIcon size={18} />
+                            Shelf Settings
+                        </h2>
 
-                    <ContextMenuSeparator />
+                        <ContextMenuSeparator />
 
-                    {/* Edit shelf option */}
-                    <DialogTrigger
-                        asChild
-                        onClick={() => setCurrentDialog('edit-shelf')}
-                    >
+                        {/* Edit shelf option */}
+                        <DialogTrigger
+                            asChild
+                            onClick={() => setCurrentDialog('edit-shelf')}
+                        >
 
-                        <ContextMenuItem className="flex flex-row gap-2 items-center">
-                            <Pencil size={16} />
-                            Edit Shelf
-                        </ContextMenuItem>
+                            <ContextMenuItem className="flex flex-row gap-2 items-center">
+                                <Pencil size={16} />
+                                Edit Shelf
+                            </ContextMenuItem>
 
-                    </DialogTrigger>
+                        </DialogTrigger>
 
-                    {/* Create new item inside shelf option */}
-                    <DialogTrigger
-                        asChild
-                        onClick={() => setCurrentDialog('create-item')}
-                    >
+                        {/* Create new item inside shelf option */}
+                        <DialogTrigger
+                            asChild
+                            onClick={() => setCurrentDialog('create-item')}
+                        >
 
-                        <ContextMenuItem className="flex flex-row gap-2 items-center">
-                            <PlusCircle size={16} />
-                            Create Item
-                        </ContextMenuItem>
+                            <ContextMenuItem className="flex flex-row gap-2 items-center">
+                                <PlusCircle size={16} />
+                                Create Item
+                            </ContextMenuItem>
 
-                    </DialogTrigger>
+                        </DialogTrigger>
 
-                    {/* Option to see additional information about shelf */}
-                    <Details details={{
-                        shelf_id: shelf_id,
-                        created_at: created_at,
-                        item_amount: items.length
-                    }} />
+                        {/* Option to see additional information about shelf */}
+                        <Details details={{
+                            shelf_id: shelf_id,
+                            created_at: created_at
+                        }} />
 
-                    <ContextMenuSeparator />
+                        <ContextMenuSeparator />
 
-                    {/* 
-                        Define item's size inside shelf 
+                        {/* 
+                            Define item's size inside shelf 
 
-                        Medium: Fits 8 Items
-                        Small: Fits 10 Items
-                        Smaller: FIts 12 Items
+                            Default: The invisible default value, equals Medium
+                            Medium: Fits 8 Items
+                            Small: Fits 10 Items
+                            Smaller: FIts 12 Items
 
-                    */}
-                    <ContextMenuRadioGroup value={size}>
+                        */}
+                        <ContextMenuRadioGroup value={size === 'default' ? 'medium' : size}>
 
-                        <ContextMenuRadioItem value="medium" onClick={() => setSize('medium')}>Medium Size</ContextMenuRadioItem>
-                        <ContextMenuRadioItem value="small" onClick={() => setSize('small')}>Small Size</ContextMenuRadioItem>
-                        <ContextMenuRadioItem value="smaller" onClick={() => setSize('smaller')}>Smaller Size</ContextMenuRadioItem>
+                            <ContextMenuRadioItem value="medium" onClick={() => setSize('medium')}>Medium Size</ContextMenuRadioItem>
+                            <ContextMenuRadioItem value="small" onClick={() => setSize('small')}>Small Size</ContextMenuRadioItem>
+                            <ContextMenuRadioItem value="smaller" onClick={() => setSize('smaller')}>Smaller Size</ContextMenuRadioItem>
 
-                    </ContextMenuRadioGroup>
+                        </ContextMenuRadioGroup>
 
-                    <ContextMenuSeparator />
+                        <ContextMenuSeparator />
 
-                    {/* Dangerous zone, shelf's deletion */}
-                    <DialogTrigger
-                        asChild
-                        onClick={() => setCurrentDialog('delete-shelf')}
-                    >
+                        {/* Dangerous zone, shelf's deletion */}
+                        <AlertDialogTrigger
+                            asChild
+                            onClick={() => setCurrentDialog('delete-shelf')}
+                        >
 
-                        <ContextMenuItem className="flex flex-row gap-2 items-center">
-                            <Trash size={16} className="text-red-500" />
-                            <span className="text-red-500">Delete Shelf</span>
-                        </ContextMenuItem>
+                            <ContextMenuItem className="flex flex-row gap-2 items-center">
+                                <Trash size={16} className="text-red-500" />
+                                <span className="text-red-500">Delete Shelf</span>
+                            </ContextMenuItem>
 
-                    </DialogTrigger>
+                        </AlertDialogTrigger>
 
-                </ContextMenuContent>
+                    </ContextMenuContent>
 
-            </ContextMenu>
+                </ContextMenu>
 
-            {
-                // Define what dialog to open on click
-                currentDialog === 'create-item' ?
-                    <CreateItemDialogContent defaultShelf={shelf_id} /> :
+                {
+                    // Define what dialog to open on click
+                    currentDialog === 'create-item' ?
+                        <CreateItemDialogContent defaultShelf={shelf_id} /> :
 
-                    currentDialog === 'delete-shelf' ?
-                        <DialogContent className="text-xl">Delete-Shelf</DialogContent> :
+                        currentDialog === 'delete-shelf' ?
+                            <DeleteShelfDialogContent id={shelf_id} /> :
 
-                        currentDialog === 'edit-shelf' ?
-                            <DialogContent className="text-xl">Edit-Shelf</DialogContent> : null
-            }
+                            currentDialog === 'edit-shelf' ?
+                                <UpdateShelfDialogContent
+                                    setData={setData}
+                                    data={{
+                                        shelf_id: shelf_id,
+                                        title: title,
+                                        description: description,
+                                        color: color
+                                    }}
+                                /> : null
+                }
 
-        </Dialog>
+            </Dialog>
+        </AlertDialog>
     )
 
 }

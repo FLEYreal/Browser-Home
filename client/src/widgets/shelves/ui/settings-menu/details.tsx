@@ -8,14 +8,13 @@ export interface DetailsProps {
     details: {
         shelf_id: number;
         created_at: string;
-        item_amount: number;
     }
 }
 
 export default function Details({ details }: DetailsProps) {
 
     // Get additional shelf's info
-    const { shelf_id, created_at, item_amount } = details;
+    const { shelf_id, created_at } = details;
 
     return (
         <ContextMenuSub>
@@ -39,12 +38,6 @@ export default function Details({ details }: DetailsProps) {
                 <div>
                     <div className="text-xs">Shelf Creation Time</div>
                     <div className="text-sm">{created_at.split("T")[0]}</div>
-                </div>
-
-                {/* Amount of Items in the shelf */}
-                <div>
-                    <div className="text-xs">Items inside</div>
-                    <div className="text-sm">{item_amount}</div>
                 </div>
 
             </ContextMenuSubContent>

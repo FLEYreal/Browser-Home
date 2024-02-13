@@ -11,7 +11,7 @@ import { Hourglass } from "lucide-react";
 import hexToRgba from 'hex-to-rgba'
 
 // Insides
-import { sizes } from "../sizes";
+import { sizes } from "../../config/sizes";
 import { ItemWrapperProps, useItemContext } from "..";
 import ItemHoverCard from "./hover-card";
 import ItemSettings from "../settings-menu";
@@ -66,7 +66,17 @@ export default function ItemWrapper({
                             }
                         </div>
 
-                        <div style={{ color: color, fontSize: sizes[size].font }} className="opacity-50 text-center leading-5">
+                        <div
+                            style={{
+                                color: color,
+                                fontSize: sizes[size].font,
+                                width: sizes[size].size
+                            }}
+                            className="
+                                opacity-50 text-center leading-5 
+                                whitespace-normal break-words
+                            "
+                        >
                             {title}
                         </div>
 

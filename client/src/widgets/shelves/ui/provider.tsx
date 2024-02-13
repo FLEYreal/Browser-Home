@@ -4,21 +4,10 @@
 import { createContext, useContext, useState, useEffect, Dispatch, SetStateAction, ReactNode } from "react";
 
 // Features
-import { ItemSize, ItemProps } from "@/features/item";
+import { ItemSize } from "@/features/item";
+import { ShelfDataProps } from "@/features/shelf";
 
 // Interfaces
-export interface ShelfDataProps {
-    // Properties of the Shelf
-    shelf_id: number;
-    title: string;
-    description: string;
-    color: string;
-    created_at: string;
-
-    // Provide list of items of the Shelf
-    items: ItemProps[];
-}
-
 export interface ShelfContextProps {
     size: ItemSize;
     setSize: Dispatch<SetStateAction<ItemSize>>;
@@ -35,8 +24,7 @@ export const ShelfContext = createContext<ShelfContextProps>({
         title: '',
         description: '',
         color: '',
-        created_at: '',
-        items: []
+        created_at: ''
     },
     setData: () => { }
 })
@@ -54,8 +42,7 @@ export default function ShelfProvider({ children, data: shelfData }: { children:
         title: '',
         description: '',
         color: '',
-        created_at: '',
-        items: []
+        created_at: ''
     })
 
     // Effects
@@ -74,7 +61,6 @@ export default function ShelfProvider({ children, data: shelfData }: { children:
         const storedSize = localStorage.getItem(`size-${data.shelf_id}`) as ItemSize;
         if (storedSize) setSize(storedSize)
     }, [])
-
 
     return (
         <ShelfContext.Provider value={{ size, setSize, data, setData }}>

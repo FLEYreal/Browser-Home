@@ -7,7 +7,7 @@ import { Button, ButtonProps } from "@/shared/ui/button";
 export interface CreateShelfWidgetProps extends ButtonProps { }
 
 // Insides
-import CreateShelfDialog from "./create-shelf-dialog";
+import CreateShelfDialog from ".";
 
 export default function CreateShelfBtn({ ...props }: CreateShelfWidgetProps) {
 

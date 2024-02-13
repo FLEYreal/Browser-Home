@@ -15,7 +15,7 @@ import {
 } from "@/shared/ui/hover-card"
 
 // Insides
-import { bingFormat, googleFormat, yandexFormat, duckduckgoFormat } from '../utils/formtatter';
+import { bingFormat, googleFormat, yandexFormat, duckduckgoFormat, youtubeFormat } from '../utils/formtatter';
 import { useSearchContext } from './provider'
 
 export default function SearchBar() {
@@ -43,6 +43,9 @@ export default function SearchBar() {
                 switch (engine) {
                     case 'google':
                         openEngine(googleFormat(query))
+                        break;
+                    case 'youtube':
+                        openEngine(youtubeFormat(query))
                         break;
                     case 'duckduckgo':
                         openEngine(duckduckgoFormat(query))

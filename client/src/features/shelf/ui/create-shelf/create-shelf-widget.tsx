@@ -8,7 +8,7 @@ import { Button } from "@/shared/ui/button";
 import { Plus as PlusIcon } from "lucide-react";
 
 // Insides
-import CreateShelfDialog from "./create-shelf-dialog";
+import CreateShelfDialog from ".";
 
 // Interfaces & Types
 export interface CreateShelfWidgetProps extends HTMLAttributes<HTMLDivElement> { }

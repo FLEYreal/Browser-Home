@@ -48,7 +48,7 @@ export default function ShelfHeader() {
             </section>
 
             {/* Description Section */}
-            <section style={{ color: color }} className="text-sm opacity-60">
+            <section style={{ color: color }} className="text-sm opacity-60 w-[896px] break-words whitespace-normal">
                 {description}
             </section>
 
