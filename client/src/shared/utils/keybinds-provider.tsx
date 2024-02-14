@@ -4,7 +4,7 @@
 import { Dispatch, SetStateAction, createContext, useContext } from "react";
 
 // Interfaces & Types
-export type focusKeybindsType = 'none' | 'search' | 'shelves';
+export type focusKeybindsType = 'none' | 'search' | 'shelves' | 'integrations';
 
 export interface KeybindsContextProps {
     focusKeybinds: focusKeybindsType;

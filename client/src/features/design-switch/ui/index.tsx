@@ -4,6 +4,7 @@
 import { useEffect, useRef } from "react";
 
 // Shadcn / Tailwind
+import { Palette } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import {
     Drawer,
@@ -72,7 +73,7 @@ function DesignSwitch() {
 
             {/* Container for component triggering drawer's open */}
             <DrawerTrigger asChild>
-                <Button>Themes</Button>
+                <Button size='icon'><Palette size={22} /></Button>
             </DrawerTrigger>
 
             {/* Container for drawer's content */}

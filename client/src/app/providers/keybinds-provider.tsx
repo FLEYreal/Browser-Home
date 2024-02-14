@@ -14,31 +14,36 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
     const [focusKeybinds, setFocusKeybinds] = useState<focusKeybindsType>('search');
 
     // Handlers
-    const defaultKeybinds = (key: string, isAlt: boolean) => {}
-    const noneKeybinds = (key: string, isAlt: boolean) => {}
-    const searchKeybinds = (key: string, isAlt: boolean) => {}
-    const shelvesKeybinds = (key: string, isAlt: boolean) => {}
+    const defaultKeybinds = (key: string, isShift: boolean, isAlt: boolean) => {}
+    const noneKeybinds = (key: string, isShift: boolean, isAlt: boolean) => {}
+    const searchKeybinds = (key: string, isShift: boolean, isAlt: boolean) => {}
+    const integrationsKeybinds = (key: string, isShift: boolean, isAlt: boolean) => {}
+    const shelvesKeybinds = (key: string, isShift: boolean, isAlt: boolean) => {}
 
     // Function to handle keybinds, defines focused area and only triggers keybinds for specific area
     const handleFocusKeybinds = (event: KeyboardEvent) => {
 
         switch (focusKeybinds) {
             case 'search': // Search Bar Area
-                searchKeybinds(event.key, event.altKey)
+                searchKeybinds(event.key, event.shiftKey, event.altKey)
                 break;
 
             case 'shelves': // Shelves & Items Area
-                shelvesKeybinds(event.key, event.altKey)
+                shelvesKeybinds(event.key, event.shiftKey, event.altKey)
+                break;
+
+            case 'integrations': // Integrations Area
+                integrationsKeybinds(event.key, event.shiftKey, event.altKey)
                 break;
 
             default: // No Area defined, general keybinds
-                noneKeybinds(event.key, event.altKey)
+                noneKeybinds(event.key, event.shiftKey, event.altKey)
                 break;
         }
 
         // Difference between "none" and default keybinds is that default keybinds work all the time but "none"
         // work only in the case that there's currently no are focus
-        defaultKeybinds(event.key, event.altKey)
+        defaultKeybinds(event.key, event.shiftKey, event.altKey)
 
     }
 
