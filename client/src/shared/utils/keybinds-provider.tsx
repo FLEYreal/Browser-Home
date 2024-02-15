@@ -13,7 +13,7 @@ export interface KeybindsContextProps {
 
 // Context Data
 export const KeybindsContext = createContext<KeybindsContextProps>({
-    focusKeybinds: 'search',
+    focusKeybinds: 'none',
     setFocusKeybinds: () => { }
 })
 

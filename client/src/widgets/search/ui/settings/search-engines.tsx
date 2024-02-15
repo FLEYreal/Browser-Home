@@ -11,7 +11,7 @@ import {
 } from '@/shared/ui/drawer';
 
 // Insides
-import { useSearchContext, EngineState } from '../provider';
+import { useSearchContext, EngineState } from '@/shared/utils/search-context';
 import { useToast } from '@/shared/ui/use-toast';
 
 // Interfaces & Types

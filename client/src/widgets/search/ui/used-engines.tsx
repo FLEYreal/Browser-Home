@@ -5,8 +5,8 @@ import { useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-// Insides
-import { useSearchContext, EngineState } from './provider'
+// Shared
+import { useSearchContext, EngineState } from '@/shared/utils/search-context';
 
 // Assets
 import Google from '@/public/icons/Google.svg'

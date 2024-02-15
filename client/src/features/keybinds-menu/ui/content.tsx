@@ -8,8 +8,8 @@ import Key from "./key";
 
 // Keybind list
 export const defaultKeys = [
-    { title: "Focus Search", keys: <Key>F</Key> },
-    { title: "Focus Shelves", keys: <Key>S</Key> },
+    { title: "Focus Search", keys: <Key>S</Key> },
+    { title: "Focus Shelves", keys: <Key>F</Key> },
     { title: "Focus Integrations", keys: <><Key>I</Key> or <Key>E</Key></> },
     { title: "New Shelf", keys: <><Key>SHIFT</Key> + <Key>S</Key></> },
     { title: "New Item", keys: <><Key>SHIFT</Key> + <Key>I</Key></> },
