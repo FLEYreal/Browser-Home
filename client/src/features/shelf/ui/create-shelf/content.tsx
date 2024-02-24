@@ -2,7 +2,7 @@
 
 // Basics
 import { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 // Shadcn / Tailwind
 import { DialogContent, DialogClose } from "@/shared/ui/dialog";
@@ -83,7 +83,7 @@ export default function CreateShelfDialogContent() {
 
             {/* Title of the new shelf */}
             <div className="relative">
-                
+
                 {/* Type title for the new shelf */}
                 <Input
                     value={title}
@@ -91,7 +91,7 @@ export default function CreateShelfDialogContent() {
                     placeholder="Title"
                     className={title.length > 32 ? "text-sm border border-red-500" : "text-sm"}
                 />
-                
+
                 {/* Show limit of the title's length */}
                 <CurrentLength
                     current={title.length}

@@ -8,8 +8,11 @@ import {
     DrawerTitle
 } from '@/shared/ui/drawer';
 
+// Shared
+import { useSearchContext } from '@/shared/utils/search-context';
+
 // Insides
-import { useSearchContext } from '../provider';
+import { toggleSameTab } from '../../utils/handlers';
 
 export default function SameTab() {
 
@@ -17,19 +20,8 @@ export default function SameTab() {
     const { toast } = useToast()
 
     // Context
-    const { sameTab, setSameTab, engines } = useSearchContext();
-
-    // Handlers
-    const handleCheckbox = (checked: boolean) => {
-        if (engines) {
-            if (checked && engines.length > 1) toast({
-                title: 'Only 1 Search Engine Allowed',
-                description: 'You cannot open more than 1 search engine in the same tab!',
-                variant: 'destructive'
-            })
-            else setSameTab(prev => !prev);
-        }
-    }
+    const searchContext = useSearchContext();
+    const { sameTab } = searchContext;
 
     return (
         <section className='mt-12'>
@@ -45,7 +37,7 @@ export default function SameTab() {
                 <Checkbox
                     className='w-5 h-5'
                     checked={sameTab ? sameTab : false}
-                    onClick={() => handleCheckbox(!sameTab)}
+                    onClick={() => toggleSameTab(searchContext, toast)}
                 />
                 <p className='-mt-[1px]'>Use Same Tab</p>
             </div>

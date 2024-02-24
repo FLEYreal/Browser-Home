@@ -1,11 +1,8 @@
 'use client'
 
 // Basics
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
-
-// Insides
-import { supportedCurrencies, supportedCurrencyType } from './utils/supported-currencies';
 
 // Shared
 import { customQuery } from '@/shared/config/types';

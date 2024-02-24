@@ -43,7 +43,7 @@ export default function CreateItemDialogContent({
     // Get Shelves List from Cache
     const shelvesList:
         AxiosResponse<BackendResponseType, any> | null =
-        queryClient.getQueriesData<AxiosResponse<BackendResponseType, any>>({ queryKey: getShelvesKey })[0][1] || null;
+        queryClient.getQueriesData<AxiosResponse<BackendResponseType, any>>({ queryKey: getShelvesKey })[0]?.[1] || null;
 
     // Item Data States
     const [ids, setIds] = useState<number[]>([]);

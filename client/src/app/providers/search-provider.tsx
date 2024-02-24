@@ -1,38 +1,10 @@
 'use client'
 
 // Basics
-import {
-    useContext,
-    createContext,
-    useState,
-    Dispatch,
-    SetStateAction,
-    ReactNode,
-    useEffect
-} from 'react';
+import { useState, ReactNode, useEffect, useRef } from 'react';
 
-// Interfaces & Types
-export type EngineState = 'google' | 'yandex' | 'bing' | 'duckduckgo' | 'youtube';
-export type EngineStates = EngineState[] | null;
-export interface SearchContextProps {
-    engines: EngineStates
-    setEngines: Dispatch<SetStateAction<EngineStates>>;
-    sameTab: boolean | null;
-    setSameTab: Dispatch<SetStateAction<boolean | null>>;
-}
-
-// Context
-export const SearchContext = createContext<SearchContextProps>({
-    engines: [],
-    setEngines: () => { },
-    sameTab: false,
-    setSameTab: () => { }
-})
-
-// Hook
-export const useSearchContext = () => {
-    return useContext(SearchContext)
-}
+// Shared
+import { SearchContext, EngineStates } from '@/shared/utils/search-context';
 
 // Provider
 export default function SearchProvider({ children }: { children: ReactNode }) {
@@ -40,6 +12,8 @@ export default function SearchProvider({ children }: { children: ReactNode }) {
     // Search Engines to use
     const [engines, setEngines] = useState<EngineStates>(null)
     const [sameTab, setSameTab] = useState<boolean | null>(null)
+    const [query, setQuery] = useState<string>('');
+    const searchRef = useRef(null)
 
     // Search Engine Effect(s)
     useEffect(() => {
@@ -73,7 +47,7 @@ export default function SearchProvider({ children }: { children: ReactNode }) {
         if (storedSameTab) setSameTab(JSON.parse(storedSameTab))
 
         // Store setting in localStorage if storage is empty
-        if (!storedEngines) localStorage.setItem('engines', JSON.stringify(['google']))
+        if (!storedEngines) localStorage.setItem('engines', JSON.stringify([0]))
         if (!storedSameTab) localStorage.setItem('sameTab', JSON.stringify(false))
 
     }, [])
@@ -82,7 +56,9 @@ export default function SearchProvider({ children }: { children: ReactNode }) {
     return (
         <SearchContext.Provider value={{
             engines, setEngines,
-            sameTab, setSameTab
+            sameTab, setSameTab,
+            query, setQuery,
+            searchRef
         }}>
             {children}
         </SearchContext.Provider>

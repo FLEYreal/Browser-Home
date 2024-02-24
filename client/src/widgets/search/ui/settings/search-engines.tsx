@@ -11,12 +11,12 @@ import {
 } from '@/shared/ui/drawer';
 
 // Insides
-import { useSearchContext, EngineState } from '../provider';
+import { EngineEnum, useSearchContext } from '@/shared/utils/search-context';
 import { useToast } from '@/shared/ui/use-toast';
 
 // Interfaces & Types
 export interface searchEnginesProps {
-    name: EngineState;
+    name: number;
     label: string;
 }
 
@@ -31,16 +31,16 @@ export default function SearchEngines() {
     // List of available engines to set
     const searchEnginesList: searchEnginesProps[] = useMemo(
         () => [
-            { name: 'google', label: 'Google' },
-            { name: 'yandex', label: 'Yandex' },
-            { name: 'bing', label: 'Bing' },
-            { name: 'duckduckgo', label: 'DuckDuckGo' },
-            { name: 'youtube', label: 'YouTube' }
+            { name: EngineEnum.Google, label: 'Google' },
+            { name: EngineEnum.Yandex, label: 'Yandex' },
+            { name: EngineEnum.Bing, label: 'Bing' },
+            { name: EngineEnum.DuckDuckGo, label: 'DuckDuckGo' },
+            { name: EngineEnum.YouTube, label: 'YouTube' }
         ],
         []
     );
 
-    const handleCheckboxChange = (engineName: EngineState, checked: boolean) => {
+    const handleCheckboxChange = (engineName: number, checked: boolean) => {
 
         if (engines) {
 
@@ -67,6 +67,7 @@ export default function SearchEngines() {
 
     return (
         <section>
+
             {/* Setting Header */}
             <DrawerTitle>Search Engines</DrawerTitle>
             <DrawerDescription className="my-2">
