@@ -9,10 +9,16 @@ import { useToast } from '@/shared/ui/use-toast';
 
 // Features
 import { handleSearch, toggleSameTab } from '@/widgets/search';
+import { CreateShelfDialogContent } from '@/features/shelf';
 
 // Shared
 import { KeybindsContext, focusKeybindsType } from '@/shared/utils/keybinds-provider';
 import { useSearchContext } from '@/shared/utils/search-context';
+import { Dialog } from '@/shared/ui/dialog';
+import { CreateItemDialogContent } from '@/features/item';
+
+// What modal to show
+type globalDialog = 'new-shelf' | 'new-item';
 
 /** Global keybind provider, it contains keybinds functionality to every important feature */
 export default function KeybindsProvider({ children }: { children: ReactNode }) {
@@ -20,6 +26,10 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
     // Context hooks
     const searchContext = useSearchContext()
     const { searchRef, query, sameTab } = searchContext;
+
+    // Dialog's states
+    const [dialog, setDialog] = useState<globalDialog>('new-item');
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     // Hooks
     const router = useRouter();
@@ -29,15 +39,15 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
     const [focusKeybinds, setFocusKeybinds] = useState<focusKeybindsType>('none');
 
     // Handlers
-    const defaultKeybinds = (key: string, isShift: boolean, isAlt: boolean) => {
+    const defaultKeybinds = (key: string, isShift: boolean) => {
         if (key === 'Escape') setFocusKeybinds('none')
-
     }
-    const noneKeybinds = (key: string, isShift: boolean, isAlt: boolean) => {
+
+    const noneKeybinds = (key: string, isShift: boolean) => {
 
         if ( // Focus Search
-            key.toLowerCase() === 's' ||
-            key.toLowerCase() === 'ы' &&
+            key.toLowerCase() === 'w' ||
+            key.toLowerCase() === 'ц' &&
             (searchRef && searchRef.current)
         ) {
             setFocusKeybinds('search');
@@ -52,14 +62,37 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
         }
 
         else if ( // Focus Integrations
-            key.toLowerCase() === 'i' || key.toLowerCase() === 'e' ||
-            key.toLowerCase() === 'ш' || key.toLowerCase() === 'у'
+            key.toLowerCase() === 'e' || key.toLowerCase() === 'у'
         ) {
             setFocusKeybinds('integrations')
         }
+
+        else if ( // Open new Shelf Modal
+            isShift &&
+            (key.toLowerCase() === 's' || key.toLowerCase() === 'ы')
+        ) {
+            setDialog('new-shelf')
+            setIsOpen(true)
+        }
+
+        else if ( // Open new Item Modal
+            isShift &&
+            (key.toLowerCase() === 'i' || key.toLowerCase() === 'ш')
+        ) {
+            setDialog('new-item')
+            setIsOpen(true)
+        }
+
+        else if ( // Toggle Same Tab
+            isShift &&
+            (key.toLowerCase() === 'a' || key.toLowerCase() === 'ф')
+        ) {
+            const isSucceed = toggleSameTab(searchContext, toast)
+            if (isSucceed) toast({ title: 'Toggled Same Tab: ' + (sameTab ? 'ON' : 'OFF') })
+        }
     }
 
-    const searchKeybinds = (key: string, isShift: boolean, isAlt: boolean) => {
+    const searchKeybinds = (key: string, isShift: boolean) => {
 
         if (key === 'Enter') handleSearch(searchContext, router, query)
 
@@ -68,42 +101,35 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
             document.activeElement === searchRef!.current ? (document.activeElement as HTMLInputElement).blur() : null
         }
 
-        else if (
-            isAlt &&
-            (key.toLowerCase() === 'a' || key.toLowerCase() === 'ф')
-        ) {
-            const isSucceed = toggleSameTab(searchContext, toast)
-            if (isSucceed) toast({ title: 'Toggled Same Tab: ' + sameTab })
-        }
     }
 
-    const integrationsKeybinds = (key: string, isShift: boolean, isAlt: boolean) => { }
-    const shelvesKeybinds = (key: string, isShift: boolean, isAlt: boolean) => { }
+    const integrationsKeybinds = (key: string, isShift: boolean) => { }
+    const shelvesKeybinds = (key: string, isShift: boolean) => { }
 
     // Function to handle keybinds, defines focused area and only triggers keybinds for specific area
     const handleFocusKeybinds = (event: KeyboardEvent) => {
 
         switch (focusKeybinds) {
             case 'search': // Search Bar Area
-                searchKeybinds(event.key, event.shiftKey, event.altKey)
+                searchKeybinds(event.key, event.shiftKey)
                 break;
 
             case 'shelves': // Shelves & Items Area
-                shelvesKeybinds(event.key, event.shiftKey, event.altKey)
+                shelvesKeybinds(event.key, event.shiftKey)
                 break;
 
             case 'integrations': // Integrations Area
-                integrationsKeybinds(event.key, event.shiftKey, event.altKey)
+                integrationsKeybinds(event.key, event.shiftKey)
                 break;
 
             default: // No Area defined, general keybinds
-                noneKeybinds(event.key, event.shiftKey, event.altKey)
+                noneKeybinds(event.key, event.shiftKey)
                 break;
         }
 
         // Difference between "none" and default keybinds is that default keybinds work all the time but "none"
         // work only in the case that there's currently no are focus
-        defaultKeybinds(event.key, event.shiftKey, event.altKey)
+        defaultKeybinds(event.key, event.shiftKey)
 
     }
 
@@ -130,12 +156,19 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
             document.removeEventListener('click', handleClick)
         }
 
-    }, [focusKeybinds])
+    }, [focusKeybinds, searchContext])
 
     return (
         <KeybindsContext.Provider value={{
             focusKeybinds, setFocusKeybinds
         }}>
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                {
+                    dialog === 'new-item'
+                        ? <CreateItemDialogContent />
+                        : <CreateShelfDialogContent />
+                }
+            </Dialog>
             {children}
         </KeybindsContext.Provider>
     )

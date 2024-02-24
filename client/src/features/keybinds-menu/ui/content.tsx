@@ -8,19 +8,19 @@ import Key from "./key";
 
 // Keybind list
 export const defaultKeys = [
-    { title: "Focus Search", keys: <Key>S</Key> },
+    { title: "Focus Search", keys: <Key>W</Key> },
     { title: "Focus Shelves", keys: <Key>F</Key> },
-    { title: "Focus Integrations", keys: <><Key>I</Key> or <Key>E</Key></> },
+    { title: "Focus Integrations", keys: <Key>E</Key> },
     { title: "New Shelf", keys: <><Key>SHIFT</Key> + <Key>S</Key></> },
     { title: "New Item", keys: <><Key>SHIFT</Key> + <Key>I</Key></> },
-    { title: "Switch Theme", keys: <><Key>ARROW UP</Key> or <Key>ARROW DOWN</Key></> },
+    { title: "Switch Theme", keys: <><Key>ARROW LEFT</Key> or <Key>ARROW RIGHT</Key></> },
+    { title: "Toggle Same Tab", keys: <><Key>SHIFT</Key> + <Key>A</Key></> },
+    { title: "Toggle Search Engines", keys: <><Key>SHIFT</Key> + <Key>1 ... 5</Key></> }
 ];
 
 export const searchKeys = [
     { title: "Search", keys: <Key>ENTER</Key> },
-    { title: "Leave Search Focus", keys: <Key>ESC</Key> },
-    { title: "Toggle Same Tab", keys: <><Key>ALT</Key> + <Key>A</Key></> },
-    { title: "Toggle Search Engines", keys: <><Key>ALT</Key> + <Key>1 ... 5</Key></> },
+    { title: "Leave Search Focus", keys: <Key>ESC</Key> }
 ];
 
 export const integrationKeys = [

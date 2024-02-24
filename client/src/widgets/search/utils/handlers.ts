@@ -46,10 +46,10 @@ export const toggleSameTab = (searchContext: SearchContextProps, toast: (props: 
                 variant: 'destructive'
             })
 
-            return true;
+            return false;
         }
         else setSameTab(prev => !prev);
     }
 
-    return false;
+    return true;
 }
