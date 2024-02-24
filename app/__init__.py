@@ -21,7 +21,7 @@ async def validation_exception_handler(_: Request, exc: RequestValidationError):
     return generate_response(
         status=status.HTTP_422_UNPROCESSABLE_ENTITY,
         title="HTTP 422: Validation Error!",
-        description="Sent data is wrong!!!",
+        description="Provided content is wrong!",
         details=exc.errors()
     )
 
