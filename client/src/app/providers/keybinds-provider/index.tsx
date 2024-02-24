@@ -12,10 +12,11 @@ import { handleSearch, toggleSameTab } from '@/widgets/search';
 import { CreateShelfDialogContent } from '@/features/shelf';
 
 // Shared
-import { KeybindsContext, focusKeybindsType } from '@/shared/utils/keybinds-provider';
+import { KeybindsContext, focusKeybindsType } from '@/shared/utils/keybinds-context';
 import { useSearchContext } from '@/shared/utils/search-context';
 import { Dialog } from '@/shared/ui/dialog';
 import { CreateItemDialogContent } from '@/features/item';
+import { useDesignContext } from '@/shared/utils/design-context';
 
 // What modal to show
 type globalDialog = 'new-shelf' | 'new-item';
@@ -25,7 +26,8 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
 
     // Context hooks
     const searchContext = useSearchContext()
-    const { searchRef, query, sameTab } = searchContext;
+    const { searchRef, query, sameTab, engines, setEngines } = searchContext;
+    const { designs, design, setDesign } = useDesignContext();
 
     // Dialog's states
     const [dialog, setDialog] = useState<globalDialog>('new-item');
@@ -38,7 +40,6 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
     // States
     const [focusKeybinds, setFocusKeybinds] = useState<focusKeybindsType>('none');
 
-    // Handlers
     const defaultKeybinds = (key: string, isShift: boolean) => {
         if (key === 'Escape') setFocusKeybinds('none')
     }
@@ -52,19 +53,6 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
         ) {
             setFocusKeybinds('search');
             (searchRef?.current as HTMLInputElement).focus()
-        }
-
-        else if ( // Focus Shelves
-            key.toLowerCase() === 'f' ||
-            key.toLowerCase() === 'а'
-        ) {
-            setFocusKeybinds('shelves')
-        }
-
-        else if ( // Focus Integrations
-            key.toLowerCase() === 'e' || key.toLowerCase() === 'у'
-        ) {
-            setFocusKeybinds('integrations')
         }
 
         else if ( // Open new Shelf Modal
@@ -83,12 +71,54 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
             setIsOpen(true)
         }
 
+        else if (isShift && key === 'ArrowRight') { // Set the next theme
+
+            // Define next theme
+            const nextDesign = designs.find(d => d.id === design.id + 1 && designs.length > design.id)
+
+            // Set next theme if defined and the first one if not
+            if (nextDesign) setDesign(nextDesign)
+            else setDesign(designs[0])
+
+        }
+
+        else if (isShift && key === 'ArrowLeft') { // Set the previous theme
+
+            // Define previous theme
+            const previousDesign = designs.find(d => d.id === design.id - 1 && 0 < design.id)
+
+            // Set next theme if defined and the last one if not
+            if (previousDesign) setDesign(previousDesign)
+            else setDesign(designs[designs.length - 1])
+
+        }
+
         else if ( // Toggle Same Tab
             isShift &&
             (key.toLowerCase() === 'a' || key.toLowerCase() === 'ф')
         ) {
             const isSucceed = toggleSameTab(searchContext, toast)
-            if (isSucceed) toast({ title: 'Toggled Same Tab: ' + (sameTab ? 'ON' : 'OFF') })
+            if (isSucceed) toast({ title: 'Toggled Same Tab: ' + (sameTab ? 'OFF' : 'ON') })
+        }
+
+        else if (
+            key === '1' || key === '2' || key === '3' || key === '4' || key === '5'
+        ) {
+            if (!engines || typeof engines !== 'object') return;
+            const engine = engines.find(e => e === Number(key) - 1)
+
+            if (typeof engine === 'number') {
+                console.log('FOUND: ', engines.filter(e => engine !== e))
+                setEngines(prev => prev!.filter(e => engine !== e))
+            } else {
+                setEngines(prev => {
+                    const uniquePrev = new Set(prev);
+                    uniquePrev.add(Number(key) - 1)
+                    console.log('NOT: ', Array.from(uniquePrev))
+                    return Array.from(uniquePrev);
+                })
+            }
+
         }
     }
 
@@ -103,23 +133,14 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
 
     }
 
-    const integrationsKeybinds = (key: string, isShift: boolean) => { }
-    const shelvesKeybinds = (key: string, isShift: boolean) => { }
-
     // Function to handle keybinds, defines focused area and only triggers keybinds for specific area
     const handleFocusKeybinds = (event: KeyboardEvent) => {
+
+        if (focusKeybinds === 'disabled') return;
 
         switch (focusKeybinds) {
             case 'search': // Search Bar Area
                 searchKeybinds(event.key, event.shiftKey)
-                break;
-
-            case 'shelves': // Shelves & Items Area
-                shelvesKeybinds(event.key, event.shiftKey)
-                break;
-
-            case 'integrations': // Integrations Area
-                integrationsKeybinds(event.key, event.shiftKey)
                 break;
 
             default: // No Area defined, general keybinds
@@ -134,6 +155,8 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
     }
 
     const handleClick = (event: MouseEvent) => {
+
+        if (focusKeybinds === 'disabled') return;
 
         // If clicked on input, set focus to search
         if (event.target === searchRef?.current) setFocusKeybinds('search')
@@ -156,7 +179,12 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
             document.removeEventListener('click', handleClick)
         }
 
-    }, [focusKeybinds, searchContext])
+    }, [focusKeybinds, searchContext, design])
+
+    useEffect(() => {
+        if (isOpen) setFocusKeybinds('disabled')
+        else setFocusKeybinds('none')
+    }, [isOpen])
 
     return (
         <KeybindsContext.Provider value={{

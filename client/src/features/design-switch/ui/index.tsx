@@ -21,7 +21,7 @@ import {
 } from "@/shared/ui/hover-card"
 
 // Shared
-import { useDesignContext, designType, designs } from "@/shared/utils/design-context";
+import { useDesignContext, DesignType, DesignsListProps } from "@/shared/utils/design-context";
 
 // Styles
 import s from './style.module.scss'
@@ -30,14 +30,17 @@ import s from './style.module.scss'
 function DesignSwitch() {
 
     // Context Values
-    const { design, setDesign } = useDesignContext();
+    const { designs, design, setDesign } = useDesignContext();
 
     // Reference to theme toggle container
     const themeToggleRef = useRef<HTMLDivElement>(null);
 
     // Handlers
-    const handleDesignSwitch = (newDesign: designType) => {
+    const handleDesignSwitch = (newDesignName: DesignType) => {
+
+        const newDesign = designs.find(d => d.name === newDesignName) as DesignsListProps;
         setDesign(newDesign); // Set new chosen design, triggered when theme's button clicked
+    
     }
 
     // Effects
@@ -54,7 +57,7 @@ function DesignSwitch() {
             Array.from(btnList).forEach((item) => {
 
                 // Remove current theme's class from all buttons that aren't current theme's buttons
-                if (item.getAttribute('id') !== `toggle-${design}-theme-btn`) {
+                if (item.getAttribute('id') !== `toggle-${design.name}-theme-btn`) {
                     item.classList.remove(s['current-btn'])
                 }
 
@@ -95,7 +98,7 @@ function DesignSwitch() {
                             designs.map((item, key) => {
 
                                 // Class for chosen theme / No class
-                                const current = design === item.name ? s['current-btn'] : ''
+                                const current = design === item ? s['current-btn'] : ''
 
                                 return (
 

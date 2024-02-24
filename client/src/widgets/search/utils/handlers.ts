@@ -4,18 +4,18 @@
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 // Shared
-import { SearchContextProps } from '@/shared/utils/search-context';
+import { SearchContextProps, EngineEnum } from '@/shared/utils/search-context';
 
 // Insides
 import { bingFormat, googleFormat, yandexFormat, duckduckgoFormat, youtubeFormat } from './formtatter';
 
-export const openEngine = (searchContext: SearchContextProps, router: AppRouterInstance, engine: string, query: string) => {
+export const openEngine = (searchContext: SearchContextProps, router: AppRouterInstance, engine: number, query: string) => {
     const engineFormats: { [key: string]: (query: string) => string } = {
-        'google': googleFormat,
-        'youtube': youtubeFormat,
-        'duckduckgo': duckduckgoFormat,
-        'bing': bingFormat,
-        'yandex': yandexFormat,
+        [EngineEnum.Google]: googleFormat,
+        [EngineEnum.Yandex]: yandexFormat,
+        [EngineEnum.Bing]: bingFormat,
+        [EngineEnum.DuckDuckGo]: duckduckgoFormat,
+        [EngineEnum.YouTube]: youtubeFormat,
     };
 
     const formattedLink = engineFormats[engine](query);

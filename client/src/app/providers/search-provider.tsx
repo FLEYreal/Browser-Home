@@ -47,7 +47,7 @@ export default function SearchProvider({ children }: { children: ReactNode }) {
         if (storedSameTab) setSameTab(JSON.parse(storedSameTab))
 
         // Store setting in localStorage if storage is empty
-        if (!storedEngines) localStorage.setItem('engines', JSON.stringify(['google']))
+        if (!storedEngines) localStorage.setItem('engines', JSON.stringify([0]))
         if (!storedSameTab) localStorage.setItem('sameTab', JSON.stringify(false))
 
     }, [])

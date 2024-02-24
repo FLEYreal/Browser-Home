@@ -26,7 +26,7 @@ export default function Intefrations() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
     return (
-        <Collapsible>
+        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
             <CollapsibleTrigger onClick={() => setIsOpen(prev => !prev)} className="text-xl mt-7 mb-5 flex flex-row items-center gap-2">
                 <ChevronUp className="transition-all duration-200 ease-in-out mt-1" style={{
                     transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',

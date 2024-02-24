@@ -9,8 +9,10 @@ import {
 } from 'react';
 
 // Interfaces & Types
-export type EngineState = 'google' | 'yandex' | 'bing' | 'duckduckgo' | 'youtube';
-export type EngineStates = EngineState[] | null;
+export enum EngineEnum {
+    Google, Yandex, Bing, DuckDuckGo, YouTube
+}
+export type EngineStates = number[] | null;
 export interface SearchContextProps {
     engines: EngineStates
     setEngines: Dispatch<SetStateAction<EngineStates>>;
