@@ -5,7 +5,5 @@ export {
     default as KeybindsMenuContent,
     KeybindItem,
     defaultKeys,
-    searchKeys,
-    integrationKeys,
-    shelvesKeys
+    searchKeys
 } from './ui/content';

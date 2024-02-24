@@ -1,6 +1,5 @@
 .idea
 .vscode
-.env
 .mypy_cache
 venv
 environment
