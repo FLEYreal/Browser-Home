@@ -93,3 +93,10 @@ To make it open in the new tab, install the extension for your browser:
 
 - Firefox: <a href="https://addons.mozilla.org/en-US/firefox/addon/new-tab-override/">Click!</a>
 - Chrome: <a href="https://chromewebstore.google.com/detail/new-tab-override/fjcmlondipcnnpmbcollgifldmajfonf?hl=en-GB">Click!</a>
+
+## Known bugs
+Known bugs that'll be fixed
+
+- Infinite first loading
+- Keybinds work inside inputs
+- HTTP 500 error, sometimes creating items & shelves
