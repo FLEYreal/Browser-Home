@@ -1,4 +1,4 @@
-## Browser-Home
+# Browser-Home
 It is not a regular website in terms of a web-application. This is a website 
 for your home page in the browser that you set up on your PC yourself.
 Currently the browser-home supports only Windows. Support for Linux / MacOS
@@ -6,7 +6,7 @@ might be added sooner. I provided instructions to how to install it on your
 pc below but first you need to know why? That's why I provided a list of
 general productivity features in the app you might want to have.
 
-### Features
+## Features
 Features Browser-Home supports already!
 
 - Search in multiple at the same time.
@@ -34,7 +34,7 @@ Features Browser-Home supports already!
     - You don't need to suffer to understand some main features, 
     we have hints in the header to help you use Browser-Home
 
-### Developing Features
+## Developing Features
 Features Browser-Home will support sooner!
 
 - Bar Toggle
@@ -60,7 +60,7 @@ Features Browser-Home will support sooner!
     in your social media just like you would. Browser-Home will support integration
     with it, you'll be able to turn it off, see the messages he sent and delete them.
 
-### Instruction to setup
+## Instruction to setup
 And here we go, setup isn't this hard, just follow these steps:
 
 1. Install 
@@ -74,15 +74,18 @@ git clone https://github.com/FLEYreal/Browser-Home.git
 ```
 2. Create a user and database in PostgreSQL.
 3. Provide user's login, password and database name in ".env" file.
-4. Launch file init.py with command to initialize project:
+4. Launch file init.py inside the project's folder with command to initialize project:
 ```
 python init.py
 ```
 5. And finally, just double click "startup.bat" file and you're done!
 
-By Default it'll launch on URL: http://localhost:81. To make it your
+The project will startup each time you're starting pc, no need
+to worry about launching startup.bar over and over!
+
+By default it'll launch on URL: http://localhost:81. To make it your
 home page, you need to go to settings in your browser and provide this url.
 To make it open in the new tab, install the extension for your browser:
 
-Firefox: <a href="https://addons.mozilla.org/en-US/firefox/addon/new-tab-override/">Click!</a>
-Chrome: <a href="https://chromewebstore.google.com/detail/new-tab-override/fjcmlondipcnnpmbcollgifldmajfonf?hl=en-GB">Click!</a>
+- Firefox: <a href="https://addons.mozilla.org/en-US/firefox/addon/new-tab-override/">Click!</a>
+- Chrome: <a href="https://chromewebstore.google.com/detail/new-tab-override/fjcmlondipcnnpmbcollgifldmajfonf?hl=en-GB">Click!</a>
