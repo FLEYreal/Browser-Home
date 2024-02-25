@@ -16,13 +16,13 @@ def create_startup_script():
     current_directory = os.path.dirname(os.path.realpath(__file__))
     startup_script_path = os.path.join(current_directory, 'startup.bat')
 
-    # Path's transformation main.py into bytes
-    main_script_path_bytes = os.path.join(current_directory, 'main.pyw').encode(filesystem_encoding)
+    # Path's transformation into bytes
+    main_script_path_bytes = os.path.join(current_directory, 'client').encode(filesystem_encoding)
     main_script_path_decoded = main_script_path_bytes.decode(filesystem_encoding)
 
     # Create insides of "startup.bat"
     with open(startup_script_path, 'w', encoding=filesystem_encoding) as file:
-        file.write(f'chcp 65001\nstart "Python" /B pythonw "{main_script_path_decoded}"\nexit')
+        file.write(f'@echo off\nchcp 65001\n\nREM Start FastAPI (uvicorn)\nstart "FastAPI" /B cmd /C uvicorn "app:app" --reload --port 8001\n\nREM Wait for a moment to allow FastAPI to start before launching Next.js\ntimeout /t 5 /nobreak >nul\n\nREM Start Next.js (Node.js)\nstart "NextJS" /B cmd /C npm start --prefix "{main_script_path_decoded}"\n\nexit')
 
     # Return path
     return startup_script_path
