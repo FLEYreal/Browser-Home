@@ -1,48 +1,88 @@
-# This project provides your custom home page for your browser. You can setup it the way you want!
+## Browser-Home
+It is not a regular website in terms of a web-application. This is a website 
+for your home page in the browser that you set up on your PC yourself.
+Currently the browser-home supports only Windows. Support for Linux / MacOS
+might be added sooner. I provided instructions to how to install it on your
+pc below but first you need to know why? That's why I provided a list of
+general productivity features in the app you might want to have.
 
-## Stack:
+### Features
+Features Browser-Home supports already!
 
-### Backend: 
-Python, FastAPI, SQLAlchemy, Postgres
+- Search in multiple at the same time.
+    - Google
+    - DuckDuckGo
+    - Bing
+    - YouTube
+    - Yandex
 
-### Frontend:
-NextJS, Typescript, Tailwind, Shadcn/UI
+- Bult-In Integrations
+    - Currency Converter
+    - Color Picker for HEX / RGB
 
+- Shelves & Items
+    - Add colorful "shelves" where you can put "items", 
+    which work just like bookmarks in the browser.
 
-# Docs for Development
+- Keybinds
+    - Support of keybinds for most used features.
 
-### Backend Response Templates:
+- Themes
+    - Currently supports 7 themes (all of them're dark)
 
-```js
+- Hints
+    - You don't need to suffer to understand some main features, 
+    we have hints in the header to help you use Browser-Home
 
-// Successful operation
-{
-    status: 200;
-    title: "HTTP 200: OK";
-    description: "The request has succeeded.";
-    details: null;
-    payload: [{
-        // If it's get method, some payload here
-    }];
-}
+### Developing Features
+Features Browser-Home will support sooner!
 
-// Raised Exception / Error
-{
-    status: 500;
-    title: "HTTP 500: Internal Server Error";
-    description: "The server encountered an unexpected condition which prevented it from fulfilling the request.";
-    details: null;
-    payload: null;
-}
+- Bar Toggle
+    - It'll be not just search bar, it'll also support built-in
+    translator and chatGPT
 
-// Provided values are invalid / Data's validation failed
-{
-    status: 422;
-    title: "HTTP 500: Unprocessable Entity";
-    description: "You've sent wrong data";
-    details: {
-        // Contains details FastAPI generates for 422 HTTP error
-    };
-    payload: null;
-}
+- In-Search
+    - Allows you to search right inside the browser-home
+
+- Type hints
+    - All the search engines support type hints, when you type something
+    google helps you understand what to type, so will we!
+
+- Custom Theming
+    - Limited themes aren't that good, when you can choose colors yourself!
+
+- Background images
+    - You'll be able to add background images and choose background color.
+    It'll support svg, png, jpg and even gifs.
+
+- Social AI
+    - I'll develop social AI that can copy your behaviour and answer questions
+    in your social media just like you would. Browser-Home will support integration
+    with it, you'll be able to turn it off, see the messages he sent and delete them.
+
+### Instruction to setup
+And here we go, setup isn't this hard, just follow these steps:
+
+1. Install 
+    - <a href="https://www.python.org/downloads/">Python</a>
+    - <a href="https://nodejs.org/en/download/current">Node.JS</a>
+    - <a href="https://git-scm.com/downloads">Git</a>
+    - <a href="https://www.postgresql.org/download/">PostgreSQL</a>
+2. Clone repository using console command
 ```
+git clone https://github.com/FLEYreal/Browser-Home.git
+```
+2. Create a user and database in PostgreSQL.
+3. Provide user's login, password and database name in ".env" file.
+4. Launch file init.py with command to initialize project:
+```
+python init.py
+```
+5. And finally, just double click "startup.bat" file and you're done!
+
+By Default it'll launch on URL: http://localhost:81. To make it your
+home page, you need to go to settings in your browser and provide this url.
+To make it open in the new tab, install the extension for your browser:
+
+Firefox: <a href="https://addons.mozilla.org/en-US/firefox/addon/new-tab-override/">Click!</a>
+Chrome: <a href="https://chromewebstore.google.com/detail/new-tab-override/fjcmlondipcnnpmbcollgifldmajfonf?hl=en-GB">Click!</a>

@@ -108,13 +108,11 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
             const engine = engines.find(e => e === Number(key) - 1)
 
             if (typeof engine === 'number') {
-                console.log('FOUND: ', engines.filter(e => engine !== e))
                 setEngines(prev => prev!.filter(e => engine !== e))
             } else {
                 setEngines(prev => {
                     const uniquePrev = new Set(prev);
                     uniquePrev.add(Number(key) - 1)
-                    console.log('NOT: ', Array.from(uniquePrev))
                     return Array.from(uniquePrev);
                 })
             }
@@ -167,8 +165,6 @@ export default function KeybindsProvider({ children }: { children: ReactNode }) 
 
     // Effects
     useEffect(() => {
-
-        console.log(focusKeybinds)
 
         document.addEventListener('keyup', handleFocusKeybinds) // Add keyboard listener
         document.addEventListener('click', handleClick) // Global Click event

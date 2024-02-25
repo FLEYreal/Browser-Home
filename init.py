@@ -66,14 +66,6 @@ if __name__ == "__main__":
     # Add script to startup apps
     add_to_startup()
 
-    # Create local environment for backend
-    subprocess.run(["python", "-m", "venv", "venv"],
-                cwd=backend_path, text=True, shell=True)
-
-    # Enter local environment
-    subprocess.run(["venv/Scripts/activate"],
-                cwd=backend_path, text=True, shell=True)
-
     # Install backend dependencies
     subprocess.run(["pip", "install", "-r", "requirements.txt"],
                 cwd=backend_path, text=True, shell=True)
@@ -81,7 +73,7 @@ if __name__ == "__main__":
     # Install frontend dependencies
     subprocess.run(["npm", "install"], cwd=frontend_path,
                 text=True, shell=True)
-    
+
     # Build a fronted application
     subprocess.run(["npm", "run", "build"], cwd=frontend_path,
                 text=True, shell=True)
