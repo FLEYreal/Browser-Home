@@ -6,6 +6,10 @@ might be added sooner. I provided instructions to how to install it on your
 pc below but first you need to know why? That's why I provided a list of
 general productivity features in the app you might want to have.
 
+
+<img src="./assets/browser-home.png" alt="Showcase Image of Browser-Home"/>
+
+
 ## Features
 Features Browser-Home supports already!
 
