@@ -97,6 +97,7 @@ To make it open in the new tab, install the extension for your browser:
 ## Known bugs
 Known bugs that'll be fixed
 
+- Backend doesn't launch on startup
 - Infinite first loading
 - Keybinds work inside inputs
 - HTTP 500 error, sometimes creating items & shelves
